@@ -1,0 +1,1 @@
+Select Count(*) as N1 from produtos where idEmpresa = 1 and coditem = '142200140'

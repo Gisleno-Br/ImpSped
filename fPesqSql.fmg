@@ -1,0 +1,190 @@
+*HMGS-MINIGUI-IDE Two-Way Form Designer Generated Code
+*OPEN SOURCE PROJECT 2005-2016 Walter Formigoni http://sourceforge.net/projects/hmgs-minigui/
+
+DEFINE WINDOW TEMPLATE AT 184 , 402 WIDTH 733 HEIGHT 447 MODAL NOSIZE NOSYSMENU ON INIT InitSql() ON RELEASE FechaCon()
+
+     DEFINE LABEL lblfundo1
+            ROW    2
+            COL    6
+            WIDTH  709
+            HEIGHT 40
+            VALUE ""
+            BACKCOLOR {166,210,210}
+     END LABEL  
+
+     DEFINE FRAME Frame_1
+            ROW    1
+            COL    2
+            WIDTH  726
+            HEIGHT 45
+            FONTNAME 'Arial'
+     END FRAME  
+
+     DEFINE FRAME Frame_2
+            ROW    48
+            COL    2
+            WIDTH  726
+            HEIGHT 40
+            FONTNAME 'Arial'
+            OPAQUE .T.
+     END FRAME  
+
+     DEFINE LABEL lblfundo2
+            ROW    50
+            COL    5
+            WIDTH  709
+            HEIGHT 34
+            VALUE ""
+            BACKCOLOR {166,210,210}
+     END LABEL  
+
+     DEFINE LABEL Label_1
+            ROW    60
+            COL    20
+            WIDTH  120
+            HEIGHT 22
+            VALUE "Pesquisa "
+            FONTNAME "Verdana"
+            TRANSPARENT .T.
+     END LABEL  
+
+     DEFINE TEXTBOX EdtPesq
+            ROW    58
+            COL    90
+            WIDTH  250
+            HEIGHT 22
+            FONTNAME 'Arial'
+            ONCHANGE ChqFSql( This.Value)
+            MAXLENGTH 45
+     END TEXTBOX 
+
+     DEFINE BUTTONEX BtnPesq
+            ROW    58
+            COL    340
+            WIDTH  84
+            HEIGHT 22
+            CAPTION "Consultar"
+            PICTURE "brw_lupa.bmp"
+            ICON NIL
+            ACTION Consulty()
+            FONTNAME 'Arial'
+            TOOLTIP ''
+            HANDCURSOR .F.
+     END BUTTONEX  
+
+     DEFINE LABEL Label_2
+            ROW    60
+            COL    465
+            WIDTH  120
+            HEIGHT 24
+            VALUE "Campo "
+            FONTNAME "Verdana"
+            TRANSPARENT .T.
+     END LABEL  
+
+     DEFINE COMBOBOX CmbCampos
+            ROW    55
+            COL    516
+            WIDTH  145
+            HEIGHT 100
+            ITEMS aCamposX
+            VALUE 1
+            FONTNAME 'Arial'
+            TOOLTIP ''
+     END COMBOBOX  
+
+     DEFINE GRID Grid1
+            ROW    90
+            COL    2
+            WIDTH  725
+            HEIGHT 285
+            HEADERS aHeaderDb
+            WIDTHS aTamDb
+            ITEMS aValores
+            VALUE 0
+            FONTNAME "Verdana"
+            FONTSIZE 8
+            DYNAMICBACKCOLOR aBColor1
+            ONDBLCLICK SetOk()
+            NOSORTHEADERS .F.
+            HEADERIMAGE ""
+     END GRID  
+
+     DEFINE BUTTONEX BtnOk
+            ROW    380
+            COL    530
+            WIDTH  75
+            HEIGHT 24
+            CAPTION "Ok"
+            PICTURE "OK.BMP"
+            ICON NIL
+            ACTION SetOk()
+            FONTNAME 'Arial'
+            TOOLTIP ''
+            HANDCURSOR .F.
+     END BUTTONEX  
+
+     DEFINE BUTTONEX ButtonEX_1
+            ROW    380
+            COL    604
+            WIDTH  100
+            HEIGHT 24
+            CAPTION "Cancelar"
+            PICTURE "cancel.bmp"
+            ICON NIL
+            ACTION ( fPesqSql.Release() , fPesqSql := Nil)
+            FONTNAME 'Arial'
+            TOOLTIP ''
+            HANDCURSOR .F.
+     END BUTTONEX  
+
+     DEFINE IMAGE Image_1
+            ROW    10
+            COL    15
+            WIDTH  24
+            HEIGHT 24
+            PICTURE "hpzoom.bmp"
+            STRETCH .T.
+            TRANSPARENT .T.
+            BACKGROUNDCOLOR {166,210,210}
+     END IMAGE  
+
+     DEFINE LABEL Lbltit1
+            ROW    12
+            COL    43
+            WIDTH  250
+            HEIGHT 24
+            VALUE "Label_3"
+            FONTNAME "Verdana"
+            FONTSIZE 10
+            FONTBOLD .T.
+            FONTUNDERLINE .T.
+            TRANSPARENT .T.
+            FONTCOLOR {0,0,255}
+     END LABEL  
+
+     DEFINE LABEL Label_3
+            ROW    15
+            COL    485
+            WIDTH  120
+            HEIGHT 24
+            VALUE "Qtde. Registros : "
+            FONTNAME "Verdana"
+            FONTSIZE 8
+            FONTBOLD .T.
+            TRANSPARENT .T.
+     END LABEL  
+
+     DEFINE LABEL lblQreg
+            ROW    15
+            COL    596
+            WIDTH  120
+            HEIGHT 24
+            VALUE "          "
+            TRANSPARENT .T.
+            FONTCOLOR {0,0,255}
+     END LABEL  
+
+END WINDOW
+
+

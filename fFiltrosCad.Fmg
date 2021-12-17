@@ -1,0 +1,123 @@
+* HMG-IDE UNICODE Form Designer Generated Code
+* (c) Roberto Lopez - http://sites.google.com/site/hmgweb
+
+DEFINE WINDOW TEMPLATE AT 181 , 292 WIDTH 665 HEIGHT 351 VIRTUAL WIDTH Nil VIRTUAL HEIGHT Nil TITLE "" ICON NIL MODAL NOSIZE NOSYSMENU NOCAPTION CURSOR NIL ON INIT (BT_ClientAreaInvalidateAll ('fFiltrosCad') , xLoadFiltros( cTabx )) ON RELEASE Nil ON INTERACTIVECLOSE Nil ON MOUSECLICK Nil ON MOUSEDRAG Nil ON MOUSEMOVE Nil ON SIZE Nil ON PAINT Nil BACKCOLOR Nil ON GOTFOCUS Nil ON LOSTFOCUS Nil ON SCROLLUP Nil ON SCROLLDOWN Nil ON SCROLLLEFT Nil ON SCROLLRIGHT Nil ON HSCROLLBOX Nil ON VSCROLLBOX Nil
+
+    DEFINE GRID GridFiltro
+        ROW    30
+        COL    2
+        WIDTH  654
+        HEIGHT 260
+        ITEMS { { '' , '',''} }
+        VALUE Nil
+        WIDTHS {65, 230,550}
+        HEADERS aHed1
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        ONCHANGE xChgIt()
+        ONGOTFOCUS Nil
+        ONLOSTFOCUS Nil
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        ONDBLCLICK Nil
+        ONHEADCLICK Nil
+        ONQUERYDATA Nil
+        MULTISELECT .F.
+        ALLOWEDIT .F.
+        VIRTUAL .F.
+        DYNAMICBACKCOLOR Nil
+        DYNAMICFORECOLOR Nil
+        COLUMNWHEN Nil
+        COLUMNVALID Nil
+        COLUMNCONTROLS Nil
+        SHOWHEADERS .T.
+        CELLNAVIGATION .F.
+        NOLINES .T.
+        HELPID Nil
+        IMAGE Nil
+        JUSTIFY Nil
+        ITEMCOUNT Nil
+        BACKCOLOR {255,255,251}
+        FONTCOLOR NIL
+        HEADERIMAGES Nil
+        ROWSOURCE Nil
+        COLUMNFIELDS Nil
+        ALLOWAPPEND .F.
+        ALLOWDELETE .F.
+        BUFFERED .F.
+        DYNAMICDISPLAY Nil
+        ONSAVE Nil
+        LOCKCOLUMNS 0
+    END GRID
+
+    DEFINE LABEL Label_1
+        ROW    294
+        COL    230
+        WIDTH  195
+        HEIGHT 24
+        VALUE "Qtde. Filtros Listados :"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        HELPID Nil
+        VISIBLE .T.
+        TRANSPARENT .F.
+        ACTION Nil
+        AUTOSIZE .F.
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+    END LABEL
+
+    DEFINE LABEL LblQtFiltro
+        ROW    294
+        COL    366
+        WIDTH  40
+        HEIGHT 24
+        VALUE "0"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        FONTBOLD .T.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        HELPID Nil
+        VISIBLE .T.
+        TRANSPARENT .F.
+        ACTION Nil
+        AUTOSIZE .F.
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+    END LABEL
+
+    DEFINE LABEL LblTabela
+        ROW    10
+        COL    10
+        WIDTH  120
+        HEIGHT 13
+        VALUE "LblTabela"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        HELPID Nil
+        VISIBLE .T.
+        TRANSPARENT .F.
+        ACTION Nil
+        AUTOSIZE .F.
+        BACKCOLOR NIL
+        FONTCOLOR {0,0,128}
+    END LABEL
+
+END WINDOW
+

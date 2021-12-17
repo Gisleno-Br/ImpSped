@@ -1,0 +1,390 @@
+* HMG-IDE UNICODE Form Designer Generated Code
+* (c) Roberto Lopez - http://sites.google.com/site/hmgweb
+
+DEFINE WINDOW TEMPLATE AT 140 , 262 WIDTH 705 HEIGHT 376 VIRTUAL WIDTH Nil VIRTUAL HEIGHT Nil TITLE "CriaÆo de Consultas" ICON NIL MODAL NOSIZE NOSYSMENU NOCAPTION CURSOR NIL ON INIT InitCons() ON RELEASE Nil ON INTERACTIVECLOSE Nil ON MOUSECLICK Nil ON MOUSEDRAG Nil ON MOUSEMOVE Nil ON SIZE Nil ON PAINT Proc_Paint("Consulta Personalizada" , , hBit20 , ThisWindow.Name) BACKCOLOR {232,232,232} ON GOTFOCUS Nil ON LOSTFOCUS Nil ON SCROLLUP Nil ON SCROLLDOWN Nil ON SCROLLLEFT Nil ON SCROLLRIGHT Nil ON HSCROLLBOX Nil ON VSCROLLBOX Nil
+
+    DEFINE FRAME Frame_1
+        ROW    1
+        COL    1
+        WIDTH  699
+        HEIGHT 361
+        FONTNAME "Arial"
+        FONTSIZE 9
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        CAPTION NIL
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+        OPAQUE .F.
+    END FRAME
+
+    DEFINE LABEL lblTabela1
+        ROW    3
+        COL    4
+        WIDTH  690
+        HEIGHT 35
+        VALUE "test"
+        FONTNAME "Verdana"
+        FONTSIZE 8
+        TOOLTIP ""
+        FONTBOLD .T.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        HELPID Nil
+        VISIBLE .F.
+        TRANSPARENT .F.
+        ACTION Nil
+        AUTOSIZE .F.
+        BACKCOLOR {9,111,137}
+        FONTCOLOR {255,255,255}
+        CENTERALIGN .T. 
+    END LABEL
+
+    DEFINE TAB Tab_1 AT 40 , 7 WIDTH 686 HEIGHT 282 VALUE 1 FONT "Arial" SIZE 9 TOOLTIP "" BUTTONS ON CHANGE TabChg()
+
+        PAGE "Campos" IMAGE "img\new.bmp"
+
+            DEFINE LABEL Label_1
+                ROW    39
+                COL    18
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Tabela"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL LblTabela
+                ROW    39
+                COL    120
+                WIDTH  300
+                HEIGHT 24
+                VALUE "Label_2"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .T.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_2
+                ROW    34
+                COL    438
+                WIDTH  195
+                HEIGHT 24
+                VALUE "Selecione campos da Consulta"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .T.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR {229,229,229}
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_3
+                ROW    69
+                COL    18
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Titulo Consulta : "
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE TEXTBOX TituloCons
+                ROW    66
+                COL    120
+                WIDTH  286
+                HEIGHT 20
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE CheckOk(.t.)
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT NONE
+                MAXLENGTH 40
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK Nil
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+            DEFINE LABEL Label_4
+                ROW    99
+                COL    18
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Obs"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE EDITBOX Obs
+                ROW    99
+                COL    120
+                WIDTH  291
+                HEIGHT 92
+                VALUE ""
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE CheckOk()
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                HSCROLLBAR .T.
+                VSCROLLBAR .T.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END EDITBOX
+
+            DEFINE LISTBOX LstCampos
+                ROW    56
+                COL    420
+                WIDTH  237
+                HEIGHT 197
+                ITEMS {""}
+                VALUE 0
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP "Segure 'Ctrl' e click nos campos desejados"
+                ONCHANGE CheckOk()
+                ONGOTFOCUS CheckOk()
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                ONDBLCLICK CheckOk()
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                SORT .F.
+                MULTISELECT .T.
+                DRAGITEMS .F.
+            END LISTBOX
+
+        END PAGE 
+
+        PAGE "Filtros/Parametros" IMAGE "img\ic_janela.bmp"
+
+            DEFINE GRID GridPar
+                ROW    25
+                COL    1
+                WIDTH  679
+                HEIGHT 210
+                ITEMS NIL
+                VALUE 0
+                WIDTHS {100,85,115,85,75,85,45,45}
+                HEADERS {'Campo','Operador','Valor','Op. Logico' ,'Editavel','Requerido' , 'P1' , 'P2' }
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE CheckOk()
+                ONGOTFOCUS GFocus()
+                ONLOSTFOCUS GFocus()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONDBLCLICK AddPar1(.f. , cTabela)
+                ONHEADCLICK Nil
+                ONQUERYDATA Nil
+                MULTISELECT .F.
+                ALLOWEDIT .F.
+                VIRTUAL .F.
+                DYNAMICBACKCOLOR Nil
+                DYNAMICFORECOLOR Nil
+                COLUMNWHEN Nil
+                COLUMNVALID Nil
+                COLUMNCONTROLS Nil
+                SHOWHEADERS .T.
+                CELLNAVIGATION .F.
+                NOLINES .T.
+                HELPID Nil
+                IMAGE Nil
+                JUSTIFY Nil
+                ITEMCOUNT Nil
+                BACKCOLOR {206,227,227}
+                FONTCOLOR {79,79,79}
+                HEADERIMAGES Nil
+                ROWSOURCE Nil
+                COLUMNFIELDS Nil
+                ALLOWAPPEND .F.
+                ALLOWDELETE .F.
+                BUFFERED .F.
+                DYNAMICDISPLAY .F.
+                ONSAVE Nil
+                LOCKCOLUMNS 0
+            END GRID
+
+        END PAGE 
+
+        PAGE "Ordem" IMAGE "img\ic_20_editar.bmp"
+
+            DEFINE LISTBOX LstOrdem
+                ROW    61
+                COL    211
+                WIDTH  250
+                HEIGHT 160
+                ITEMS {""}
+                VALUE 0
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP "Segure 'Ctrl' e click nos campos desejados"
+                ONCHANGE CheckOk()
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                ONDBLCLICK Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                SORT .F.
+                MULTISELECT .T.
+                DRAGITEMS .F.
+            END LISTBOX
+
+            DEFINE LABEL LblOrdem
+                ROW    241
+                COL    215
+                WIDTH  262
+                HEIGHT 24
+                VALUE ""
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE CHECKBOX ChkOrd1
+                ROW    75
+                COL    481
+                WIDTH  165
+                HEIGHT 28
+                CAPTION "Ordem Ascendente"
+                VALUE .F.
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                TRANSPARENT .F.
+            END CHECKBOX
+
+        END PAGE 
+
+        PAGE "Sql" IMAGE ""
+
+        END PAGE 
+
+    END TAB 
+
+END WINDOW
+

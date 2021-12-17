@@ -1,0 +1,1 @@
+insert into filtros values(56,"adsad vazio","Clientes","( ( nome =  '' ) )","S","Id                       "," ")

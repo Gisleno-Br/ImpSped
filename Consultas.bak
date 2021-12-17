@@ -1,0 +1,1862 @@
+#include <hmg.ch>
+#include <minigui.ch>
+
+#define QUEBRA Chr(13)+Chr(10)
+
+REQUEST HB_LANG_PT
+REQUEST HB_CODEPAGE_PT850
+
+#define DBI_QUERY             1001
+#define RDDI_CONNECT          1001
+#define RDDI_DISCONNECT       1002
+#define RDDI_EXECUTE          1003
+#define RDDI_ERROR            1004
+#define RDDI_ERRORNO          1005
+#define RDDI_NEWID            1006
+#define RDDI_AFFECTEDROWS     1007
+#define RDDI_QUERY            1008
+
+REQUEST SDDMY, SQLMIX
+
+
+
+FUNCTION NovaConsulta( cTabela, lMovTable )
+
+   LOCAL aCabec  := GetCamposDic( cTabela, ' ', .F. )
+   LOCAL n1 := 1
+
+   LOCAL lBold      := .F.
+   LOCAL lItalic    := .F.
+   LOCAL lUnderline := .F.
+   LOCAL lStrikeOut := .F.
+
+   LOCAL lOk := .F.
+
+   DEFAULT lMovTable := .F.
+
+   SET LANGUAGE TO PORTUGUESE
+   SET CODEPAGE TO PORTUGUESE
+
+   HB_SetCodePage( "PT850" )
+   hb_langSelect( "PT" )
+
+   PRIVATE aButx1 := {}
+
+   Load Window fCriaConsulta
+
+   ON KEY ESCAPE of fCriaConsulta Action fCriaConsulta.Release()
+
+   fCriaConsulta .LblTabela. value := AllTrim( cTabela )
+
+   Center Window fCriaConsulta
+
+   fCriaConsulta .LstCampos. DeleteAllItems()
+
+   PRIVATE lMvTable := lMovTable
+
+   WHILE n1 <= Len( aCabec )
+
+      IF !Empty( AllTrim( aCabec[ n1 ] ) )
+         fCriaConsulta .LstCampos. Additem( hb_ANSIToOEM( aCabec[ n1 ] ) )
+      END IF
+
+      n1++
+
+   ENDDO
+
+   cTit1 := 'Criação de Consultas'
+   // Aviso(Hb_ansiToOem( cTit1 ))
+
+   // fCriaConsulta .BtnOk. Enabled := .F.
+
+   SetProperty( 'fCriaConsulta', 'Title', hb_ANSIToOEM( cTit1 ) )
+   SetProperty( 'fCriaConsulta', 'Label_4', "Value", hb_ANSIToOEM( "Observação" ) )
+
+   SetProperty( 'fCriaConsulta', 'Tab_1', "Captions", { "Campos", "Filtros/Parametros", hb_ANSIToOEM( "Ordenação" ), "Sql"  } )
+
+   PRIVATE cJanx := 'fCriaConsulta'
+
+   OBTN_Create( cJanx,  6598, "Ok", 330, 500,  65,  24,  .T., .T., .T.,  8, aBtnColor, aBtnFont )
+   OBTN_Font( cJanx, 6598,  { cFontName, nFontSize, lBold, lItalic, lUnderline, lStrikeOut } )
+
+   OBTN_Create( cJanx, 6599, "Cancelar", 330, 565,  65,  24,  .T., .T., .T.,  8, aBtnColor, aBtnFont )
+   OBTN_Font( cJanx, 6599,  { cFontName, nFontSize, lBold, lItalic, lUnderline, lStrikeOut } )
+
+   OBTN_Create( cJanx, 6597, "Novo Parametro", 322, 10,  85,  24,  .T., .T., .T.,  8, aBtnColor, aBtnFont )
+   OBTN_Font( cJanx, 6597,  { cFontName, nFontSize, lBold, lItalic, lUnderline, lStrikeOut } )
+
+   OBTN_Create( cJanx, 6596, "Modificar", 322, 89,  62,  24,  .T., .T., .T.,  8, aBtnColor, aBtnFont )
+   OBTN_Font( cJanx, 6596,  { cFontName, nFontSize, lBold, lItalic, lUnderline, lStrikeOut } )
+
+   OBTN_Create( cJanx, 6595, "Excluir", 322, 150,  62,  24,  .T., .T., .T.,  8, aBtnColor, aBtnFont )
+   OBTN_Font( cJanx, 6595,  { cFontName, nFontSize, lBold, lItalic, lUnderline, lStrikeOut } )
+
+   AAdd( aButx1, {  6598,  OBTN_Handle( cJanx, 6598 ),   {|| lOk := GrvConsul( cTabela )  },  cJanx   } )
+
+   AAdd( aButx1, {  6599,  OBTN_Handle( cJanx, 6599 ),   {|| fCriaConsulta.Release },  cJanx   } )
+
+   AAdd( aButx1, {  6597,  OBTN_Handle( cJanx, 6597 ),   {|| AddPar1( .T., cTabela ) },  cJanx   } )
+   AAdd( aButx1, {  6596,  OBTN_Handle( cJanx, 6596 ),   {|| AddPar1( .F., cTabela ) },  cJanx   } )
+   AAdd( aButx1, {  6595,  OBTN_Handle( cJanx, 6595 ),   {|| DelParam() },  cJanx   } )
+
+   EventProcessAllHookMessage( EventCreate( {|| InputEvButton( aButx1, cJanx ) },    OBTN_Handle( cJanx, 6598 )   ), .T. )
+   EventProcessAllHookMessage( EventCreate( {|| InputEvButton( aButx1, cJanx ) },    OBTN_Handle( cJanx, 6599 )   ), .T. )
+   EventProcessAllHookMessage( EventCreate( {|| InputEvButton( aButx1, cJanx ) },    OBTN_Handle( cJanx, 6597 )   ), .T. )
+
+   EventProcessAllHookMessage( EventCreate( {|| InputEvButton( aButx1, cJanx ) },    OBTN_Handle( cJanx, 6596 )   ), .T. )
+   EventProcessAllHookMessage( EventCreate( {|| InputEvButton( aButx1, cJanx ) },    OBTN_Handle( cJanx, 6595 )   ), .T. )
+
+   InstallEventHandler( "EventIn2" )
+
+   InstallEventHandler( "EventHndFlt" )
+
+   OBTN_Enable( 'fCriaConsulta', 6598, .F. )
+
+   OBTN_Enable( 'fCriaConsulta', 6597, .F. )
+   OBTN_Enable( 'fCriaConsulta', 6596, .F. )
+   OBTN_Enable( 'fCriaConsulta', 6595, .F. )
+
+   Activate Window fCriaConsulta
+
+RETURN lOk
+
+FUNCTION EventIn2( nHWnd, nMsg, nWParam, nLParam )
+
+   LOCAL nID
+   LOCAL ButHnd
+   LOCAL nRow, nCol
+   LOCAL nind1
+   LOCAL cJanela := cJanx
+   LOCAL cControl := ''
+   LOCAL cform := ''
+
+   IF !_isWindowDefined( cJanela )
+      RETURN
+   END IF
+
+   // cJanela := aButX1[1][4]
+
+   IF nHWnd == GetProperty(  cJanela, "HANDLE" )
+
+      IF nMsg == WM_DRAWITEM
+
+         // If (nWParam ==  6598) .or. (nWParam ==  6599)
+         // OBTN_Draw( nHWnd,  nWParam , nLParam )
+         // End If
+         nID := LoWord( nWParam )
+
+         IF nID == IDOK
+            nID := GetDlgCtrlID( GetFocus() )
+         ENDIF
+
+         nI1 := AScan( aButx1, {| n| n[ 1 ] == nId } )
+
+         IF nI1 > 0
+            OBTN_Draw( nHWnd,  nWParam, nLParam )
+         END IF
+
+      END IF
+
+      IF nMsg == 273
+
+         nID := LoWord( nWParam )
+
+         IF nID == IDOK
+            nID := GetDlgCtrlID( GetFocus() )
+         ENDIF
+
+         nI1 := AScan( aButx1, {| n| n[ 1 ] == nId } )
+
+         IF nI1 > 0
+            // msginfo('ok1')
+            Eval(   aButX1[ ni1 ][ 3 ] )
+         END IF
+
+         IF nId == 6598
+            // msginfo('ok2')
+            // xInputWindowOk()
+         END IF
+
+         IF nId == 6599
+            // msginfo('ok1')
+            // xInputWindowCancel()
+         END IF
+
+      END IF
+
+   END IF
+
+RETURN NIL
+
+
+FUNCTION AddPar1( lNovo, cTabelax )
+
+   LOCAL wCad := cTabelaX
+   LOCAL aCampos
+
+   LOCAL cJany := 'fFiltro'
+
+
+   LOCAL aMoper := {}
+   LOCAL aMLogico := {}
+
+   LOCAL cTipo
+
+   DEFAULT lNovo := .T.
+
+   IF lNovo
+      PushButton( cJanx, 6597 )
+   ELSE
+PushButton( cJanx, 6597 )
+   END IF
+
+
+   Load Window fFiltro
+
+   PRIVATE lNovoFilt := lNovo
+
+   Center Window fFiltro
+
+   ON KEY ESCAPE Of fFiltro ACTION fFiltro.Release()
+
+   fFiltro .cmbCampo. DeleteAllItems()
+   fFiltro .cmbOrdem. DeleteAllItems()
+
+   fFiltro.Title := "Construtor Parametros "
+
+   fFiltro .lblTabela. Caption := Upper( wCad )
+
+   PRIVATE aCmps := GetCamposDic( wCad, ' ',  .F. )
+
+   FOR n := 1 TO Len( aCmps )
+      fFiltro .cmbCampo. AddItem( hb_ANSIToOEM( aCmps[ n ] ) )
+   NEXT
+
+   fFiltro .cmbCampo. value := 1
+
+   // fFiltro .BtnAdd. Visible := .F.
+   // fFiltro .BtnLimpa. Visible := .F.
+
+
+   fFiltro .cmbOrdem. enabled := .F.
+
+   fFiltro .Titulo. enabled := .F.
+
+   fFiltro .ChkRequerido. visible := .T.
+   fFiltro .ChkRequerido. value   := .T.
+
+   fFiltro .chkOrdem. caption := 'Editavel'
+
+   // fFiltro .Btnok. Enabled := .F.
+
+   IF !lNovo
+
+      fFiltro .Titulo. enabled := .F.
+
+      nIt1 := fCriaconsulta .gridPar. Value
+      aIt1 := fCriaconsulta .gridPar. Item( nIt1 )
+
+      IF nIt1 > 0
+
+         // fFiltro .Btnok. Enabled := .T.
+
+         fFiltro .chkOrdem. value     := ( aIt1[ 5 ] == 'Sim' )
+         fFiltro .chkRequerido. value := ( aIt1[ 6 ] == 'Sim' )
+
+         // fFiltro .Titulo. enabled := .t.
+         // fFiltro .Titulo. Value :=  ait1[8]
+
+         fFiltro .ChkPar1. Value := aIt1[ 7 ] == '('
+         fFiltro .ChkPar2. Value := aIt1[ 7 ] == ')'
+
+         fFiltro .cmbCampo. value := AScan( aCmps, ait1[ 1 ] )
+
+         cTipo  := GetInfoDic( ait1[ 1 ], cTabelax, 'TIPO' )
+
+         aMoper := {}
+         aMLogico := {}
+
+         FOR n1 := 1 TO fFiltro .cmbOperador. itemCount
+            AAdd( aMOper,    fFiltro .cmbOperador. item( n1 ) )
+         NEXT
+
+         FOR n1 := 1 TO fFiltro .cmbLogico. itemCount
+            AAdd( aMLogico,    fFiltro .cmbLogico. item( n1 ) )
+         NEXT
+
+         fFiltro .cmbOperador. value := AScan( aMoper, ait1[ 2 ] )
+
+         // Aviso( ait1[ 3 ] )
+
+         fFiltro .cmbLogico. value := AScan( aMLogico, ait1[ 4 ] )
+         // fFiltro .Btnok. Enabled := .T.
+
+         SetProperty( "fFiltro", "GetData1", "Visible", .F. )
+         SetProperty( "fFiltro", "DoubleEdit", "Visible", .F. )
+         SetProperty( "fFiltro", "Valor", "Visible", .F. )
+         SetProperty( "fFiltro", "IntEdit", "Visible", .F. )
+
+         IF cTipo == "B"
+            fFiltro .DoubleEdit. Visible := .T.
+            fFiltro .DoubleEdit. Value   := Val( ait1[ 3 ] )
+         END IF
+
+         IF cTipo == "I"
+            fFiltro .IntEdit. Visible := .T.
+            fFiltro .IntEdit. Value   := Val( ait1[ 3 ] )
+            // msginfo('num ' + ' ' +  ait1[ 3 ])
+         END IF
+
+         IF cTipo == "D"
+            fFiltro .GetData1. Visible := .T.
+            fFiltro .GetData1. Value   := CToD( ait1[ 3 ] )
+         END IF
+
+         IF cTipo == "C"
+            fFiltro .valor. value := ait1[ 3 ]
+         END IF
+
+
+      END IF
+
+   END IF
+
+   // CheckOk()
+
+   IF !lnovo
+      // msginfo('ll')
+   END IF
+
+   OBTN_Create( cJany,  6600, "Ok", 330, 300,  65,  24,  .T., .T., .T.,  8, aBtnColor, aBtnFont )
+   OBTN_Font( cJany, 6600,  { cFontName, nFontSize, .F., .F., .F., .F. } )
+
+
+   OBTN_Create( cJany, 6601, "Cancelar", 330, 365,  65,  24,  .T., .T., .T.,  8, aBtnColor, aBtnFont )
+   OBTN_Font( cJany, 6601,  { cFontName, nFontSize, .F., .F., .F., .F. } )
+
+   OBTN_Create( cJany, 6602, "Adicionar", 297, 15,  65,  24,  .T., .T., .T.,  8, aBtnColor, aBtnFont )
+   OBTN_Font( cJany, 6602,  { cFontName, nFontSize, .F., .F., .F., .F. } )
+
+   OBTN_Create( cJany, 6603, "Limpar Filtro", 297, 87,  65,  24,  .T., .T., .T.,  8, aBtnColor, aBtnFont )
+   OBTN_Font( cJany, 6603,  { cFontName, nFontSize, .F., .F., .F., .F. } )
+
+   OBTN_Enable( cJany, 6602, .F. )
+   OBTN_Enable( cJany, 6603, .F. )
+
+   EventProcessAllHookMessage( EventCreate( {|| InputEvFilt() },    OBTN_Handle( cJany, 6600 )   ), .T. )
+   EventProcessAllHookMessage( EventCreate( {|| InputEvFilt() },    OBTN_Handle( cJany, 6601 )   ), .T. )
+
+   EventProcessAllHookMessage( EventCreate( {|| InputEvFilt() },    OBTN_Handle( cJany, 6602 )   ), .T. )
+   EventProcessAllHookMessage( EventCreate( {|| InputEvFilt() },    OBTN_Handle( cJany, 6603 )   ), .T. )
+
+   // InstallEventHandler( "EventHndFlt" )
+
+   fFiltro .cmbCampo. SetFocus()
+
+   Activate Window fFiltro
+
+RETURN
+
+FUNCTION HandX( cJan1, n1, n2, nH1 )
+
+   LOCAL nId := 0
+   LOCAL nz1
+
+   FOR nz1 := n1 TO n2
+      IF ( OBTN_Handle( cJan1, nz1 ) == nH1 )
+         IF nId == 0
+            nId := nZ1
+         END IF
+      END IF
+   NEXT
+
+RETURN nId
+
+FUNCTION InputEvFilt()
+
+   STATIC lTracking := .F.
+
+   LOCAL  nHWnd   := EventHWND()
+   LOCAL  nMsg    := EventMSG()
+   LOCAL  nWParam := EventWPARAM()
+   LOCAL  nLParam := EventLPARAM()
+
+   LOCAL cFormx := 'fFiltro'
+   LOCAL nind1
+   LOCAL nIdBut := 0
+
+   LOCAL n1
+   LOCAL ButHnd
+
+   // IF ( OBTN_Handle( cFormx, 6600 ) == nHWnd )
+   // nIdBut := 6600
+   // END IF
+
+   // IF ( OBTN_Handle( cFormx, 6602 ) == nHWnd )
+   // nIdBut := 6602
+   // END IF
+
+   // IF ( OBTN_Handle( cFormx, 6603 ) == nHWnd )
+   // nIdBut := 6603
+   // END IF
+
+   // IF ( OBTN_Handle( cFormx, 6601 ) == nHWnd )
+   // nIdBut := 6601
+   // END IF
+
+   nIdBut := Handx( cFormx, 6600, 6603, nHWnd )
+
+
+   IF ( nIdBut > 0 )
+
+      IF ( nMsg == WM_MOUSEMOVE )
+
+         lTracking := TrackMouseEvent( nHWnd ) // TME_LEAVE is default flag
+
+         OBTN_Color( cFormx, nIdBut, aBtnSel, .T. )
+         OBTN_Enable( cFormx, nIdBut, .T. )
+         OBTN_Visible( cFormx, nIdBut, .T. )
+
+      END IF
+
+      IF ( nMsg == WM_MOUSELEAVE )
+
+         OBTN_Color( cFormx,  nIdBut, aBtnColor, .T. )
+         OBTN_Enable( cFormx, nIdBut, .T. )
+         OBTN_Visible( cFormx, nIdBut, .T. )
+
+         lTracking := .F.
+
+      END IF
+   ELSE
+
+   END IF
+
+RETURN
+
+FUNCTION EventHndFlt( nHWnd, nMsg, nWParam, nLParam )
+
+   LOCAL nID
+   LOCAL ButHnd
+   LOCAL nRow, nCol
+   LOCAL nind1
+   LOCAL cMenuName := 'fFiltro'
+
+   IF !_IsWindowDefined ( cMenuName )
+      RETURN
+   END IF
+   //
+
+   IF nHWnd == GetProperty(  cMenuName, "HANDLE" )
+
+      IF nMsg == WM_DRAWITEM
+
+         IF ( nWParam >=  6600 ) .AND.  ( nWParam <=  6603 )
+            OBTN_Draw( nHWnd,  nwParam, nLParam )
+         END IF
+
+      END IF
+
+      IF nMsg == 273
+
+         // msginfo('here')
+
+         nID := LoWord( nWParam )
+
+         IF nID == IDOK
+            nID := GetDlgCtrlID( GetFocus() )
+         ENDIF
+
+         IF nId == 6600
+            RetFiltro()
+         END IF
+
+         IF nId == 6601
+            // msginfo('2')
+            fFiltro.Release()
+         END IF
+
+         IF nId == 6602
+            FiltroAdd()
+         END IF
+
+         IF nId == 6603
+            LimpaFilt()
+         END IF
+
+      END IF
+
+   END IF
+
+RETURN
+
+
+FUNCTION ChgFiltroAnt()
+
+   LOCAL cValor := AllTrim( fFiltro .Valor. Value )
+   LOCAL isData := GetProperty( "fFiltro", "GetData1", "Visible" )
+
+   IF IsData
+      cValor := DToC( fFiltro .GetData1. Value )
+
+      IF Len( AllTrim( fFiltro .Titulo. Value ) ) > 0
+         // _EnableControl( "BtnAdd", "fFiltro" )
+         OBTN_Enable( 'fFiltro', 6602, .T. )
+         // OBTN_Enable( cJany , 6603 , .F. )
+
+      END IF
+
+   ELSE
+
+      IF ( Len( cValor ) > 0 ) .AND. ;
+            ( Len( AllTrim(fFiltro .Titulo. Value ) ) > 0 )
+         // _EnableControl( "BtnAdd", "fFiltro" )
+         OBTN_Enable( 'fFiltro', 6602, .T. )
+      ELSE
+         // _DisableControl( "BtnAdd", "fFiltro" )
+         OBTN_Enable( 'fFiltro', 6602, .F. )
+      END IF
+
+   END IF
+
+   DO EVENTS
+
+RETURN
+
+STATIC FUNCTION ChgFiltro()
+
+   // Aviso( 'ok' )
+   // ProcessMessages()
+
+   IF lNovoFilt
+      IF  ( Len( AllTrim(fFiltro .Valor. Value ) ) > 0 ) .OR. ( fFiltro .Getdata1. Visible  )
+
+         IF ( ( fFiltro .CmbCampo. value > 0 )  .AND. ( fFiltro .CmbOperador. value > 0 )  )
+            OBTN_Enable( 'fFiltro', 6600, .T. )
+            // fFiltro .BtnOk. Enabled := .T.
+         END IF
+
+      ELSE
+         // fFiltro .BtnOk. Enabled := .F.
+         OBTN_Enable( 'fFiltro', 6600, .T. )
+      END IF
+   ELSE
+      // Aviso('ok2')
+      // fFiltro .BtnOk. Enabled :=  ( Len( AllTrim(fFiltro .Valor. Value ) ) > 0 )
+      OBTN_Enable( 'fFiltro', 6600, Len( AllTrim(fFiltro .Valor. Value ) ) > 0 )
+   END IF
+
+RETURN
+
+
+
+
+
+FUNCTION GFocus()
+
+   IF GetProperty( 'fCriaConsulta', 'GridPar', 'ItemCount' ) > 0
+
+      OBTN_Enable( 'fCriaConsulta', 6597, .T. )
+      OBTN_Enable( 'fCriaConsulta', 6596, .T. )
+      OBTN_Enable( 'fCriaConsulta', 6595, .T. )
+
+      // SetProperty( 'fCriaConsulta', 'BtnDelPar', 'Enabled', .T. )
+      // SetProperty( 'fCriaConsulta', 'BtnEditPar', 'Enabled', .T. )
+
+   ELSE
+      // SetProperty( 'fCriaConsulta', 'BtnDelPar', 'Enabled', .F. )
+      // SetProperty( 'fCriaConsulta', 'BtnEditPar', 'Enabled', .F. )
+      OBTN_Enable( 'fCriaConsulta', 6596, .F. )
+      OBTN_Enable( 'fCriaConsulta', 6595, .F. )
+
+   END IF
+
+   // DO EVENTS
+
+RETURN
+
+FUNCTION DelParam()
+
+   LOCAL n1 := GetProperty( 'fCriaConsulta', 'GridPar', 'Value' )
+
+   PushButton( cJanx, 6595 )
+
+   IF n1 > 0
+      fCriaConsulta .GridPar. DeleteItem( n1 )
+   END IF
+
+   CheckOk( .T. )
+   GFocus()
+
+   // ProcessMessages()
+   DO EVENTS
+
+RETURN
+
+FUNCTION FiltroAdd()
+
+   LOCAL cVal   := AllTrim( fFiltro .EdtFiltro. Value )
+
+   LOCAL cTabela := AllTrim( fFiltro .lblTabela. Caption )
+
+   LOCAL cC1    := AllTrim( fFiltro .CmbCampo. DisplayValue )
+
+   LOCAL cFiltro := ''
+
+   // Local cCampo := Left( cc1 , Len(cc1) - 2 )
+
+   LOCAL cCampo := Lower( GetInfoDic( cC1, cTabela, 'CAMPO' ) )
+
+   LOCAL cTipo  := GetInfoDic( cC1, cTabela, 'TIPO' )
+
+   LOCAL cOperador := Left( AllTrim( fFiltro .CmbOperador. DisplayValue ), 2 )
+
+   LOCAL cOpLogico := AllTrim( fFiltro .CmbLogico. DisplayValue )
+
+   LOCAL cValor := AllTrim( fFiltro .Valor. Value )
+
+   // Aviso(" Tipo : " + cTipo)
+
+   IF !Empty( AllTrim( fFiltro .EdtFiltro. Value ) )
+
+      IF AllTrim( cOpLogico ) == 'Nenhum'
+         Aviso( "Favor Selecionar um Operador Logico Antes" + QUEBRA + ;
+            "Para compor o Filtro." )
+         RETURN
+      END IF
+
+   END IF
+
+
+   IF ( ( cTipo == 'I' ) .OR. ( cTipo == 'B' ) )
+
+      IF IsAlpha( cValor )
+         Aviso( 'Formato Invalido para Tipo Numerico.' )
+         fFiltro .Valor. Value := ''
+         RETURN
+      END IF
+
+   END IF
+
+   IF AllTrim( fFiltro .CmbOperador. DisplayValue ) = 'CONTEM'
+      IF ( cTipo != 'C' )
+         MsgExclamation( "Operador 'CONTEM' funciona apenas com campos Tipo Caracter." )
+         RETURN
+      END IF
+   END IF
+
+   IF ( cTipo == 'C' )
+      IF AllTrim( fFiltro .CmbOperador. DisplayValue ) != 'CONTEM'
+         cFiltro := AllTrim( cCampo ) + ' ' + coperador + ' ' + Chr( 39 ) + AllTrim( cValor ) + Chr( 39 )
+      ELSE
+         cFiltro := AllTrim( cCampo ) + ' LIKE ' + Chr( 39 ) + AllTrim( cValor ) + '%' + Chr( 39 )
+      END IF
+   END IF
+
+   IF ( cTipo == 'I' ) .OR. ( cTipo == 'B' ) .OR. ( cTipo == 'N' )
+      cFiltro := AllTrim( cCampo ) + ' ' +  cOperador + ' ' + cValor
+   END IF
+
+   IF ( cTipo == 'D' )
+
+      // '2018-01-15
+
+      cValor   := DToC( fFiltro .GetData1. Value )
+      cValDate := Right( cValor, 4 ) + '-' + SubStr( cValor, 4, 2 ) + '-' + Left( cValor, 2 )
+      cFiltro := AllTrim( cCampo ) + ' ' + coperador + ' '  + Chr( 39 ) + cValDate + Chr( 39 )
+
+   END IF
+
+   IF !Empty( AllTrim( fFiltro .EdtFiltro. Value ) )
+      IF   ( AllTrim( cOpLogico ) == 'E(AND)' )
+         cVal += " and "
+      ELSE
+         cVal += " or "
+      END IF
+   END IF
+
+   fFiltro .EdtFiltro. Value := cVal + '(' + cFiltro + ')'
+   // fFiltro .EdtFiltro. Refresh()
+
+   // _EnableControl( "BtnOk", "fFiltro" )
+   // _EnableControl( "BtnLimpa", "fFiltro" )
+
+   OBTN_Enable( 'fFiltro', 6600, .T. )
+   OBTN_Enable( 'fFiltro', 6603, .T. )
+
+RETURN
+
+FUNCTION LimpaFilt()
+
+   fFiltro .EdtFiltro. Value := ''
+   // fFiltro .EdtFiltro. Refresh()
+
+   // _DisableControl( "BtnOk", "fFiltro" )
+   // _DisableControl( "BtnAdd", "fFiltro" )
+
+   OBTN_Enable( 'fFiltro', 6600, .F. )
+   OBTN_Enable( 'fFiltro', 6602, .F. )
+
+RETURN
+
+FUNCTION GrvFiltro( cTabela, cDescr, cFiltro, cOrdem, lCresc )
+
+   LOCAL nIdFilt := GetReg( "filtros" )
+   LOCAL oServer := GetConexao()
+
+   LOCAL cSql := "insert into filtros values(" + AllTrim( Str( nIdFilt + 1 ) ) + "," + Chr( 34 ) + cdescr + Chr( 34 ) + "," + Chr( 34 ) + ;
+      cTabela + Chr( 34 ) + "," + Chr( 34 ) + cFiltro + Chr( 34 ) + "," + Chr( 34 ) + "S" + Chr( 34 ) + "," + Chr( 34 ) + cOrdem + Chr( 34 ) + "," + ;
+      Chr( 34 ) + iif( lCresc, " ", "N" ) + Chr( 34 ) + ")"
+
+   hb_MemoWrit( 'SqlInsert.txt', cSql )
+
+   oQuery := oServer:Query(  cSql )
+
+   IF oServer:NetErr()
+      Aviso( "Error ao Executar Query " + cSql + ": " + oServer:Error() )
+      RETURN .F.
+   ENDIF
+
+   oServer:Destroy()
+   oServer := Nil
+
+   oQuery:Destroy()
+   oQuery := Nil
+
+ /*
+  Local wAlias := "Filt"
+  Local nRec   := 0
+  Local wAliasAnt := Select()
+
+   USE (cBanco) VIA  "ADORDD" TABLE "filtros" MYSQL ;
+  FROM cServer USER cUserDb PASSWORD cPassDb SHARED NEW ALIAS (wAlias)
+
+  DbSelectArea(wAlias)
+
+  nRec := Filt->(LastRec())
+
+  Filt->(DbAppend())
+  Filt->(RLock())
+
+  Filt->IdFiltros := nRec+1
+  Filt->Descricao := cDescr
+  Filt->Tabela    := cTabela
+  Filt->Filtro    := cfiltro
+  Filt->Ativo     := "S"
+
+  Filt->(dbCommitAll())
+  Filt->(DbUnlock())
+
+   DbSelectArea(wAlias)
+   Use
+
+   SELECT Alias(wAliasAnt)
+
+   */
+
+RETURN .T.
+
+STATIC FUNCTION RetFiltro()
+
+   LOCAL nItem := 0
+   LOCAL nValor := iif( fFiltro .IntEdit. Visible, AllTrim( Str(fFiltro .IntEdit. Value ) ), ;
+      iif( fFiltro .DoubleEdit. Visible, AllTrim( Str(fFiltro .DoubleEdit. Value,10,2 ) ), "-1" ) )
+   LOCAL nCount := fCriaConsulta .GridPar. ItemCount
+   LOCAL cParent := iif( fFiltro .ChkPar1. Value, '(', iif( fFiltro .ChkPar2. Value,')',' ' ) )
+   LOCAL aM1 := { ( fFiltro .cmbCampo. DisplayValue ), fFiltro .cmbOperador. DisplayValue, ;
+      iif( !fFiltro .Getdata1. Visible, iif( Val(nValor ) >= 0, nValor, AllTrim( fFiltro .Valor. Value ) ),  DToC( fFiltro .Getdata1. Value )   ), fFiltro .cmbLogico. DisplayValue, ;
+      iif( fFiltro .ChkOrdem. Value, hb_ANSIToOEM( 'Sim' ), hb_ANSIToOEM( 'Não' )  ), ;
+      iif( fFiltro .ChkRequerido. Value, hb_ANSIToOEM( 'Sim' ), hb_ANSIToOEM( 'Não' ) ),     cParent        }
+
+   IF ( fFiltro .ChkPar1. Value ) .AND. ( fFiltro .ChkPar2. Value )
+      Aviso( "Apenas um dos Parenteses '(' ou ')' podem estar Marcados." )
+      RETURN .F.
+   END IF
+
+   IF ( ( (fFiltro .ChkPar1. Value ) .OR. (fFiltro .ChkPar2. Value ) ) .AND. ( fFiltro .cmbLogico. DisplayValue = 'Nenhum' ) )
+      IF nCount == 0
+         Aviso( "A Expressão deve conter um operador logico , caso esteja marcado adicionar Parenteses '(' ou ')'." )
+         RETURN .F.
+      END IF
+   END IF
+
+   IF lNovoFilt
+      DoMethod( "fCriaConsulta", "GridPar", "AddItem", aM1 )
+   ELSE
+      nItem := fCriaConsulta .GridPar. value
+      fCriaConsulta .GridPar. Item( nItem ) := aM1
+   END IF
+
+   CheckOk()
+
+   IF _isWindowDefined( 'fFiltro' )
+      // msginfo('defined')
+   END IF
+
+
+   DoMethod( "fFiltro", "Release" )
+   // fFiltro.Release
+   // DestroyWindow( fFiltro.Handle )
+
+RETURN
+
+FUNCTION EditPar()
+
+   AddPar1( .F. )
+
+RETURN
+
+FUNCTION CheckOk( lOk9, lAviso )
+
+   LOCAL n1
+   LOCAL ait1 := {}
+   LOCAL lOk1 := .T.
+
+   LOCAL lok2 := .F.
+
+   DEFAULT lOk9 := .F.
+   DEFAULT lAviso := .F.
+
+   IF !lOk9
+      // SetProperty( 'fCriaConsulta', 'BtnOk', 'Enabled', .F. )
+      // OBTN_Enable( 'fCriaConsulta', 6598, .T. )
+   END IF
+
+
+   IF Len( fCriaConsulta .LstCampos. Value ) > 0
+      FOR n1 := 1 TO Len( fCriaConsulta .LstCampos. Value )
+         lOk1 := .T.
+      NEXT
+   END IF
+
+   lOk2 := ( GetProperty( 'fCriaConsulta', 'GridPar', "ItemCount" ) > 0 )
+
+   IF fCriaConsulta .GridPar. ItemCount > 1
+      FOR n1 := 1 TO fCriaConsulta .GridPar. ItemCount
+
+         aIt1 := fCriaConsulta .GridPar. item( n1 )
+
+         IF ( n1 == fCriaConsulta .GridPar. ItemCount )
+
+            IF AScan( aIt1, 'Nenhum' ) == 0
+               IF lAviso
+                  Aviso( "Nos Parametros o Ultimo Item tem que estar com o operador Logico 'Nenhum'.", 'Aviso' )
+               END IF
+               lOk1 := .F.
+            ELSE
+
+            END IF
+
+         ELSE
+
+            IF AScan( aIt1, 'Nenhum' ) > 0
+               IF lAviso
+                  Aviso( "So é Permitido Operador Logico 'Nenhum' no Ultimo Item.", 'Aviso' )
+               END IF
+               lOk1 := .F.
+            ELSE
+
+
+            END IF
+
+         END IF
+
+      NEXT
+
+   END IF
+
+   // msginfo('ckeck ok ')
+
+   IF !lOk1
+      // msginfo('ckeck ok1 ')
+   ELSE
+
+      IF lOk2
+
+         // msginfo('ckeck ok2 ')
+         IF ( Len( AllTrim( GetProperty( 'fCriaConsulta', 'TituloCons', 'Value' ) )   ) > 0 ) .AND. ;
+               ( fCriaConsulta .GridPar. ItemCount > 0 ) .AND. ;
+               ( Len( fCriaConsulta .LstCampos. Value ) > 0 )
+            OBTN_Enable( 'fCriaConsulta', 6598, .T. )
+         ELSE
+
+         END IF
+
+      ELSE
+
+      END IF
+
+   END IF
+
+RETURN .F.
+
+FUNCTION ChgField()
+
+   LOCAL cCampo := fFiltro .CmbCampo. DisplayValue
+   LOCAL cTabela := AllTrim( fFiltro .lblTabela. Caption )
+
+   LOCAL cTipo := GetInfoDic( cCampo, cTabela, 'TIPO' )
+   LOCAL cMask := GetInfoDic( cCampo, cTabela, 'MASCARA' )
+
+   SetProperty( "fFiltro", "Valor", "InputMask", Nil )
+
+   SetProperty( "fFiltro", "GetData1", "Visible", .F. )
+   SetProperty( "fFiltro", "DoubleEdit", "Visible", .F. )
+   SetProperty( "fFiltro", "Valor", "Visible", .F. )
+   SetProperty( "fFiltro", "IntEdit", "Visible", .F. )
+
+   IF cTipo == 'D'
+
+      SetProperty( "fFiltro", "GetData1", "Visible", .T. )
+      SetProperty( "fFiltro", "GetData1", "Col", 150 )
+      SetProperty( "fFiltro", "Valor", "Visible", .F. )
+
+      // SetProperty( 'fFiltro', 'BtnOk', 'Enabled', .T. )
+      OBTN_Enable( 'fFiltro', 6600, .T. )
+      // Aviso('kk')
+
+      DO EVENTS
+
+   END IF
+
+   IF ( cTipo == 'B' )
+
+      SetProperty( "fFiltro", "DoubleEdit", "Visible", .T. )
+      SetProperty( "fFiltro", "DoubleEdit", "Col", 150 )
+      SetProperty( "fFiltro", "DoubleEdit", "Row", 116 )
+
+      fFiltro .DoubleEdit. Value := AllTrim( Transform( 0, cMask ) )
+      SendMessage( GetControlHandle( "DoubleEdit", ThisWindow.Name ), WM_PAINT, 0, 0 )
+
+      // fFiltro .Btnok. Enabled := .T.
+      OBTN_Enable( 'fFiltro', 6600, .T. )
+      fFiltro .DoubleEdit. SetFocus()
+      // fFiltro .Valor. Refresh()
+   END IF
+
+
+   IF ( cTipo == 'N' ) .OR. ( cTipo == 'I' )
+
+
+      SetProperty( "fFiltro", "IntEdit", "Visible", .T. )
+      SetProperty( "fFiltro", "IntEdit", "Col", 150 )
+      SetProperty( "fFiltro", "IntEdit", "Row", 116 )
+
+      fFiltro .IntEdit. Value := AllTrim( Transform( 0, cMask ) )
+      SendMessage( GetControlHandle( "IntEdit", ThisWindow.Name ), WM_PAINT, 0, 0 )
+
+      // fFiltro .Btnok. Enabled := .T.
+
+      OBTN_Enable( 'fFiltro', 6600, .T. )
+
+      fFiltro .IntEdit. SetFocus()
+      // fFiltro .Valor. Refresh()
+   END IF
+
+   IF cTipo == 'C'
+      SetProperty( "fFiltro", "Valor", "Visible", .T. )
+      fFiltro .Valor. Value := ''
+      SendMessage( GetControlHandle( "Valor", ThisWindow.Name ), WM_PAINT, 0, 0 )
+      // fFiltro .Btnok. Enabled := .T.
+      OBTN_Enable( 'fFiltro', 6600, .T. )
+      fFiltro .Valor. SetFocus()
+   END IF
+
+   // fFiltro .BtnAdd. Enabled := .F.
+
+   // fFiltro .Valor. SetFocus()
+   OBTN_Enable( 'fFiltro', 6602, .F. )
+
+   DO EVENTS
+
+RETURN
+
+FUNCTION GetDescTable( cTable, lOrdemId )
+
+   LOCAL cSql    := "select * from " + cTable + " where status = 'Ativo' order by 2"
+   LOCAL oServ   := GetConexao()
+   LOCAL oRow
+   LOCAL ni      := 1
+   LOCAL aRet    := {}
+   LOCAL oQuery
+
+   DEFAULT lOrdemId := .F.
+
+   IF lOrdemId
+      // Aviso('ordem id ' + cTable)
+      cSql    := "select * from " + cTable + " where status = 'Ativo' order by 1"
+   END IF
+
+   oQuery := oServ:Query( cSql )
+
+   FOR ni := 1 TO oQuery:LastRec()
+
+      oRow := oQuery:GetRow( ni )
+
+      AAdd( aRet, oRow:FieldGet( 2 ) )
+      oQuery:Skip( 1 )
+
+   NEXT
+
+   oQuery:Destroy()
+   oQuery := Nil
+
+   oServ:Destroy( 0 )
+   oServ := Nil
+
+RETURN aRet
+
+FUNCTION GetInfoDic( cCampo, cTabela, cInfo )
+
+   LOCAL cSql    := "select * from dicionario where (camposistema = '" + AllTrim( hb_OEMToANSI( cCampo ) ) + "') and (tabela = '" + cTabela + "')"
+   LOCAL oServ   := GetConexao()
+   LOCAL oRow
+   LOCAL cRet    := ''
+
+   oQuery := oServ:Query( cSql )
+
+   IF oQuery:Eof()
+      msgExclamation( ( 'Houve um Erro ao tenta recuperar Informações do Campo : ' + cCampo  + "." + QUEBRA + ;
+         "Tabela : " + cTabela + "/" + cInfo + QUEBRA + ;
+         'Contactar Suporte!' ) )
+   ELSE
+
+      oRow := oQuery:GetRow( 1 )
+
+      IF cInfo == 'CAMPO'
+         cRet := oRow:FieldGet( 3 )
+      END IF
+
+      IF cInfo == 'ID'
+         cRet := AllTrim( Str( oRow:FieldGet( 1 ) ) )
+      END IF
+
+      IF cInfo == 'TAM'
+         cRet := oRow:FieldGet( 7 )
+      END IF
+
+      IF cInfo == 'TIPO'
+         cRet := oRow:FieldGet( 4 )
+      END IF
+
+      IF cInfo == 'MASCARA'
+         cRet := oRow:FieldGet( 8 )
+      END IF
+
+   END IF
+
+
+   oQuery:Destroy()
+   oQuery := Nil
+
+   oServ:Destroy( 0 )
+   oServ := Nil
+
+RETURN cRet
+
+FUNCTION InitCons()
+
+   LOCAL n1
+
+   HMG_ChangeWindowStyle( fCriaConsulta.Handle, WS_EX_DLGMODALFRAME, NIL, .T., .T. )
+
+   HMG_ChangeWindowStyle( fCriaConsulta .LblTabela1. Handle, WS_EX_STATICEDGE, NIL, .T., .T. )
+
+   fCriaConsulta .LblTabela1. Value := Chr( 13 ) + Chr( 10 ) + hb_ANSIToOEM( "Criação de Consultas" )
+   // {'Campo','Operador','Valor','Operador Logico' ,'Editavel','Requerido' , 'P1' , 'Titulo Filtro'}
+
+   FOR n1 := 1 TO 7
+      // SetProperty( ThisWindow.name,"GridPar", "HeaderDYNAMICFONT", n1, {|| { "Arial", 8, .T. } } )
+
+      SetProperty( ThisWindow.name, "GridPar", "HeaderDYNAMICFORECOLOR", n1, {|| 78, 78, 78 } )
+      SetProperty( ThisWindow.name, "GridPar", "HeaderDYNAMICBACKCOLOR", n1, {||  78, 78, 78   } )
+
+   NEXT
+
+RETURN
+
+STATIC FUNCTION IniFiltro()
+
+   HMG_ChangeWindowStyle( fFiltro.Handle, WS_EX_DLGMODALFRAME, NIL, .T., .T. )
+
+
+   // HMG_ChangeWindowStyle( fFiltro .LblTabela. Handle, WS_EX_STATICEDGE, NIL, .T., .T. )
+
+   // HMG_ChangeWindowStyle( fFiltro.Handle     , WS_BORDER, NIL, .F., .T.)
+   // HMG_ChangeWindowStyle( fFiltro.Handle    , NIL, WS_EX_STATICEDGE, .T., .T.)
+
+   // fCriaConsulta .BtnDelPar. Enabled := .F.
+   // fCriaConsulta .BtnEditPar. Enabled := .F.
+
+   DO EVENTS
+
+RETURN
+
+FUNCTION InitFilt()
+
+   // _DisableControl( "BtnOk", "fFiltro" )
+   // _DisableControl( "BtnAdd", "fFiltro" )
+
+   OBTN_Enable( 'fFiltro', 6602, .F. )
+
+   DECLARE Window fFiltro
+   // fFiltro.CmbCampo.setFocus()
+
+   fFiltro .Titulo. SetFocus()
+
+   // ProcessMessages()
+
+RETURN( NIL )
+
+
+FUNCTION TabChg()
+
+   OBTN_Enable( 'fCriaConsulta', 6597, ( fCriaConsulta .Tab_1. Value = 2 ) )
+   OBTN_Enable( 'fCriaConsulta', 6596, ( fCriaConsulta .Tab_1. Value = 2 ) .AND. ( (GetProperty( 'fCriaConsulta', 'GridPar', 'ItemCount' )  > 0  )   ) )
+   OBTN_Enable( 'fCriaConsulta', 6595, ( fCriaConsulta .Tab_1. Value = 2 ) .AND. ( (GetProperty( 'fCriaConsulta', 'GridPar', 'ItemCount' )  > 0  )   ) )
+
+   IF ( fCriaConsulta .Tab_1. Value = 3 ) .AND. ( fCriaConsulta .LstOrdem. ItemCount == 1 )
+
+      SetProperty( "fCriaConsulta", "LblOrdem", "Value", hb_ANSIToOEM( 'Selecione a Ordenação da Consulta' ) )
+
+      fCriaConsulta .LstOrdem. DeleteAllitems()
+      fCriaConsulta .LstOrdem. AddItem( 'Nenhum' )
+
+      IF fCriaConsulta .LstOrdem. ItemCount == 1
+         IF Len( fCriaConsulta .LstCampos. Value ) > 0
+            FOR n1 := 1 TO Len( fCriaConsulta .LstCampos. Value )
+               // Aviso(  aCmps[fCriaConsulta.LstCampos.Value[n1]]    )
+               fCriaConsulta .LstOrdem. AddItem(  fCriaConsulta .LstCampos. item( fCriaConsulta .LstCampos. Value[ n1 ] )      )
+            NEXT
+         END IF
+      END IF
+
+      fCriaConsulta .LstOrdem. Value := 1
+
+   END IF
+
+RETURN
+
+FUNCTION GrvConsul( cTab )
+
+   LOCAL oServer
+   LOCAL oQuery
+   LOCAL NID
+   LOCAL nTpVend
+   LOCAL cSql := ''
+   LOCAL aIt1
+
+   // LOCAL cTabela := 'pedidos'
+   LOCAL cTabelax := cTab
+   LOCAL cTpOrdem := ""
+   LOCAL nQ1      := 0
+   LOCAL nQ2      := 0
+
+   LOCAL cCampoORd := ''
+
+   LOCAL l1 := .F.
+   LOCAL l2 := .F.
+
+   LOCAL cSqlx1 := ''
+   LOCAL lAscend := fCriaConsulta .ChkOrd1. value
+
+   FOR nx5 := 1 TO fCriaConsulta .gridpar. ItemCount
+
+      ait1 := fCriaConsulta .gridpar. Item( nx5 )
+
+      IF ait1[ 7 ] = '('
+         nq1++
+         l1 := .T.
+      END IF
+
+      IF ait1[ 7 ] = ')'
+         nq2++
+         IF !l1
+            l2 := .T.
+         END IF
+      END IF
+
+   NEXT
+
+   IF l2
+      Aviso( "Parenteses devem comecar com ( " )
+      RETURN .F.
+   END IF
+
+   IF ( nQ1 != nQ2 )
+      Aviso( "Qtde.de Parenteses '(' e ')' diferem , devem ser o mesmo." )
+      RETURN .F.
+   END IF
+
+   IF Len( fCriaConsulta .LstOrdem. Value ) > 1
+      FOR nx := 1 TO  Len( fCriaConsulta .LstOrdem. Value )
+         IF AllTrim( fCriaConsulta .LstOrdem. Item(  fCriaConsulta .LstOrdem. Value[ nx ] ) )  = 'Nenhum'
+            Aviso( hb_ANSIToOEM( "Em Ordenação dos Campos não pode estar Marcado 'Nenhum',Caso haja Campos Selecionados para ordenação." ) )
+            RETURN
+         ELSE
+            cCampoORd += ( AllTrim( fCriaConsulta .LstOrdem. Item(  fCriaConsulta .LstOrdem. Value[ nx ] ) ) + "." )
+         END IF
+      NEXT
+   ELSE
+
+      IF Len( fCriaConsulta .LstOrdem. Value ) > 0
+         IF ( fCriaConsulta .LstOrdem. Value[ 1 ] != 1 )
+            cCampoORd := fCriaConsulta .LstOrdem. Item( fCriaConsulta .LstOrdem. Value[ 1 ] )
+         END IF
+      END IF
+
+   END IF
+
+
+   // If !ConfirmAviso( 'Confirma Cadastro Dessa Consulta?' , cActiveJan )
+   // RETURN .F.
+   // End if
+
+   IF !MsgYesNo( 'Confirma Cadastro dessa Consulta?' )
+      RETURN .F.
+   END IF
+
+   // SetCursorOnControls( IDC_WAIT )
+
+   SETWAITCURSOR()
+
+   nTpVend := 1
+
+   nId := GetReg( "consultas" ) + 1
+
+   cSql := "Insert into Consultas Values(" + AllTrim( Str( nId ) ) + ","   + AllTrim( Str( nIdEmp ) ) + "," + AllTrim( Str( nTpVend ) ) + ","
+   cSql += QuotedStr( AllTrim( (  hb_OEMToANSI(fCriaConsulta .TituloCons. value )  ) )  ) + "," + QuotedStr( AllTrim( hb_OEMToANSI(fCriaConsulta .Obs. value ) ) ) + ","
+   cSql +=  QuotedStr( AllTrim( ConvDt( dDataBase ) ) ) + "," + QuotedStr( "Ativo" ) + "," + QuotedStr( cTabelax ) + ")"
+
+   oSErver := GetConexao()
+   oQuery := ExecSql( @oServer, cSql )
+
+   hb_MemoWrit( 'Cons1.txt', cSql )
+
+   IF oQuery == Nil
+      MsgStop( "Execução da Rotina sera Interrompida(Cons  Cab)." + QUEBRA + "Contacte Suporte." )
+      RETURN .F.
+   END IF
+
+   oQuery:Destroy()
+   oQuery := Nil
+
+   oServer:Destroy()
+   oServer := Nil
+
+   hb_MemoWrit( 'InsCons1.txt', cSql )
+
+   // msginfo( cCampoOrd )
+
+   FOR nX1 :=  1 TO Len( fCriaConsulta .LstCampos. Value )
+
+      cOrdem := ""
+      cTpOrdem := ""
+
+      cCampo := fCriaConsulta .LstCampos. item( fCriaConsulta .LstCampos. Value[ nx1 ] )
+
+      IF ( AllTrim( cCampo ) $ cCampoOrd ) .OR. ;
+            ( AllTrim( cCampo ) = AllTrim( cCampoOrd ) )
+
+         cOrdem := "S"
+         cTpOrdem := "Asc"
+
+         IF lAScend
+            cTpOrdem := "Desc"
+         END IF
+
+      END IF
+
+      nIdCampo :=  Val( GetInfoDic( AllTrim( cCampo ), cTabela, 'ID' ) )
+
+      cSqlx1 := "Insert into conscampos values(" + AllTrim( Str(  nId  ) ) + "," + AllTrim( Str(  nIdCampo  ) )  + "," + QuotedStr( cOrdem ) + ","
+      cSqlx1 +=  QuotedStr( cTpOrdem )  + ")"
+
+      hb_MemoWrit( 'ConsCampos.txt', cSqlx1 )
+
+      oSErver := GetConexao()
+      oQuery := ExecSql( @oServer, cSqlx1 )
+
+      IF oQuery == Nil
+         MsgStop( "Execução da Rotina sera Interrompida(Cons  item)." + QUEBRA + "Contacte Suporte." )
+         RETURN
+      END IF
+
+      oQuery:Destroy()
+      oQuery := Nil
+
+      oServer:Destroy()
+      oServer := Nil
+
+      hb_MemoWrit( 'InsItem.txt', cSqlx1 )
+
+   NEXT
+
+   FOR nx1 := 1 TO fCriaConsulta .gridpar. ItemCount
+
+      aIt1 := fCriaConsulta .gridpar. Item( nx1 )
+
+      // cTipo  := GetInfoDic( aIt1[1], cTabela, 'TIPO' )
+      cIdCampo := GetInfoDic( aIt1[ 1 ], cTabela, 'ID' )
+
+      cSqlx1 := "Insert Into ConsParametros values(" + AllTrim( Str( nId ) ) + "," + AllTrim(  cIdCampo  ) + "," +  AllTrim( Str( nX1 ) ) + "," +   Quotedstr( aIt1[ 2 ] ) + ","
+      cSqlx1 +=  Quotedstr( aIt1[ 3 ] ) + "," + Quotedstr( aIt1[ 4 ] )  + "," + Quotedstr( Left( aIt1[ 5 ],1 ) ) + "," +  Quotedstr( Left( aIt1[ 6 ],1 ) ) + "," + Quotedstr( aIt1[ 7 ] ) + ")"
+
+      oSErver := GetConexao()
+      oQuery := ExecSql( @oServer, cSqlx1 )
+
+      hb_MemoWrit( 'ConsParam.txt', cSqlx1 )
+
+      IF oQuery == Nil
+         MsgStop( "Execução da Rotina sera Interrompida(Cons Param)." + QUEBRA + "Contacte Suporte." )
+         RETURN .F.
+      END IF
+
+      oQuery:Destroy()
+      oQuery := Nil
+
+      oServer:Destroy()
+      oServer := Nil
+
+   NEXT
+
+   lREtOk2 := .T.
+   SetArrowCursor()
+
+   _ReleaseWindow( 'fCriaConsulta' )
+
+   MsgAviso( 'Consulta Gravada com Sucesso!'  )
+   // SetCursorOnControls( IDC_ARROW )
+
+RETURN .T.
+
+FUNCTION Aviso( cMsg )
+
+   MsgInfo( cMsg )
+
+RETURN
+
+
+FUNCTION Proc_Paint( cTexto, cBitmap )
+
+   LOCAL hDC, BTstruct, hDc2, BTstruct2
+
+   LOCAL hBitmap, aRGBcolor := { 9, 111, 137 }
+
+   LOCAL Width  := BT_ClientAreaWidth  ( ThisWindow.Name ) -4
+   LOCAL Height := 25
+
+   LOCAL hBitMap5
+
+   DEFAULT cBitMap := ''
+
+   IF !Empty( cBitMap )
+      hBitmap5 := BT_BitmapLoadFile ( cBitmap )
+   END IF
+
+   hBitmap := BT_BitmapCreateNew ( Width,  Height, aRGBcolor )
+
+   hDC := BT_CreateDC ( hBitmap, BT_HDC_BITMAP, @BTstruct )
+
+   BT_DrawGradientFillVertical ( hDC,  0,  0,  Width, 30, aRGBcolor, { 7, 101, 125 } )
+
+   // BT_DrawGradientFillVertical ( hDC,  120,  0 ,  Width  , 50 ,  aRGBcolor, { 7, 101, 125 } )
+
+   nTypeText    := BT_TEXT_TRANSPARENT + BT_TEXT_BOLD
+   nAlingText   := BT_TEXT_LEFT + BT_TEXT_TOP
+   nOrientation := BT_TEXT_NORMAL_ORIENTATION
+
+   hb_MemoWrit( 'Texto1.txt', ( AllTrim(cTexto ) )   )
+
+   BT_DrawText ( hDC, 06, 35,  hb_ANSIToOEM( cTexto ), "Arial", 9, WHITE,  BLACK, nTypeText, nAlingText, nOrientation )
+
+   BT_DeleteDC ( BTstruct )
+
+   hDC2 := BT_CreateDC ( ThisWindow.Name, BT_HDC_INVALIDCLIENTAREA, @BTstruct2 )
+
+   BT_DrawBitmapTransparent ( hDC2,  2, 2, Width, Height, BT_COPY,  hBitmap, NIL )
+
+   IF !Empty( cBitMap )
+      BT_DrawBitmap ( hDC2, 3, 2, 24, 24, BT_STRETCH, hBitmap5 )
+   END IF
+
+   BT_DeleteDC ( BTstruct2 )
+
+RETURN
+
+FUNCTION xInitMov(  nIdc1, nTpVnd9, cTabelax, lMvTable, cJanName )
+
+   LOCAL aCabec   := {}
+   LOCAL aFieldsx := {}
+   LOCAL nid := nIdc1
+   LOCAL oQuery
+   LOCAL aFlt := {}
+   LOCAL oServer := GetConexao()
+   LOCAL aLabels := {}
+   LOCAL aValues := {}
+   LOCAL aFormats := {}
+   LOCAL aE1      := {}
+   LOCAL aR1      := {}
+   LOCAL cFiltro := ''
+   LOCAL aFiltro := {}
+   LOCAL aRelacao := {}
+   LOCAL aTipos := {}
+   LOCAL aMask := {}
+   LOCAL aTam := {}
+
+   // LOCAL aCabec := {}
+   LOCAL nQReg := 0
+
+   LOCAL cOperador := ''
+
+   LOCAL cTp1 := RetSql( "select descricao from consultas where id = " + AllTrim( Str( nId ) ) )
+
+   LOCAL cSqlx := "select relacao,camposistema,tipo,campo,mascara,tamdisp,consparametros.* from consparametros,dicionario where idconsul = " + AllTrim( Str( nId ) )
+
+   DEFAULT lMvTable := .F.
+   DEFAULT cJanName := ''
+
+   cSqlx += " and iddicionario = idcampo and tabela = " + QuotedStr( cTabelax ) + " order by itemOrdem "
+
+   hb_MemoWrit( 'Sql\SqlConsulta.txt', cSqlx )
+
+   oQuery := oServer:Query( cSqlx )
+
+   // DrawMov( ThisWindow.name )
+
+   // DoMethod( ThisWindow.name, "Image_1", "Refresh" )
+
+   // SetProperty( ThisWindow.name, "Lbltitulo", "Value", cTp1 )
+
+   aTam := {}
+   aCabec := {}
+
+   FOR n1 := 1 TO oQuery:LastRec()
+
+      oRow := oQuery:GetRow( n1 )
+
+      cTpcampo := AllTrim( GetCampo( oRow, 'tipo' ) )
+      cRelacao := AllTrim( GetCampo( oRow, 'relacao' ) )
+
+      cOperador := AllTrim( GetCampo( oRow, 'operador' ) )
+
+      cName := 'Control_' + AllTrim( Str(  n1 ) )
+      lEnabled   := ( GetCampo( oRow, 'editavel' ) = 'S' )
+
+      lRequerido := ( GetCampo( oRow, 'requerido' ) = 'S' )
+
+      AAdd( aFiltro, { AllTrim( GetCampo( oRow, 'campo' ) ),  GetCampo( oRow, 'tipo' ),  AllTrim( GetCampo( oRow, 'operador' ) ), ;
+         GetCampo( oRow, 'oplogico' ), GetCampo( oRow, 'parentese' ) } )
+
+      AAdd( aE1, { cName, lEnabled    } )
+      AAdd( aR1, { cName, lRequerido, AllTrim( GetCampo( oRow, 'tipo' ) )  } )
+
+      AAdd( aRelacao, cRelacao )
+
+      IF cTpCampo = 'C'
+
+         AAdd( aLabels, AllTrim( GetCampo( oRow, 'camposistema' ) ) + ' ' + AllTrim( coperador ) )
+         AAdd( aValues, GetCampo( oRow, 'valor' ) )
+         AAdd( aFormats, {   GetCampo( oRow, 'tamdisp' ),  'TX',,, 'BOLD' } )
+
+      END IF
+
+      IF cTpCampo = 'D'
+
+         AAdd( aLabels, AllTrim( GetCampo( oRow, 'camposistema' ) ) + ' ' + AllTrim( coperador ) )
+         AAdd( aValues, CToD( GetCampo( oRow, 'valor' ) ) )
+         AAdd( aFormats, { 235, 'DP',,, 'BOLD' } )
+
+      END IF
+
+      IF cTpCampo = 'I'
+
+         AAdd( aLabels, AllTrim( GetCampo( oRow, 'camposistema' ) ) + ' ' + AllTrim( coperador ) )
+         AAdd( aValues, GetCampo( oRow, 'valor' ) )
+         AAdd( aFormats, {, 'TN', 50,, 'BOLD' } )
+
+      END IF
+
+      IF ( cTpCampo = 'N' ) .OR. ( cTpCampo = 'B' )
+
+         AAdd( aLabels, AllTrim( GetCampo( oRow, 'camposistema' ) ) + ' ' + AllTrim( coperador ) )
+         AAdd( aValues, iif( Val(GetCampo( oRow, 'valor' ) ) = 0,0.00, Val(GetCampo( oRow, 'valor' ) )  )  )
+         AAdd( aFormats, { 220, 'TN', 80,, '9 999,999,999.99' } )
+
+      END IF
+
+   NEXT
+
+   oQuery:Destroy()
+   oQuery := Nil
+
+   oServer:Destroy()
+   oServer := Nil
+
+   aRes1 := InputWindowEx( 'Parametros Consulta - ' + StrZero( nIdC1,3 ), ;
+      aLabels, ;
+      aValues, ;
+      aFormats,,, .T., , {|| CdBlock(  aE1, aR1  ) }, aRelacao )
+
+   // IF aRes1[ 1 ] == Nil
+   IF ( aRes1[ 1 ] == Nil )
+      Msginfo( 'Sera Necessario Preencher os Parametros para Prosseguir.', 'Aviso' )
+      RETURN
+   END IF
+
+   FOR nx1 := 1 TO Len( aFiltro )
+
+      cOp1 := AllTrim( Left( aFiltro[ nx1 ][ 3 ],2 ) )
+      cTipo := aFiltro[ nx1 ][ 2 ]
+
+      cOpLogico := AllTrim( aFiltro[ nx1 ][ 4 ] )
+
+      // msginfo(cOpLogico)
+
+      cFiltro := ''
+
+      IF ( AllTrim( aFiltro[ nx1 ][ 3 ] ) = 'Contem' )
+         cOp1 := "LIKE"
+      END IF
+
+      // If aFiltro[nx1][3]
+
+      cOpLogic := ''
+
+      IF ( AllTrim( cOpLogico ) != "Nenhum" ) // .And. ( nx1 != 1 )
+         // msginfo('ok')
+         IF   ( AllTrim( cOpLogico ) == 'E(AND)' )
+            cOpLogic := " And "
+         ELSE
+            cOpLogic := " Or "
+         END IF
+      END IF
+
+      IF ( cTipo = 'C' )
+         IF cOp1 != "LIKE"
+            cFiltro :=   "("  + aFiltro[ nx1 ][ 1 ] + " " + cOp1 + " " + QuotedStr( AllTrim( aRes1[ nx1 ] ) ) + ")"
+         ELSE
+            cFiltro := "(" + aFiltro[ nx1 ][ 1 ] + " LIKE " + QuotedStr( AllTrim( aRes1[ nx1 ] ) + '%' ) + ")"
+         END IF
+      END IF
+
+      IF ( cTipo = 'I' )
+         cFiltro :=  "(" + aFiltro[ nx1 ][ 1 ] + " " + cOp1 + " " +  AllTrim( Str( aRes1[ nx1 ] ) ) + ")"
+      END IF
+
+      IF ( cTipo = 'N' ) .OR. ( cTipo = 'B' )
+         cFiltro := "(" + aFiltro[ nx1 ][ 1 ] + " " + cOp1 + " " +  AllTrim( Str( aRes1[ nx1 ],10,2 ) )  + ")"
+         // msginfo(cFiltro)
+      END IF
+
+      IF ( cTipo = 'D' )
+         cValor   := DToC( aRes1[ nx1 ] )
+         cValDate := Right( cValor, 4 ) + '-' + SubStr( cValor, 4, 2 ) + '-' + Left( cValor, 2 )
+
+         cFiltro := "(" + aFiltro[ nx1 ][ 1 ] + " " + cOp1 + " " + QuotedStr( cValDate ) + ")"
+      END IF
+
+      IF AllTrim( aFiltro[ nx1 ][ 5 ] ) = '('
+         cFiltro := "(" + cFiltro
+      END IF
+
+      IF AllTrim( aFiltro[ nx1 ][ 5 ] ) = ')'
+         cFiltro := cFiltro + ')'
+      END IF
+
+
+      IF !Empty( cOpLogic ) .AND. ( nx1 < Len( aFiltro ) )
+         cFiltro += " " + cOpLogic + " "
+         // msginfo(cFiltro)
+      END IF
+
+      AAdd( aFlt, cFiltro )
+
+      // Msginfo( cFiltro )
+   NEXT
+
+   cSqlx := "select mascara,tipo,tamdisp,camposistema,campo,conscampos.* from conscampos,dicionario where idconsulta = " + AllTrim( Str( nId ) )
+   cSqlx += " and iddicionario = idcampo "
+
+   oServer := GetConexao()
+   oQuery  := oServer:Query( cSqlx )
+
+   hb_MemoWrit( 'Sqlc2.txt', cSqlx )
+
+   cSql1 := "Select @row_number:=@row_number+1 AS row_number,"
+   cOrdem := ""
+   cAsc   := ""
+
+   aCabec := {}
+   aTipos := {}
+   aMask  := {}
+   aTam   := {}
+
+   FOR n1 := 1 TO oQuery:LastRec()
+
+      oRow := oQuery:GetRow( n1 )
+      cSql1 += AllTrim( GetCampo( orow, 'campo' ) ) + ","
+
+      AAdd( aCabec, hb_ANSIToOEM( GetCampo( orow, 'camposistema' )  ) )
+
+      AAdd( aTam, GetCampo( oRow, 'tamdisp' ) )
+
+      IF ( GetCampo( orow, 'tipo' ) == 'C' )
+         AAdd( aFieldsx, "hb_ansiToOem(" + AllTrim( GetCampo( orow, 'campo' ) ) + ")" )
+      ELSE
+         AAdd( aFieldsx, AllTrim( GetCampo( orow, 'campo' ) ) )
+      END IF
+
+      AAdd( aTipos, GetCampo( oRow, 'tipo' ) )
+      AAdd( aMask, GetCampo( oRow, 'mascara' ) )
+
+      IF GetCampo( orow, 'ordenado' ) == 'S'
+
+         cOrdem += AllTrim( GetCampo( orow, 'campo' ) ) + ","
+
+         IF AllTrim( GetCampo( orow, 'campo' ) ) == 'Desc'
+            cAsc := "Asc"
+         END IF
+
+      END IF
+
+   NEXT
+
+   cSql1 += "a.status "
+
+   cSql1 := Left( cSql1, Len( cSql1 ) -1 )
+   IF lMvTable
+      cSql1 += " from " + cTabelax + " c " + GetJoinTab( cTabelax ) + " where (idfilial = " + AllTrim( Str( nIdEmp ) ) + ") and (Idtpvend = " + AllTrim( Str( nTpVnd9 ) ) + ") and "
+   ELSE
+      cSql1 += " from " + cTabelax + " a " + GetJoinTab( cTabelax ) + iif( Len( aFlt ) > 0, " where ", "" )
+   END IF
+
+   FOR p := 1 TO Len( aFlt )
+      cSql1 += aFlt[ p ]
+   NEXT
+
+   IF !Empty( cOrdem )
+      cSql1 += " Order by " + Left( cOrdem, Len( cOrdem ) -1 )   + " " + cAsc
+   END IF
+
+   hb_MemoWrit( 'Sqly15.txt', cSql1 )
+
+
+   // WaitMsg( "Aguarde..", {||  nQreg := EncheGrid( cSql1,  .T., aCabec, aTam, aTipos, aMask ) } )
+
+   // SetProperty( ThisWindow.name, "LblqReg", "Value",  AllTrim( Str(nQReg ) )  )
+
+   oQuery:Destroy()
+   oQuery := Nil
+
+   oServer:Destroy()
+   oServer := Nil
+
+   BrowConsulta( cSql1, aCabec, aTam, @aFieldsx, cJanName )
+
+   // msginfo( 'ok r2' )
+
+RETURN
+
+
+FUNCTION BrowConsulta( cSqlp, aCabecario, aTamanhos, aCampos, cJanx1 )
+
+   LOCAL cForm :=  cJanx1
+   LOCAL aBckColor := {}
+   LOCAL aFckColor := {}
+   LOCAL nJ
+
+   LOCAL oServer := GetConexao()
+
+   PRIVATE bGrid1 := {}
+   PRIVATE bGrid2 := {}
+
+   PRIVATE ColorGrid :=  { 210, 240, 255 }
+
+   PRIVATE aJustify := {}
+
+   PRIVATE bColorGridDb := {|| iif(  This.CellRowIndex = 1, { 78,78,78 },   iif( This.CellRowIndex / 2 <> Int( This.CellRowIndex / 2 ), ColorGrid, { 255,255,255 } )  )  }
+
+   PRIVATE fColorGridDb := {|| iif(  This.CellRowIndex = 1, { 255,255,255 },   { 78,78,78 }   ) }
+
+
+   PRIVATE aFont := ARRAY FONT "Calibri" SIZE 10 BOLD ITALIC
+
+
+   PRIVATE cAlias := "T" + Left( cJanx1, 3 )
+
+   IF Select( cAlias ) > 0
+      // MsgInfo( 'Aberto' )
+      dbSelectArea( cAlias )
+      USE
+   END IF
+
+   rddSetDefault( "SQLMIX" )
+
+   FOR nl := 1 TO Len( aCampos )
+      // aCampos[ nl ] += cAlias + "->" + AllTrim( aCampos[ nl ]  )
+   NEXT
+
+   IF rddInfo( RDDI_CONNECT, { "MYSQL", cServer, cUserDb, cPassDb, cBanco } ) == 0
+      MSGSTOP( "Unable connect to the server" )
+      RETURN
+   ENDIF
+
+   dbUseArea( .T.,,  cSqlp, cAlias )
+   dbSelectArea( cAlias )
+   dbGoTop()
+
+   IF _IsControlDefined( "br_Main",  cForm )
+      DoMethod( cForm, "br_Main", "Release" )
+   END IF
+
+   // msginfo(Str( ReccOunt() ) )
+
+   // FOR nJ := 1 TO Len( aCabecario )
+   // AAdd( aBckColor, bColor )
+   // AAdd( aFckColor, fColor )
+   // NEXT
+
+   cTab1  := FormateSql( cSqlp,  aCabecario )
+   cAlias := "tmp"
+
+   // msginfo( cTab1 )
+
+   cSqly := "select * from " + cTab1 + " order by row_number"
+
+   dbUseArea( .T.,,  cSqly, cAlias )
+   dbSelectArea( cAlias )
+   dbGoTop()
+
+   IF ( RecCount() == 0 )
+
+      yAviso( "Consulta Não Retornou Registros." )
+
+   ELSE
+
+      PrepareGrid()
+
+   END IF
+
+   dbSelectArea( cAlias )
+   USE
+   oServer:Query( "drop table if exists " + cTab1  )
+
+   // oServer:Destroy()
+   // oServer := Nil
+
+
+   /*
+   @ 50, 200 BROWSE br_Main;
+      OF &cJanx1 ;
+      WIDTH 620;
+      HEIGHT 332;
+      HEADERS aCabecario;
+      WIDTHS aTamanhos;
+      FONT 'Consolas' SIZE 10;
+      WORKAREA &cAlias ;
+      BACKCOLOR {0,128,192} ;
+      FIELDS aCampos
+
+      */
+
+
+   // abaixo do font
+   // DYNAMICBACKCOLOR aBckColor ;
+   // DYNAMICFORECOLOR aFckColor ;
+
+   // GRID_SetBkImage ( "Br_Main" , cJanx1 , 1 , "menu1.bmp", 12, 12)
+
+   // SetProperty( cJanx1, "Br_main", "Value", 1 )
+   // DoMethod( cJanx1, "br_Main", "Refresh" )
+
+RETURN
+
+FUNCTION PrepareGrid()
+
+   bGrid1 := {}
+   bGrid2 := {}
+   aJustify := {}
+
+   FOR n2 := 2 TO FCount()
+
+      // AAdd( aCabec, FieldName( n2 ) )
+
+      AAdd( aJustify, GRID_JTFY_RIGHT )
+      AAdd( bGrid1, bColorGridDb  )
+      AAdd( bGrid2, fColorGridDb  )
+
+   NEXT
+
+RETURN
+
+
+
+FUNCTION CdBlock( aMe1, aRe1 )
+
+   // msginfo('ok')
+   LOCAL n2
+
+   FOR n2 := 1 TO Len( aMe1 )
+      SetProperty( '_InputWindow', aMe1[ n2 ][ 1 ], 'Enabled', aMe1[ n2 ][ 2 ]   )
+
+      IF aRe1[ n2 ][ 2 ]
+         SetMethodCode( '_InputWindow', aMe1[ n2 ][ 1 ], 'LOSTFOCUS', {|| xIfEmpty()  }    )
+      END IF
+
+   NEXT
+
+RETURN
+
+
+
+STATIC FUNCTION xIfEmpty()
+
+   // *********************
+   // msginfo('ok98542---')
+
+   IF Empty( This.Value )
+      SetProperty( '_InputWindow', This.Name, 'BackColor', RED )
+      PlayBeep()
+      Inkey( .5 )
+      Msginfo( 'Este campo deve estar Preenchido,' + QUEBRA + 'Para que a consulta possa ser executada.' )
+      DoMethod( '_InputWindow', This.Name, 'SetFocus' )
+      SetProperty( '_InputWindow', This.Name, 'BackColor', WHITE )
+   ENDIF
+
+RETURN
+
+
+FUNCTION FormateSql( cSql1, aCabec  )
+
+   LOCAL cSqlx   := ''
+   LOCAL n1 := Int( hb_Random( 23455 ) )
+   LOCAL cTabela := "tab" + DToS( Date() ) + StrZero( n1, 6 )
+   LOCAL cSql := ''
+   LOCAL cCabec := ''   // LOCAL n1
+   LOCAL oServer := GetConexao()
+
+   FOR n1 := 1 TO Len( aCabec )
+      cCabec += "'" + aCabec[ n1 ] + "',"
+   NEXT
+
+   cCabec := Left( cCabec, Len( cCabec ) -1 )
+
+   cSql := "drop table if exists " + cTabela + ";"
+   oServer:Query( cSql )
+
+   cSql := "SET @row_number:=0; " + Chr( 13 ) + Chr( 10 )
+   oServer:Query( cSql )
+
+   cSql := "create table " + cTabela + " as " + Chr( 13 ) + Chr( 10 )
+   cSql += cSql1
+   oServer:Query( cSql )
+
+   cSql := "insert into "  + cTabela + " values(-5," + cCabec + ");" + Chr( 13 ) + Chr( 10 )
+   // cSql += "select * from " + cTabela  + " order by row_number;"
+   // msginfo(cSql)
+   oServer:Query( cSql )
+
+   // hb_MemoWrit( 'saida1.txt', cSql )
+
+RETURN ( cTabela )

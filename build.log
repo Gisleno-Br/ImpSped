@@ -1,0 +1,37 @@
+Harbour 3.2.0dev (r1703241902)
+Copyright (c) 1999-2016, http://harbour-project.org/
+C:\impSped\Clientes.Prg: In function 'HB_FUN_WNDBOXRAISED':
+C:\impSped\Clientes.Prg:3605:2: warning: implicit declaration of function 'WindowRd' [-Wimplicit-function-declaration]
+  WindowRd( ( HDC ) hb_parnl( 1 ), &rct );
+  ^
+C:\impSped\Clientes.Prg: At top level:
+C:\impSped\Clientes.Prg:3622:7: warning: conflicting types for 'WindowRd'
+  void WindowRd( HDC hDC, RECT * pRect )
+       ^
+C:\impSped\Clientes.Prg:3605:2: note: previous implicit declaration of 'WindowRd' was here
+  WindowRd( ( HDC ) hb_parnl( 1 ), &rct );
+  ^
+C:\impSped\Clientes.Prg: In function 'WindowRd':
+C:\impSped\Clientes.Prg:3641:2: warning: implicit declaration of function 'WndDrawBox' [-Wimplicit-function-declaration]
+  WndDrawBox( hDC, pRect, hWhite, hGray );
+  ^
+C:\impSped\Clientes.Prg:3628:11: warning: unused variable 'BackColor2' [-Wunused-variable]
+  COLORREF BackColor2 = 0xFFFFFFFF;
+           ^
+C:\impSped\Clientes.Prg:3627:11: warning: unused variable 'BackColor1' [-Wunused-variable]
+  COLORREF BackColor1 = 0xFFFFFFFF;
+           ^
+C:\impSped\Clientes.Prg: At top level:
+C:\impSped\Clientes.Prg:3568:16: warning: 'CreateGradientB' declared 'static' but never defined [-Wunused-function]
+  static HBRUSH CreateGradientB();
+                ^
+C:\impSped\OwnButton.prg: In function 'HB_FUN__OWNBUTTONCREATE':
+C:\impSped\OwnButton.prg:483:17: warning: passing argument 1 of 'SetClassLongW' makes pointer from integer without a cast [-Wint-conversion]
+   SetClassLong( (LONG_PTR) hButton  , GCL_HCURSOR, ( LONG ) LoadCursor( NULL, IDC_HAND ) );
+                 ^
+In file included from C:/hmg/mingw/i686-w64-mingw32/include/windows.h:72:0,
+                 from C:\impSped\OwnButton.prg:448:
+C:/hmg/mingw/i686-w64-mingw32/include/winuser.h:3755:27: note: expected 'HWND {aka struct HWND__ *}' but argument is of type 'long int'
+   WINUSERAPI DWORD WINAPI SetClassLongW(HWND hWnd,int nIndex,LONG dwNewLong);
+                           ^
+

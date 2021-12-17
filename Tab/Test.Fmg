@@ -1,0 +1,521 @@
+* HMG-IDE UNICODE Form Designer Generated Code
+* (c) Roberto Lopez - http://sites.google.com/site/hmgweb
+
+DEFINE WINDOW TEMPLATE AT 141 , 0 WIDTH 136 HEIGHT 39 VIRTUAL WIDTH Nil VIRTUAL HEIGHT Nil TITLE "Tab Demo" ICON NIL  CURSOR NIL ON INIT Nil ON RELEASE Nil ON INTERACTIVECLOSE Nil ON MOUSECLICK Nil ON MOUSEDRAG Nil ON MOUSEMOVE Nil ON SIZE Nil ON MAXIMIZE Nil ON MINIMIZE Nil ON PAINT Nil BACKCOLOR YELLOW NOTIFYICON NIL NOTIFYTOOLTIP NIL ON NOTIFYCLICK Nil ON GOTFOCUS Nil ON LOSTFOCUS Nil ON SCROLLUP Nil ON SCROLLDOWN Nil ON SCROLLLEFT Nil ON SCROLLRIGHT Nil ON HSCROLLBOX Nil ON VSCROLLBOX Nil
+
+    DEFINE TAB Tab_1 AT 300 , 10 WIDTH 370 HEIGHT 190 VALUE 1 FONT "Arial" SIZE 9 TOOLTIP "" ON CHANGE Nil
+
+        PAGE "Page 1"
+
+            DEFINE FRAME Frame_3
+                ROW    50
+                COL    40
+                WIDTH  300
+                HEIGHT 110
+                FONTNAME "Arial"
+                FONTSIZE 12
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                CAPTION NIL
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                OPAQUE .T.
+            END FRAME
+
+            DEFINE LABEL Label_1
+                ROW    80
+                COL    60
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Label_1"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP " Label 1 ToolTip"
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE TEXTBOX Text_1
+                ROW    80
+                COL    190
+                WIDTH  120
+                HEIGHT 24
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT NONE
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK Nil
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+            DEFINE LABEL Label_2
+                ROW    110
+                COL    60
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Label_2"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP "ToolTip Label_2"
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE TEXTBOX Text_2
+                ROW    110
+                COL    190
+                WIDTH  120
+                HEIGHT 24
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT NONE
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK Nil
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+        END PAGE 
+
+        PAGE "Page 2"
+
+            DEFINE RADIOGROUP RadioGroup_1
+                ROW    80
+                COL    130
+                WIDTH  120
+                HEIGHT 50
+                OPTIONS { 'Option 1','Option 2'}
+                VALUE 1
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                TRANSPARENT .T.
+                SPACING 25
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                READONLY Nil
+                HORIZONTAL .F. 
+            END RADIOGROUP
+
+            DEFINE FRAME Frame_1
+                ROW    50
+                COL    100
+                WIDTH  160
+                HEIGHT 110
+                FONTNAME "Arial"
+                FONTSIZE 9
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                CAPTION NIL
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                OPAQUE .T.
+            END FRAME
+
+        END PAGE 
+
+        PAGE "Page 3"
+
+            DEFINE FRAME Frame_2
+                ROW    50
+                COL    50
+                WIDTH  290
+                HEIGHT 110
+                FONTNAME "Arial"
+                FONTSIZE 9
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                CAPTION NIL
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                OPAQUE .T.
+            END FRAME
+
+            DEFINE CHECKBOX Check_1
+                ROW    70
+                COL    80
+                WIDTH  100
+                HEIGHT 28
+                CAPTION "Check_1"
+                VALUE .F.
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                TRANSPARENT .F.
+            END CHECKBOX
+
+            DEFINE CHECKBOX Check_2
+                ROW    120
+                COL    80
+                WIDTH  100
+                HEIGHT 28
+                CAPTION "Check_2"
+                VALUE .F.
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                TRANSPARENT .F.
+            END CHECKBOX
+
+            DEFINE CHECKBOX Check_3
+                ROW    70
+                COL    210
+                WIDTH  100
+                HEIGHT 28
+                CAPTION "Check_3"
+                VALUE .F.
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                TRANSPARENT .F.
+            END CHECKBOX
+
+            DEFINE CHECKBOX Check_5
+                ROW    120
+                COL    210
+                WIDTH  100
+                HEIGHT 28
+                CAPTION "Check_5"
+                VALUE .F.
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                TRANSPARENT .F.
+            END CHECKBOX
+
+        END PAGE 
+
+        PAGE "Page 4"
+
+            DEFINE FRAME Frame_4
+                ROW    50
+                COL    60
+                WIDTH  260
+                HEIGHT 110
+                FONTNAME "Arial"
+                FONTSIZE 9
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                CAPTION NIL
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                OPAQUE .T.
+            END FRAME
+
+            DEFINE SLIDER Slider_1
+                ROW    90
+                COL    120
+                WIDTH  120
+                HEIGHT 35
+                RANGEMIN 1
+                RANGEMAX 10
+                VALUE 0
+                TOOLTIP ""
+                ONCHANGE Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                BACKCOLOR NIL
+            END SLIDER
+
+        END PAGE 
+
+        PAGE "Page Bien Largo"
+
+            DEFINE FRAME Frame_5
+                ROW    50
+                COL    40
+                WIDTH  300
+                HEIGHT 110
+                FONTNAME "Arial"
+                FONTSIZE 9
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                CAPTION NIL
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                OPAQUE .T.
+            END FRAME
+
+            DEFINE HYPERLINK HyperLink_1
+                ROW    90
+                COL    70
+                WIDTH  230
+                HEIGHT 28
+                VALUE "http://www.hmgforum.com/"
+                ADDRESS "http://www.hmgforum.com/"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                AUTOSIZE .F.
+                HELPID Nil
+                VISIBLE .T.
+                HANDCURSOR .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END HYPERLINK
+
+        END PAGE 
+
+    END TAB 
+
+    DEFINE TAB Tab_2 AT 100 , 500 WIDTH 370 HEIGHT 190 VALUE 1 FONT "Arial" SIZE 9 TOOLTIP "" ON CHANGE Nil
+
+        PAGE "Page 1"
+
+            DEFINE LABEL Label_33
+                ROW    80
+                COL    60
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Label_1"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP " Label 33 ToolTip"
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+        END PAGE 
+
+        PAGE "Page 2"
+
+            DEFINE RADIOGROUP RadioGroup_33
+                ROW    80
+                COL    130
+                WIDTH  120
+                HEIGHT 50
+                OPTIONS { 'Option 1','Option 2'}
+                VALUE 1
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                TRANSPARENT .T.
+                SPACING 25
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                READONLY Nil
+                HORIZONTAL .F. 
+            END RADIOGROUP
+
+        END PAGE 
+
+        PAGE "Page 3"
+
+            DEFINE CHECKBOX Check_33
+                ROW    70
+                COL    80
+                WIDTH  100
+                HEIGHT 28
+                CAPTION "Check_1"
+                VALUE .F.
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                TRANSPARENT .F.
+            END CHECKBOX
+
+        END PAGE 
+
+        PAGE "Page 4"
+
+            DEFINE SLIDER Slider_33
+                ROW    90
+                COL    120
+                WIDTH  120
+                HEIGHT 35
+                RANGEMIN 1
+                RANGEMAX 10
+                VALUE 0
+                TOOLTIP ""
+                ONCHANGE Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                BACKCOLOR NIL
+            END SLIDER
+
+        END PAGE 
+
+        PAGE "Page Bien Largo 2"
+
+            DEFINE HYPERLINK HyperLink_33
+                ROW    90
+                COL    70
+                WIDTH  230
+                HEIGHT 28
+                VALUE "http://www.hmgforum.com/"
+                ADDRESS "http://www.hmgforum.com/"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                AUTOSIZE .F.
+                HELPID Nil
+                VISIBLE .T.
+                HANDCURSOR .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END HYPERLINK
+
+        END PAGE 
+
+    END TAB 
+
+END WINDOW
+

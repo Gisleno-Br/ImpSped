@@ -1,0 +1,1 @@
+Select nome,contato,endereco,cpf,codigo,status from Clientes a  where  codigo = '000031' Order by codigo 

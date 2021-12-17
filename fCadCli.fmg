@@ -1,0 +1,1748 @@
+* HMG-IDE UNICODE Form Designer Generated Code
+* (c) Roberto Lopez - http://sites.google.com/site/hmgweb
+
+DEFINE WINDOW TEMPLATE AT 169 , 231 WIDTH 869 HEIGHT 455 VIRTUAL WIDTH Nil VIRTUAL HEIGHT Nil TITLE "" ICON NIL MODAL NOSIZE NOSYSMENU NOCAPTION CURSOR NIL ON INIT xInitCad() ON RELEASE Nil ON INTERACTIVECLOSE Nil ON MOUSECLICK Nil ON MOUSEDRAG Nil ON MOUSEMOVE Nil ON SIZE Nil ON PAINT Proc_Cadastro("Cadastro de Clientes" , ThisWindow.Name) BACKCOLOR Nil ON GOTFOCUS Nil ON LOSTFOCUS Nil ON SCROLLUP Nil ON SCROLLDOWN Nil ON SCROLLLEFT Nil ON SCROLLRIGHT Nil ON HSCROLLBOX Nil ON VSCROLLBOX Nil
+
+    DEFINE TAB Tab_1 AT 40 , 4 WIDTH 856 HEIGHT 370 VALUE 1 FONT "Arial" SIZE 9 TOOLTIP "" BUTTONS HOTTRACK ON CHANGE Nil
+
+        PAGE "Dados Cliente" IMAGE "img\new.bmp"
+
+            DEFINE LABEL Label_1
+                ROW    41
+                COL    28
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Codigo :"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .T.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_123
+                ROW    40
+                COL    550
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Status Cadastro "
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .T.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_2
+                ROW    62
+                COL    28
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Nome"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .T.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_8
+                ROW    62
+                COL    550
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Cnpj\Cpf "
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_9
+                ROW    83
+                COL    550
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Ins.Estadual "
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_3
+                ROW    83
+                COL    28
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Endereço"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_4
+                ROW    105
+                COL    28
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Bairro"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_10
+                ROW    105
+                COL    550
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Fantasia"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_11
+                ROW    127
+                COL    550
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Nome Contato "
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_5
+                ROW    127
+                COL    28
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Referencia"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_12
+                ROW    149
+                COL    550
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Rg"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_13
+                ROW    172
+                COL    550
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Data Nascimento"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_425
+                ROW    196
+                COL    550
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Tipo Pessoa"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_6
+                ROW    149
+                COL    28
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Cep"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_7
+                ROW    172
+                COL    28
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Uf"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_87
+                ROW    250
+                COL    28
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Telefone "
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_887
+                ROW    273
+                COL    28
+                WIDTH  120
+                HEIGHT 24
+                VALUE "WhatsAp "
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_987
+                ROW    296
+                COL    28
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Email "
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_1234
+                ROW    318
+                COL    28
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Fone Contato "
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE FRAME Frame_2
+                ROW    228
+                COL    2
+                WIDTH  843
+                HEIGHT 140
+                FONTNAME "Arial"
+                FONTSIZE 9
+                FONTBOLD .T.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                CAPTION "Contatos"
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                OPAQUE .F.
+            END FRAME
+
+            DEFINE TEXTBOX Nome
+                ROW    58
+                COL    158
+                WIDTH  375
+                HEIGHT 20
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS HabilGrv()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT UPPER
+                MAXLENGTH 50
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK Nil
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+            DEFINE TEXTBOX Endereco
+                ROW    79
+                COL    158
+                WIDTH  375
+                HEIGHT 20
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS HabilGrv()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT UPPER
+                MAXLENGTH 50
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK Nil
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+            DEFINE LABEL lblCodigo
+                ROW    38
+                COL    158
+                WIDTH  120
+                HEIGHT 15
+                VALUE "Label_14"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .T.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR {64,128,128}
+            END LABEL
+
+            DEFINE LABEL lblStatus
+                ROW    38
+                COL    660
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Normal"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .T.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR {64,128,128}
+            END LABEL
+
+            DEFINE COMBOBOX CmbBairros
+                ROW    101
+                COL    158
+                WIDTH  310
+                HEIGHT 100
+                ITEMS {""}
+                VALUE 0
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS HabilGrv()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                SORT .F.
+                ONENTER Nil
+                ONDISPLAYCHANGE Nil
+                DISPLAYEDIT .F.
+                IMAGE Nil
+                DROPPEDWIDTH Nil
+                ONDROPDOWN Nil
+                ONCLOSEUP Nil
+            END COMBOBOX
+
+            DEFINE TEXTBOX Referencia
+                ROW    126
+                COL    158
+                WIDTH  375
+                HEIGHT 20
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS HabilGrv()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT UPPER
+                MAXLENGTH 40
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK Nil
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+            DEFINE TEXTBOX Cep
+                ROW    147
+                COL    158
+                WIDTH  120
+                HEIGHT 20
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS HabilGrv()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT NONE
+                MAXLENGTH 9
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK "99999-999"
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+            DEFINE LABEL Label_14
+                ROW    196
+                COL    28
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Cidade"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE COMBOBOX CmbUf
+                ROW    169
+                COL    158
+                WIDTH  100
+                HEIGHT 100
+                ITEMS {""}
+                VALUE 2
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE xChgUf( This.Value )
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS HabilGrv()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                SORT .F.
+                ONENTER Nil
+                ONDISPLAYCHANGE Nil
+                DISPLAYEDIT .F.
+                IMAGE Nil
+                DROPPEDWIDTH Nil
+                ONDROPDOWN Nil
+                ONCLOSEUP Nil
+            END COMBOBOX
+
+            DEFINE COMBOBOX CmbCidade
+                ROW    193
+                COL    158
+                WIDTH  310
+                HEIGHT 100
+                ITEMS {""}
+                VALUE 0
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE xChgCidade()
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS HabilGrv()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                SORT .F.
+                ONENTER Nil
+                ONDISPLAYCHANGE Nil
+                DISPLAYEDIT .F.
+                IMAGE Nil
+                DROPPEDWIDTH Nil
+                ONDROPDOWN Nil
+                ONCLOSEUP Nil
+            END COMBOBOX
+
+            DEFINE TEXTBOX Cnpj
+                ROW    58
+                COL    660
+                WIDTH  120
+                HEIGHT 20
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS HabilGrv()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT NONE
+                MAXLENGTH 14
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK "99999999999999"
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+            DEFINE TEXTBOX InEst
+                ROW    79
+                COL    660
+                WIDTH  120
+                HEIGHT 20
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS HabilGrv()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT NONE
+                MAXLENGTH 14
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK Nil
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+            DEFINE TEXTBOX Fantasia
+                ROW    101
+                COL    660
+                WIDTH  180
+                HEIGHT 20
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS HabilGrv()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT UPPER
+                MAXLENGTH 40
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK Nil
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+            DEFINE TEXTBOX Contato
+                ROW    123
+                COL    660
+                WIDTH  180
+                HEIGHT 20
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS HabilGrv()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT UPPER
+                MAXLENGTH 40
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK Nil
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+            DEFINE TEXTBOX Rg
+                ROW    145
+                COL    660
+                WIDTH  120
+                HEIGHT 20
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS HabilGrv()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT NONE
+                MAXLENGTH 16
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK Nil
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+            DEFINE TEXTBOX DataNasc
+                ROW    167
+                COL    660
+                WIDTH  95
+                HEIGHT 20
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS HabilGrv()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT NONE
+                MAXLENGTH 16
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK Nil
+                FORMAT Nil
+                DATE .T. 
+                VALUE Nil
+            END TEXTBOX
+
+            DEFINE COMBOBOX CmbTipo
+                ROW    189
+                COL    660
+                WIDTH  100
+                HEIGHT 100
+                ITEMS {"Fisica" , "Juridica" }
+                VALUE 1
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS HabilGrv()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                SORT .F.
+                ONENTER Nil
+                ONDISPLAYCHANGE Nil
+                DISPLAYEDIT .F.
+                IMAGE Nil
+                DROPPEDWIDTH Nil
+                ONDROPDOWN Nil
+                ONCLOSEUP Nil
+            END COMBOBOX
+
+            DEFINE TEXTBOX Telefone
+                ROW    248
+                COL    158
+                WIDTH  120
+                HEIGHT 20
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS HabilGrv()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT NONE
+                MAXLENGTH 25
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK "(99)99999-9999"
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+            DEFINE TEXTBOX WhatsAp
+                ROW    270
+                COL    158
+                WIDTH  120
+                HEIGHT 20
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS HabilGrv()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT NONE
+                MAXLENGTH 25
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK "(99)99999-9999"
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+            DEFINE TEXTBOX Email
+                ROW    292
+                COL    158
+                WIDTH  425
+                HEIGHT 20
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS HabilGrv()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT NONE
+                MAXLENGTH 325
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK Nil
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+            DEFINE TEXTBOX FoneCon
+                ROW    314
+                COL    158
+                WIDTH  120
+                HEIGHT 20
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS HabilGrv()
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT NONE
+                MAXLENGTH 25
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK "(99)99999-9999"
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+            DEFINE IMAGE ImgLupa
+                ROW    147
+                COL    280
+                WIDTH  24
+                HEIGHT 20
+                PICTURE "img\Pesq1.bmp"
+                HELPID Nil
+                VISIBLE .T.
+                STRETCH .T.
+                ACTION Nil
+            END IMAGE
+
+            DEFINE FRAME Frame_1
+                ROW    26
+                COL    2
+                WIDTH  843
+                HEIGHT 200
+                FONTNAME "Arial"
+                FONTSIZE 9
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                CAPTION NIL
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                OPAQUE .F.
+            END FRAME
+
+        END PAGE 
+
+        PAGE "Outros" IMAGE "img\ic_janela.bmp"
+
+            DEFINE FRAME Frame_3
+                ROW    30
+                COL    2
+                WIDTH  520
+                HEIGHT 140
+                FONTNAME "Arial"
+                FONTSIZE 9
+                FONTBOLD .T.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                CAPTION "Entrega"
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                OPAQUE .T.
+            END FRAME
+
+            DEFINE LABEL Label_15
+                ROW    55
+                COL    16
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Endereço :"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_16
+                ROW    75
+                COL    16
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Bairro"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_17
+                ROW    95
+                COL    16
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Referencia"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_18
+                ROW    118
+                COL    16
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Cidade"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_19
+                ROW    139
+                COL    16
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Cep"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE TEXTBOX EndEnt
+                ROW    50
+                COL    120
+                WIDTH  385
+                HEIGHT 20
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT UPPER
+                MAXLENGTH 50
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK Nil
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+            DEFINE COMBOBOX CmbBaiEnt
+                ROW    70
+                COL    120
+                WIDTH  315
+                HEIGHT 100
+                ITEMS {""}
+                VALUE 0
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                SORT .F.
+                ONENTER Nil
+                ONDISPLAYCHANGE Nil
+                DISPLAYEDIT .F.
+                IMAGE Nil
+                DROPPEDWIDTH Nil
+                ONDROPDOWN Nil
+                ONCLOSEUP Nil
+            END COMBOBOX
+
+            DEFINE TEXTBOX RefEnt
+                ROW    94
+                COL    120
+                WIDTH  385
+                HEIGHT 20
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT UPPER
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK Nil
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+            DEFINE COMBOBOX cmbCident
+                ROW    114
+                COL    120
+                WIDTH  315
+                HEIGHT 100
+                ITEMS {""}
+                VALUE 0
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE xCidEnt()
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                SORT .F.
+                ONENTER Nil
+                ONDISPLAYCHANGE Nil
+                DISPLAYEDIT .F.
+                IMAGE Nil
+                DROPPEDWIDTH Nil
+                ONDROPDOWN Nil
+                ONCLOSEUP Nil
+            END COMBOBOX
+
+            DEFINE TEXTBOX CepEnt
+                ROW    137
+                COL    120
+                WIDTH  120
+                HEIGHT 20
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                ONENTER Nil
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                RIGHTALIGN .F.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                CASECONVERT NONE
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                INPUTMASK "99999-999"
+                FORMAT Nil
+                VALUE ""
+            END TEXTBOX
+
+            DEFINE FRAME Frame_4
+                ROW    30
+                COL    525
+                WIDTH  313
+                HEIGHT 140
+                FONTNAME "Arial"
+                FONTSIZE 9
+                FONTBOLD .T.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                CAPTION "Classe\Categoria"
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                OPAQUE .T.
+            END FRAME
+
+            DEFINE LABEL Label_20
+                ROW    55
+                COL    536
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Classe"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_21
+                ROW    75
+                COL    536
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Categoria"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE COMBOBOX cmbClasse
+                ROW    50
+                COL    600
+                WIDTH  227
+                HEIGHT 100
+                ITEMS {""}
+                VALUE 0
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                SORT .F.
+                ONENTER Nil
+                ONDISPLAYCHANGE Nil
+                DISPLAYEDIT .F.
+                IMAGE Nil
+                DROPPEDWIDTH Nil
+                ONDROPDOWN Nil
+                ONCLOSEUP Nil
+            END COMBOBOX
+
+            DEFINE COMBOBOX cmbCategoria
+                ROW    73
+                COL    600
+                WIDTH  227
+                HEIGHT 100
+                ITEMS {""}
+                VALUE 0
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                SORT .F.
+                ONENTER Nil
+                ONDISPLAYCHANGE Nil
+                DISPLAYEDIT .F.
+                IMAGE Nil
+                DROPPEDWIDTH Nil
+                ONDROPDOWN Nil
+                ONCLOSEUP Nil
+            END COMBOBOX
+
+            DEFINE FRAME Frame_5
+                ROW    170
+                COL    2
+                WIDTH  520
+                HEIGHT 130
+                FONTNAME "Arial"
+                FONTSIZE 9
+                FONTBOLD .T.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                CAPTION "Informações Cliente"
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                OPAQUE .T.
+            END FRAME
+
+            DEFINE LABEL Label_22
+                ROW    198
+                COL    16
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Saldo Cliente :"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_23
+                ROW    220
+                COL    16
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Acumulado Vendas :"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_24
+                ROW    244
+                COL    16
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Qtde. Vendas :"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_25
+                ROW    268
+                COL    16
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Maior Compra"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_26
+                ROW    198
+                COL    270
+                WIDTH  110
+                HEIGHT 22
+                VALUE "Data Bloqueio :"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE LABEL Label_27
+                ROW    220
+                COL    270
+                WIDTH  120
+                HEIGHT 24
+                VALUE "Ultima Compra"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE FRAME Frame_6
+                ROW    170
+                COL    525
+                WIDTH  313
+                HEIGHT 130
+                FONTNAME "Arial"
+                FONTSIZE 9
+                FONTBOLD .T.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                CAPTION "Observação"
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+                OPAQUE .T.
+            END FRAME
+
+            DEFINE EDITBOX EdtObs
+                ROW    194
+                COL    540
+                WIDTH  285
+                HEIGHT 90
+                VALUE ""
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                ONCHANGE Nil
+                ONGOTFOCUS Nil
+                ONLOSTFOCUS Nil
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                TABSTOP .T.
+                VISIBLE .T.
+                READONLY .F.
+                HSCROLLBAR .T.
+                VSCROLLBAR .T.
+                DISABLEDBACKCOLOR Nil
+                DISABLEDFONTCOLOR Nil
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END EDITBOX
+
+            DEFINE LABEL Label_28
+                ROW    244
+                COL    270
+                WIDTH  156
+                HEIGHT 24
+                VALUE "Ult. Atualização Cadastro"
+                FONTNAME "Arial"
+                FONTSIZE 9
+                TOOLTIP ""
+                FONTBOLD .F.
+                FONTITALIC .F.
+                FONTUNDERLINE .F.
+                FONTSTRIKEOUT .F.
+                HELPID Nil
+                VISIBLE .T.
+                TRANSPARENT .F.
+                ACTION Nil
+                AUTOSIZE .F.
+                BACKCOLOR NIL
+                FONTCOLOR NIL
+            END LABEL
+
+            DEFINE IMAGE ImgEnd
+                ROW    138
+                COL    243
+                WIDTH  24
+                HEIGHT 20
+                PICTURE "img\Pesq1.bmp"
+                HELPID Nil
+                VISIBLE .T.
+                STRETCH .T.
+                ACTION Nil
+            END IMAGE
+
+        END PAGE 
+
+    END TAB 
+
+END WINDOW
+

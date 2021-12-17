@@ -1,0 +1,1 @@
+Data ModificaΒo Cadastro  select * from dicionario where (camposistema = 'Data ModificaΒo Cadastro') and (tabela = 'CLIENTES')

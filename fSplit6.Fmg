@@ -1,0 +1,67 @@
+* HMG-IDE UNICODE Form Designer Generated Code
+* (c) Roberto Lopez - http://sites.google.com/site/hmgweb
+
+DEFINE WINDOW TEMPLATE AT 56 , 1 WIDTH 194 HEIGHT 550 VIRTUAL WIDTH Nil VIRTUAL HEIGHT Nil TITLE "" ICON NIL PANEL CURSOR NIL ON INIT Nil ON RELEASE Nil ON INTERACTIVECLOSE Nil ON MOUSECLICK Nil ON MOUSEDRAG Nil ON MOUSEMOVE Nil ON SIZE Nil ON MAXIMIZE Nil ON MINIMIZE Nil ON PAINT Nil BACKCOLOR {255,255,255} NOTIFYICON NIL NOTIFYTOOLTIP NIL ON NOTIFYCLICK Nil ON GOTFOCUS Nil ON LOSTFOCUS Nil ON SCROLLUP Nil ON SCROLLDOWN Nil ON SCROLLLEFT Nil ON SCROLLRIGHT Nil ON HSCROLLBOX Nil ON VSCROLLBOX Nil
+
+    DEFINE IMAGE Image1
+        ROW    280
+        COL    70
+        WIDTH  20
+        HEIGHT 16
+        PICTURE "img\desenho1.bmp"
+        HELPID Nil
+        VISIBLE .F.
+        STRETCH .T.
+        ACTION Nil
+    END IMAGE
+
+    DEFINE IMAGE Imagem3
+        ROW    370
+        COL    50
+        WIDTH  21
+        HEIGHT 16
+        PICTURE "img\desenho1.bmp"
+        HELPID Nil
+        VISIBLE .F.
+        STRETCH .F.
+        ACTION Nil
+    END IMAGE
+
+    DEFINE IMAGE Img_seta1
+        ROW    410
+        COL    0
+        WIDTH  186
+        HEIGHT 16
+        PICTURE "img\setab2.png"
+        HELPID Nil
+        VISIBLE .F.
+        STRETCH .F.
+        ACTION Nil
+    END IMAGE
+
+    DEFINE IMAGE img_seta2
+        ROW    295
+        COL    0
+        WIDTH  186
+        HEIGHT 17
+        PICTURE "img\setac2d.png"
+        HELPID Nil
+        VISIBLE .F.
+        STRETCH .F.
+        ACTION Nil
+    END IMAGE
+
+    DEFINE IMAGE image4
+        ROW    340
+        COL    100
+        WIDTH  20
+        HEIGHT 16
+        PICTURE "img\desenho1.bmp"
+        HELPID Nil
+        VISIBLE .F.
+        STRETCH .T.
+        ACTION Nil
+    END IMAGE
+
+END WINDOW
+

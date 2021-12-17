@@ -1,0 +1,118 @@
+hbmk2: Harbour: Compilando m¢dulos...
+Harbour 3.2.0dev (r1703241902)
+Copyright (c) 1999-2016, http://harbour-project.org/
+hbmk2: Compilando...
+In file included from C:\trab2\trab\Tab\Main.Prg:42:0:
+C:\trab2\trab\Tab\Main.Prg: In function 'win_IsAppThemed':
+C:/hmg/include/HMG_UNICODE.h:202:31: warning: implicit declaration of function 'hb_threadEnterCriticalSection' [-Wimplicit-function-declaration]
+    #define _THREAD_LOCK()     hb_threadEnterCriticalSection( &_HMG_Mutex )
+                               ^
+C:/hmg/include/HMG_UNICODE.h:228:1: note: in expansion of macro '_THREAD_LOCK'
+ _THREAD_LOCK();\
+ ^
+C:\trab2\trab\Tab\Main.Prg:90:1: note: in expansion of macro 'HMG_DEFINE_DLL_FUNC'
+ HMG_DEFINE_DLL_FUNC ( win_IsAppThemed,                                   // user function name
+ ^
+C:/hmg/include/HMG_UNICODE.h:202:63: error: '_HMG_Mutex' undeclared (first use in this function)
+    #define _THREAD_LOCK()     hb_threadEnterCriticalSection( &_HMG_Mutex )
+                                                               ^
+C:/hmg/include/HMG_UNICODE.h:228:1: note: in expansion of macro '_THREAD_LOCK'
+ _THREAD_LOCK();\
+ ^
+C:\trab2\trab\Tab\Main.Prg:90:1: note: in expansion of macro 'HMG_DEFINE_DLL_FUNC'
+ HMG_DEFINE_DLL_FUNC ( win_IsAppThemed,                                   // user function name
+ ^
+C:/hmg/include/HMG_UNICODE.h:202:63: note: each undeclared identifier is reported only once for each function it appears in
+    #define _THREAD_LOCK()     hb_threadEnterCriticalSection( &_HMG_Mutex )
+                                                               ^
+C:/hmg/include/HMG_UNICODE.h:228:1: note: in expansion of macro '_THREAD_LOCK'
+ _THREAD_LOCK();\
+ ^
+C:\trab2\trab\Tab\Main.Prg:90:1: note: in expansion of macro 'HMG_DEFINE_DLL_FUNC'
+ HMG_DEFINE_DLL_FUNC ( win_IsAppThemed,                                   // user function name
+ ^
+C:/hmg/include/HMG_UNICODE.h:203:31: warning: implicit declaration of function 'hb_threadLeaveCriticalSection' [-Wimplicit-function-declaration]
+    #define _THREAD_UNLOCK()   hb_threadLeaveCriticalSection( &_HMG_Mutex )
+                               ^
+C:/hmg/include/HMG_UNICODE.h:236:1: note: in expansion of macro '_THREAD_UNLOCK'
+ _THREAD_UNLOCK();\
+ ^
+C:\trab2\trab\Tab\Main.Prg:90:1: note: in expansion of macro 'HMG_DEFINE_DLL_FUNC'
+ HMG_DEFINE_DLL_FUNC ( win_IsAppThemed,                                   // user function name
+ ^
+C:\trab2\trab\Tab\Main.Prg: In function 'win_GetCurrentThemeName':
+C:/hmg/include/HMG_UNICODE.h:202:63: error: '_HMG_Mutex' undeclared (first use in this function)
+    #define _THREAD_LOCK()     hb_threadEnterCriticalSection( &_HMG_Mutex )
+                                                               ^
+C:/hmg/include/HMG_UNICODE.h:228:1: note: in expansion of macro '_THREAD_LOCK'
+ _THREAD_LOCK();\
+ ^
+C:\trab2\trab\Tab\Main.Prg:101:1: note: in expansion of macro 'HMG_DEFINE_DLL_FUNC'
+ HMG_DEFINE_DLL_FUNC ( win_GetCurrentThemeName,                                   // user function name
+ ^
+C:\trab2\trab\Tab\Main.Prg: In function 'win_OpenThemeData':
+C:/hmg/include/HMG_UNICODE.h:202:63: error: '_HMG_Mutex' undeclared (first use in this function)
+    #define _THREAD_LOCK()     hb_threadEnterCriticalSection( &_HMG_Mutex )
+                                                               ^
+C:/hmg/include/HMG_UNICODE.h:228:1: note: in expansion of macro '_THREAD_LOCK'
+ _THREAD_LOCK();\
+ ^
+C:\trab2\trab\Tab\Main.Prg:111:1: note: in expansion of macro 'HMG_DEFINE_DLL_FUNC'
+ HMG_DEFINE_DLL_FUNC ( win_OpenThemeData,                                   // user function name
+ ^
+C:\trab2\trab\Tab\Main.Prg: In function 'win_CloseThemeData':
+C:/hmg/include/HMG_UNICODE.h:202:63: error: '_HMG_Mutex' undeclared (first use in this function)
+    #define _THREAD_LOCK()     hb_threadEnterCriticalSection( &_HMG_Mutex )
+                                                               ^
+C:/hmg/include/HMG_UNICODE.h:228:1: note: in expansion of macro '_THREAD_LOCK'
+ _THREAD_LOCK();\
+ ^
+C:\trab2\trab\Tab\Main.Prg:122:1: note: in expansion of macro 'HMG_DEFINE_DLL_FUNC'
+ HMG_DEFINE_DLL_FUNC ( win_CloseThemeData,                                   // user function name
+ ^
+C:\trab2\trab\Tab\Main.Prg: In function 'win_DrawThemeEdge':
+C:/hmg/include/HMG_UNICODE.h:202:63: error: '_HMG_Mutex' undeclared (first use in this function)
+    #define _THREAD_LOCK()     hb_threadEnterCriticalSection( &_HMG_Mutex )
+                                                               ^
+C:/hmg/include/HMG_UNICODE.h:228:1: note: in expansion of macro '_THREAD_LOCK'
+ _THREAD_LOCK();\
+ ^
+C:\trab2\trab\Tab\Main.Prg:133:1: note: in expansion of macro 'HMG_DEFINE_DLL_FUNC'
+ HMG_DEFINE_DLL_FUNC ( win_DrawThemeEdge,                                   // user function name
+ ^
+C:\trab2\trab\Tab\Main.Prg: In function 'win_DrawThemeBackground':
+C:/hmg/include/HMG_UNICODE.h:202:63: error: '_HMG_Mutex' undeclared (first use in this function)
+    #define _THREAD_LOCK()     hb_threadEnterCriticalSection( &_HMG_Mutex )
+                                                               ^
+C:/hmg/include/HMG_UNICODE.h:228:1: note: in expansion of macro '_THREAD_LOCK'
+ _THREAD_LOCK();\
+ ^
+C:\trab2\trab\Tab\Main.Prg:144:1: note: in expansion of macro 'HMG_DEFINE_DLL_FUNC'
+ HMG_DEFINE_DLL_FUNC ( win_DrawThemeBackground,                                   // user function name
+ ^
+C:\trab2\trab\Tab\Main.Prg: In function 'win_DrawThemeParentBackground':
+C:/hmg/include/HMG_UNICODE.h:202:63: error: '_HMG_Mutex' undeclared (first use in this function)
+    #define _THREAD_LOCK()     hb_threadEnterCriticalSection( &_HMG_Mutex )
+                                                               ^
+C:/hmg/include/HMG_UNICODE.h:228:1: note: in expansion of macro '_THREAD_LOCK'
+ _THREAD_LOCK();\
+ ^
+C:\trab2\trab\Tab\Main.Prg:155:1: note: in expansion of macro 'HMG_DEFINE_DLL_FUNC'
+ HMG_DEFINE_DLL_FUNC ( win_DrawThemeParentBackground,                                   // user function name
+ ^
+C:\trab2\trab\Tab\Main.Prg: In function 'win_IsThemeBackgroundPartiallyTransparent':
+C:/hmg/include/HMG_UNICODE.h:202:63: error: '_HMG_Mutex' undeclared (first use in this function)
+    #define _THREAD_LOCK()     hb_threadEnterCriticalSection( &_HMG_Mutex )
+                                                               ^
+C:/hmg/include/HMG_UNICODE.h:228:1: note: in expansion of macro '_THREAD_LOCK'
+ _THREAD_LOCK();\
+ ^
+C:\trab2\trab\Tab\Main.Prg:166:1: note: in expansion of macro 'HMG_DEFINE_DLL_FUNC'
+ HMG_DEFINE_DLL_FUNC ( win_IsThemeBackgroundPartiallyTransparent,                                   // user function name
+ ^
+C:\trab2\trab\Tab\Main.Prg: In function 'HB_FUN_CUSTOMDRAWITEM':
+C:\trab2\trab\Tab\Main.Prg:298:12: warning: variable 'bPainted' set but not used [-Wunused-but-set-variable]
+       BOOL bPainted;
+            ^
+hbmk2[tabteste]: Erro: Executando compilador C/C++. 1
+gcc.exe -c -O3 -march=i586 -mtune=pentiumpro -fomit-frame-pointer  -W -Wall -pipe -IC:/hmg/harbour/include -I../../.. -IC:/hmg/include ../../../.hbmk/win/mingw/Main.c

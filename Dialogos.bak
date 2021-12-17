@@ -1,0 +1,376 @@
+#include <hmg.ch>
+#include <minigui.ch>
+
+#define WM_SETFOCUS 7
+
+
+DEFINE WINDOW main
+DECLARE WINDOW fSplit6
+
+// REQUEST HB_LANG_PT
+// REQUEST HB_CODEPAGE_PT850
+
+FUNCTION yAviso( cMsgx1 )
+
+   LOCAL cControl := ''
+   LOCAL cForm    := ''
+   LOCAL cFormName := ''
+
+   GetFormNameByHandle ( GetActiveWindow(), @cFormName )
+   
+   //msginfo(cFormName)    
+   
+   Flag_AlphaBlend_Effect := .T.
+   Grayness_effect_start(  cFormName )
+
+   SetWindowControlsVisible( cFormName, .F. )
+
+   msgAviso( cMsgx1 )
+
+   //Grayness_effect_End( cFormName )
+
+   //SetWindowControlsVisible( cFormName, .T. )
+   
+   //msginfo(cFormName)    
+   
+    If isWindowDefined("fMenuClien")  
+   		DoMethod("fMenuClien","Show")     			
+   		DoMethod("fCadClien","Show")  
+   		
+   		DoMethod("fClien","Show")  
+   		
+   		DoMethod("fSplit5","Show")  
+   		DoMethod("fSplit5","Refresh")  
+   		msginfo('ok2222')
+   		
+   End If		
+   
+   
+   
+   
+   PostMessage ( GetFormHandle(cFormName) , WM_LBUTTONDOWN, 0,0 )
+   
+   DO EVENTS
+   
+  
+   
+   //RefreshAll()
+
+RETURN
+
+
+FUNCTION ConfirmAviso( cMsgx1, lOk1 )
+
+   LOCAL cControl := ''
+   LOCAL cForm    := ''
+   LOCAL cFormName := ''
+   LOCAL lOk := .F.
+   PRIVATE lRet := .F.   
+   
+    
+
+   GetFormNameByHandle ( GetActiveWindow()  , @cFormName )
+     
+   
+   
+   Flag_AlphaBlend_Effect := .t.   
+   
+   Grayness_effect_start(  cFormName )
+   
+   SetWindowControlsVisible( cFormName, .F. )   
+
+   // msginfo('ll2')
+
+   //msginfo('ok')
+
+
+   msgAviso( cMsgx1, 2 )   
+   
+   Grayness_effect_End(  cFormName )
+   SetWindowControlsVisible( cFormName, .T. )
+
+RETURN lRet
+
+
+FUNCTION MsgAviso( cMsg1, nTipo )
+
+   // Local cJanx := 'fDialog'
+
+   // aLbly1 := {}
+
+   LOCAL nTxColorE  := Rgb( 79, 79, 79 )
+   LOCAL nFrColorE  := Rgb( 207, 207, 207 )
+
+   LOCAL nBkColorE1 := Rgb( 251, 251, 251 )
+   LOCAL nBkColorE2 := Rgb( 230, 230, 230 )
+
+   LOCAL nGradDirE  := 0
+   LOCAL nTxColorD  := 0x808080
+
+   LOCAL nFrColorD  := Rgb( 232, 232, 232 )
+   // { 9, 111, 137 }
+
+   LOCAL nBkColorD1 := 0XE0E0E0
+   LOCAL nBkColorD2 := 0XE0E0E0
+   LOCAL nGradDirD  := 0
+   LOCAL nTxColorF  := Rgb( 45, 55, 56 )
+   LOCAL nFrColorF  := nFrColorE
+
+
+   LOCAL nBkColorF1 :=  0xFFFFFF
+   LOCAL nBkColorF2 :=  Rgb( 192, 192, 192 )
+
+   LOCAL nGradDirF  := 0
+   LOCAL cFontName  := 'Arial'
+   LOCAL nFontSize  := 8
+
+   LOCAL aBtnFont  := { "Arial", 8, .F., .F., .F., .F. }
+
+   LOCAL cVar1 := "Isto não é um Teste"
+
+   PRIVATE cJanxDialog := 'fDialogo'
+
+   DEFAULT cMsg1 := ''
+   DEFAULT nTipo := 1
+
+   PRIVATE cBmpx1 := iif( nTipo == 1, "img\aviso1.bmp", "img\pergunta1.bmp" )
+
+   PRIVATE cMensagem := iif( nTipo == 1, "Aviso", "Confirme Para Prosseguir" )
+
+   PRIVATE lRet := .F.
+
+   Load Window fDialogo
+
+
+   Center Window fDialogo
+
+   SetProperty( "fDialogo", "lblMsg", "Value",  hb_ANSIToOEM(    AllTrim( cMsg1 )  )     )
+
+   // hb_MemoWrit( 'Debug12.txt', Alltrim(cMsg1) + ' ' +  Hb_AnsiToOem(    AllTrim( cMsg1 )  )  + '  ' + Hb_OemtoAnsi(    AllTrim( cMsg1 )  )  )
+   // msginfo(Hb_AnsiToOem( cMsg   ))
+
+
+   ON KEY ESCAPE Of fDialogo Action fDialogo.Release
+   ON KEY RETURN Of fDialogo Action fDialogo.Release
+   
+
+   Activate Window fDialogo 
+   //ON INIT xIniDialog(nTipo)
+   
+ 
+   
+   
+   //msginfo('Fechou')
+   //DoMethod( "fClien" , "SetFocus" )
+
+RETURN lRet
+
+
+FUNCTION xIniDialog( nTp )
+
+   Local cJanx := cJanxDialog 
+   Local nFontSize := 8
+
+   IF nTp == 1
+
+      OBTN_Create( cJanxDialog  , 6652, "Ok", 185, 245,  62,  24,  .T., .T., .T.,  8, RetColor1( 1 ), aBtnFont )
+      OBTN_Font( cJanxDialog , 6652,  { cFontName, nFontSize, .F., .F., .F., .F. } )
+
+      EventProcessAllHookMessage( EventCreate( {|| InputEv2(cJanx ) },    OBTN_Handle( cJanx, 6652 )   ), .T. )
+
+   ELSE
+
+      OBTN_Create( cJanx, 6653, "Sim", 185, 375,  62,  24,  .T., .T., .T.,  8, RetColor1( 1 ), aBtnFont )
+      OBTN_Create( cJanx, 6654, hb_ANSIToOEM( "Não" ), 185, 435,  62,  24,  .T., .T., .T.,  8, RetColor1( 1 ), aBtnFont )
+
+      OBTN_Font( cJanx, 6653,  { cFontName, nFontSize, .F., .F., .F., .F. } )
+      OBTN_Font( cJanx, 6654,  { cFontName, nFontSize, .F., .F., .F., .F. } )
+
+      EventProcessAllHookMessage( EventCreate( {|| InputEv2(cJanx ) },    OBTN_Handle( cJanx, 6653 )   ), .T. )
+      EventProcessAllHookMessage( EventCreate( {|| InputEv2(cJanx ) },    OBTN_Handle( cJanx, 6654 )   ), .T. )
+
+   END IF
+   
+   InstallEventHandler( "EventDl1" )
+
+RETURN
+
+FUNCTION EventDl1( nHWnd, nMsg, nWParam, nLParam )
+
+   LOCAL nID
+   LOCAL ButHnd
+   LOCAL nRow, nCol
+   LOCAL nind1
+   LOCAL cMenuName := 'fDialogo'
+
+   // msginfo('ok')
+
+
+   IF !_IsWindowDefined ( cMenuName )
+      RETURN
+   END IF
+   //
+   // msginfo('ok')
+
+   // Quit
+
+   IF nHWnd == GetProperty(  cMenuName, "HANDLE" )
+
+
+      IF nMsg == WM_DRAWITEM
+
+         IF ( nWParam >=  6652 ) .AND.  ( nWParam <=  6669 )
+            OBTN_Draw( nHWnd,  nwParam, nLParam )
+         END IF
+
+      END IF
+
+      IF nMsg == 273
+
+         nID := LoWord( nWParam )
+
+         IF nID == IDOK
+            nID := GetDlgCtrlID( GetFocus() )
+         ENDIF
+
+         IF nId == 6652
+            DoMethod( "fDialogo", "Release" )
+            //Do Events
+         END IF
+
+         IF nId == 6653
+            // msginfo( 'Sim' )
+            lRet := .T.
+            DoMethod( "fDialogo", "Release" )
+         END IF
+
+         IF nId == 6654
+            // msginfo( 'Não' )
+            lRet := .F.
+            DoMethod( "fDialogo", "Release" )
+         END IF
+
+         IF nId == 6601
+            // msginfo('2')
+            // fFiltro.Release()
+         END IF
+
+
+      END IF
+
+   END IF
+
+RETURN
+
+FUNCTION InputEv2( cJan1 )
+
+   STATIC lTracking := .F.
+
+   LOCAL  nHWnd   := EventHWND()
+   LOCAL  nMsg    := EventMSG()
+   LOCAL  nWParam := EventWPARAM()
+   LOCAL  nLParam := EventLPARAM()
+
+   LOCAL cFormx := 'fDialogo'
+   LOCAL nind1
+   LOCAL nIdBut := 0
+
+   LOCAL n1
+   LOCAL ButHnd
+
+   // LOCAL n1
+
+   FOR n1 := 6652 TO 6659
+      IF ( OBTN_Handle( cFormx, n1 ) == nHWnd )
+         IF nIdBut == 0
+            nIdBut := n1
+         END IF
+      END IF
+   NEXT
+
+
+   IF ( nIdBut > 0 )
+
+      IF ( nMsg == WM_MOUSEMOVE )
+
+         lTracking := TrackMouseEvent( nHWnd ) // TME_LEAVE is default flag
+
+         OBTN_Color( cFormx, nIdBut, RetColor1( 2 ), .T. )
+         OBTN_Enable( cFormx, nIdBut, .T. )
+         OBTN_Visible( cFormx, nIdBut, .T. )
+
+      END IF
+
+      IF ( nMsg == WM_MOUSELEAVE )
+
+         OBTN_Color( cFormx,  nIdBut, RetColor1( 1 ), .T. )
+         OBTN_Enable( cFormx, nIdBut, .T. )
+         OBTN_Visible( cFormx, nIdBut, .T. )
+
+         lTracking := .F.
+
+      END IF
+   ELSE
+
+   END IF
+
+RETURN
+
+
+
+FUNCTION InitDlg( aHandle , nTp1 )
+
+	 xIniDialog(nTp1)
+
+   HMG_ChangeWindowStyle( aHandle, WS_EX_DLGMODALFRAME, NIL, .T., .T. )
+   HMG_ChangeWindowStyle( aHandle, WS_EX_STATICEDGE, NIL, .T., .T. )   
+   
+
+RETURN
+
+FUNCTION RetColor1( nInd1, nModel )
+
+   LOCAL aColor := {}
+
+   LOCAL nTxColorE  := Rgb( 79, 79, 79 )
+   LOCAL nFrColorE  := Rgb( 207, 207, 207 )
+
+   LOCAL nBkColorE1 := Rgb( 251, 251, 251 )
+   LOCAL nBkColorE2 := Rgb( 230, 230, 230 )
+
+   LOCAL nGradDirE  := 0
+   LOCAL nTxColorD  := 0x808080
+
+   LOCAL nFrColorD  := Rgb( 232, 232, 232 )
+
+   // { 9, 111, 137 }
+
+   LOCAL nBkColorD1 := 0XE0E0E0
+   LOCAL nBkColorD2 := 0XE0E0E0
+   LOCAL nGradDirD  := 0
+   LOCAL nTxColorF  := Rgb( 45, 55, 56 )
+   LOCAL nFrColorF  := nFrColorE
+
+
+   LOCAL nBkColorF1 :=  0xFFFFFF
+   LOCAL nBkColorF2 :=  Rgb( 192, 192, 192 )
+
+   LOCAL nGradDirF  := 0
+   LOCAL cFontName  := 'Arial'
+   LOCAL nFontSize  := 8
+
+   LOCAL aBtnFont  := { "Arial", 8, .F., .F., .F., .F. }
+
+   LOCAL aBtnColor := ;
+      { { nTxColorE, nFrColorE, nBkColorE1, nBkColorE2, nGradDirE }, { nTxColorD, nFrColorD, nBkColorD1, nBkColorD2, nGradDirD }, { nTxColorF, nFrColorF, nBkColorF1, nBkColorF2,         nGradDirF } }
+
+   LOCAL aBtnSel := ;
+      { { nTxColorF, nFrColorF, nBkColorF1, nBkColorF2, nGradDirF }, { nTxColorD, nFrColorD, nBkColorD1, nBkColorD2, nGradDirD }, { nTxColorF, nFrColorF, nBkColorF1, nBkColorF2,       nGradDirF } }
+
+   DEFAULT nModel := 1
+
+   IF ( nModel != 1 )
+
+   END IF
+
+RETURN iif( nInd1 == 1, aBtnColor, aBtnSel )

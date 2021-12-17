@@ -1,0 +1,29 @@
+* HMG-IDE UNICODE Form Designer Generated Code
+* (c) Roberto Lopez - http://sites.google.com/site/hmgweb
+
+DEFINE WINDOW TEMPLATE AT 195 , 382 WIDTH 571 HEIGHT 229 VIRTUAL WIDTH Nil VIRTUAL HEIGHT Nil TITLE "" ICON NIL MODAL NOSIZE NOSYSMENU NOCAPTION CURSOR NIL ON INIT InitDlg( ThisWindow.Handle , nTipo) ON RELEASE Nil ON INTERACTIVECLOSE Nil ON MOUSECLICK Nil ON MOUSEDRAG Nil ON MOUSEMOVE Nil ON SIZE Nil ON PAINT Proc_Paint(cMensagem ,cBmpx1 ,, ThisWindow.name ) BACKCOLOR {232,232,232} ON GOTFOCUS Nil ON LOSTFOCUS Nil ON SCROLLUP Nil ON SCROLLDOWN Nil ON SCROLLLEFT Nil ON SCROLLRIGHT Nil ON HSCROLLBOX Nil ON VSCROLLBOX Nil
+
+    DEFINE LABEL LblMsg
+        ROW    39
+        COL    20
+        WIDTH  520
+        HEIGHT 30
+        VALUE "sdfsdfsdf"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        HELPID Nil
+        VISIBLE .T.
+        TRANSPARENT .T.
+        ACTION Nil
+        AUTOSIZE .F.
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+    END LABEL
+
+END WINDOW
+

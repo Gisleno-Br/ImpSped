@@ -1,0 +1,46 @@
+* HMG-IDE UNICODE Form Designer Generated Code
+* (c) Roberto Lopez - http://sites.google.com/site/hmgweb
+
+DEFINE WINDOW TEMPLATE AT 314 , 350 WIDTH 672 HEIGHT 183 VIRTUAL WIDTH Nil VIRTUAL HEIGHT Nil TITLE "" ICON NIL MODAL NOSIZE NOSYSMENU NOCAPTION CURSOR NIL ON INIT InitDlg( ThisWindow.Handle , 5 ) ON RELEASE Nil ON INTERACTIVECLOSE Nil ON MOUSECLICK Nil ON MOUSEDRAG Nil ON MOUSEMOVE Nil ON SIZE Nil ON PAINT Proc_Paint(cMensagem ,cBmpx1 ,, ThisWindow.name ) BACKCOLOR Nil ON GOTFOCUS Nil ON LOSTFOCUS Nil ON SCROLLUP Nil ON SCROLLDOWN Nil ON SCROLLLEFT Nil ON SCROLLRIGHT Nil ON HSCROLLBOX Nil ON VSCROLLBOX Nil
+
+    DEFINE LABEL LblMsg
+        ROW    40
+        COL    60
+        WIDTH  460
+        HEIGHT 20
+        VALUE "Label_1"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        HELPID Nil
+        VISIBLE .T.
+        TRANSPARENT .T.
+        ACTION Nil
+        AUTOSIZE .F.
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+    END LABEL
+
+    DEFINE PROGRESSBAR Progress1
+        ROW    71
+        COL    60
+        WIDTH  540
+        HEIGHT 30
+        RANGEMIN 1
+        RANGEMAX 20
+        VALUE 0
+        TOOLTIP ""
+        HELPID Nil
+        VISIBLE .T.
+        SMOOTH .F.
+        VERTICAL .F. 
+        BACKCOLOR NIL
+        FORECOLOR NIL
+    END PROGRESSBAR
+
+END WINDOW
+

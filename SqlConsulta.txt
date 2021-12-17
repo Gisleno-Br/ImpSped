@@ -1,0 +1,1 @@
+select relacao,camposistema,tipo,campo,mascara,tamdisp,consparametros.* from consparametros,dicionario where idconsul = 7 and iddicionario = idcampo and tabela = 'clientes' order by itemOrdem 

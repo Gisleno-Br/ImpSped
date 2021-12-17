@@ -1,0 +1,1 @@
+select codigo,endereco,bairro,nome,cidade,ifNull(qtpeds ,0 ) As qtpeds ,ifNull(acumulado ,0 ) As acumulado ,cpf,lPad(Date_Format(datanasc, '%d/%m/%Y'),10,' ')  As datanasc ,ifNull(maiorcompra ,0 ) As maiorcompra ,status from clientes Where  Codigo = '000031'

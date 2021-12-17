@@ -1,0 +1,467 @@
+#include <hmg.ch>
+
+
+#include "dbinfo.ch"
+#include "error.ch"
+
+#include "hmg.ch"
+
+#define IDC_BTN_1   2001
+#define IDC_BTN_2   2002
+#define IDC_BTN_3   2003
+#define IDC_BTN_4   2104
+#define IDC_BTN_5   2005
+// #define IDC_BTN_YES 201
+// #define IDC_BTN_NO  1102
+
+
+
+#define DBI_QUERY             1001
+#define RDDI_CONNECT          1001
+#define RDDI_DISCONNECT       1002
+#define RDDI_EXECUTE          1003
+#define RDDI_ERROR            1004
+#define RDDI_ERRORNO          1005
+#define RDDI_NEWID            1006
+#define RDDI_AFFECTEDROWS     1007
+#define RDDI_QUERY            1008
+
+REQUEST SDDMY, SQLMIX
+
+Define Window Main
+
+REQUEST HB_LANG_PT
+REQUEST HB_CODEPAGE_PT850
+
+
+FUNCTION CadCli()
+
+   LOCAL wCad := 'clientes'
+
+   LOCAL aTam    := GetCamposInf( wCad, 'TAM' )
+   LOCAL aCabec  := GetCamposInf( wCad, 'CABEC' )
+   LOCAL aCampos := GetCamposDic( wCad, 'S', .T. )
+
+   // aTam := {80,500}
+   // aCabec := {'Id','Nome',Hb_OemToAnsi('Endereço') }
+   // aCampos := {'Id',"Hb_OemToAnsi('Clien->Nome')","Clien->(Hb_OemToAnsi('Endereco'))" }
+
+   SET LANGUAGE TO PORTUGUESE
+   // SET LANGUAGE TO SPANISH
+   SET CODEPAGE TO PORTUGUESE
+
+   HB_SetCodePage( "PT850" )
+
+   hb_langSelect( "PT" )
+
+   // MSGINFO(HB_LANGSELECT() )
+
+   _HMG_SYSDATA[ 348 ] := { 199, 250, 225 }
+   _HMG_SYSDATA[ 349 ] := { 007, 071, 041 }
+   _HMG_SYSDATA[ 350 ] := { 235, 237, 095 }
+   _HMG_SYSDATA[ 351 ] := { 069, 015, 135 }
+
+   // aCampos[2] := 'Hb_AnsiToOem(Nome)'
+
+   ManutDb( aCabec, aCampos,  GetSql( "clientes", .F. ), "clien", aTam, "Cadastro de Clientes" )
+
+   // GetSql("clientes",.f. )
+
+RETURN
+
+
+FUNCTION ManutDb( aHeader, aCampos, cSql, cAlias, aTam1, cTitulo )
+
+   // IF ( FindWindowEx( Main.Handle   ,, ,'Cadastro de Clientes'  ) > 0 )
+   // MsgInfo( 'Este Cadastro ja esta Ativo.' )
+   // RETURN
+   // END IF
+
+   LOCAL cTitle := ''
+
+   PRIVATE aHeaderDb := aHeader
+   PRIVATE aCamposDb := aCampos
+
+   PRIVATE aDynBack := {}
+   PRIVATE aForBack := {}
+
+   PRIVATE cAli1     := cAlias
+
+   PRIVATE aWidths := aTam1
+
+   FOR n1 := 1 TO Len( aHeaderDb )
+      AAdd( aDynBack, bColor )
+      AAdd( aForBack, fColor )
+   NEXT
+
+   PRIVATE nTxColorE  := Rgb( 79, 79, 79 )
+   PRIVATE nFrColorE  := Rgb( 207, 207, 207 )
+
+   PRIVATE nBkColorE1 := Rgb( 251, 251, 251 )
+   PRIVATE nBkColorE2 := Rgb( 230, 230, 230 )
+
+   PRIVATE nGradDirE  := 0
+   PRIVATE nTxColorD  := 0x808080
+   PRIVATE nFrColorD  := { 9, 111, 137 }
+   PRIVATE nBkColorD1 := 0XE0E0E0
+   PRIVATE nBkColorD2 := 0XE0E0E0
+   PRIVATE nGradDirD  := 0
+   PRIVATE nTxColorF  := Rgb( 45, 55, 56 )
+   PRIVATE nFrColorF  := nFrColorE
+
+
+   PRIVATE nBkColorF1 :=  0xFFFFFF
+   PRIVATE nBkColorF2 :=  Rgb( 192, 192, 192 )
+
+   PRIVATE nGradDirF  := 0
+   PRIVATE cFontName  := 'Arial'
+   PRIVATE nFontSize  := 8
+
+
+
+   PRIVATE aBtnFont  := { "Arial", 8, .F., .F., .F., .F. }
+
+   // PRIVATE nFocused := IDC_BTN_1
+
+   PRIVATE aBtnColor := ;
+      { { nTxColorE, nFrColorE, nBkColorE1, nBkColorE2, nGradDirE }, { nTxColorD, nFrColorD, nBkColorD1, nBkColorD2, nGradDirD }, { nTxColorF, nFrColorF, nBkColorF1, nBkColorF2, nGradDirF } }
+
+   PRIVATE aBtnSel := ;
+      { { nTxColorF, nFrColorF, nBkColorF1, nBkColorF2, nGradDirF }, { nTxColorD, nFrColorD, nBkColorD1, nBkColorD2, nGradDirD }, { nTxColorF, nFrColorF, nBkColorF1, nBkColorF2, nGradDirF } }
+
+   PRIVATE aButtons := {  { "Novo", {|| fx1( "novo") }, .T., "Teste01", 0 }, ;
+      { "Modificar", {|| fx1( "edit" ) }, .T., "Teste02", 0 }, ;
+      { "Excluir", {|| fx1( "excluir" ) }, .T., "Teste05", 0 } }
+
+
+   rddSetDefault( "SQLMIX" )
+   HB_SetCodePage( "PT850" )
+
+   IF rddInfo( RDDI_CONNECT, { "MYSQL", cServer, cUserDb, cPassDb, cBanco } ) == 0
+      MSGSTOP( "Unable connect to the server" )
+      RETURN
+   ENDIF
+
+   dbUseArea( .T.,,  cSql, cAlias )
+
+   dbSelectArea( cAlias )
+
+   dbGoTop()
+
+   // msginfo( indexkey() )
+
+   dbSetOrder( 1 )
+
+   PRIVATE nDesktopHeight := GetDesktopHeight()
+
+   PRIVATE cAuxName := 'fCad2'
+
+   // Private cAuxMenu :=
+
+   PRIVATE cFormPrin := 'F' + cAlias
+
+   cAuxName := 'FCad' + cAlias
+   cForm := cAuxName
+
+   PRIVATE cMenuName := 'fMenu' + cAlias
+
+   // Load Window fClientes as fCli
+
+   Load Window fClientes as &cFormPrin
+
+   cTitle := cTitulo
+
+   ON KEY ESCAPE OF &cFormPrin Action ( DoMethod( cFormPrin, "release" ), &cFormPrin := Nil )
+
+
+   SetProperty( cFormPrin, "row", 60 )
+   SetProperty( cFormPrin, "col", 2 )
+
+   SetProperty( cForm, "LblTxt1", "Value", DToC( dDataBase ) + ' ' +  cTitle + '    ' +  AllTrim( Transform(RecCount(),'999,999,999' ) ) + ' Registros ' )
+
+   Activate Window &cFormPrin
+
+   // HMG_HOOK_UNINSTALL ()
+   USE
+
+RETURN
+
+FUNCTION DefTitle( cTxt1 )
+
+
+
+RETURN
+
+
+FUNCTION Fx1( cTexto )
+
+   Msginfo( cTexto )
+
+RETURN
+
+FUNCTION IntCli()
+
+   // setProperty("fClientes","Label_1","BackColor", {23,23,33} )
+   // SysRefresh()
+
+   LOCAL lBold      := .F.
+   LOCAL lItalic    := .F.
+   LOCAL lUnderline := .F.
+   LOCAL lStrikeOut := .F.
+
+   LOCAL nB1 := IDC_BTN_1
+   LOCAL nCol := 05
+
+
+   FOR nx1 := 1 TO Len( aButtons )
+
+      OBTN_Create( cForm, nB1, aButtons[ nx1 ][ 1 ],  01, nCol,  54,  32,  .T., .T., .T.,  8, aBtnColor, aBtnFont )
+      OBTN_Font( cForm, nB1,  { cFontName, nFontSize, lBold, lItalic, lUnderline, lStrikeOut } )
+
+      aButtons[ nx1 ][ 5 ] := nB1
+      EventProcessAllHookMessage( EventCreate( {|| EventButton() },    OBTN_Handle( cForm, nB1 )   ), .T. )
+
+      nCol += 60
+      nB1++
+
+   NEXT
+
+   OBTN_Create( cMenuName, 5457, "Nova Consulta",  13, 05,  54,  32,  .T., .T., .T.,  8, aBtnColor, aBtnFont )
+   OBTN_Font( cMenuName, 5457,  { cFontName, nFontSize, lBold, lItalic, lUnderline, lStrikeOut } )
+   
+   EventProcessAllHookMessage( EventCreate( {|| EventButton() },    OBTN_Handle( cMenuName, 5457 )   ), .T. )
+
+
+   // msginfo( ThisWindow.name )
+
+   // EventProcessAllHookMessage( EventCreate( {|| EventButton() },    OBTN_Handle( cForm, IDC_BTN_2 )   ), .T. )
+
+
+   // OBTN_Create( cForm, IDC_BTN_1, "Novo",  03, 05, 75,  24, .T., .T., .T.,  8, aBtnColor, aBtnFont )
+   // OBTN_Font( cForm, IDC_BTN_1, { cFontName, nFontSize, lBold, lItalic, lUnderline, lStrikeOut } )
+
+   InstallEventHandler( "EventHndBut" )
+
+   // EventProcessAllHookMessage( EventCreate( {|| EventButton() },    OBTN_Handle( cForm , IDC_BTN_1 )   ), .T. )
+
+RETURN
+
+FUNCTION EventButton()
+
+   STATIC lTracking := .F.
+
+   LOCAL  nHWnd   := EventHWND()
+   LOCAL  nMsg    := EventMSG()
+   LOCAL  nWParam := EventWPARAM()
+   LOCAL  nLParam := EventLPARAM()
+
+   LOCAL nind1
+   LOCAL nIdBut := 0
+
+   LOCAL n1
+
+   // GetDlgCtrlID
+
+   // LOCAL ButHnd := OBTN_Handle( cForm , IDC_BTN_1 )
+
+   LOCAL ButHnd
+
+   nInd1 := AScan( aButtons, {| a| a[ 5 ] == nWParam } )
+   // msginfo(Str(nWParam))
+
+
+   For n1 := 1 TO Len( aButtons )
+
+      IF ( OBTN_Handle( cForm, aButtons[ n1 ][ 5 ] ) == nHWnd )
+         nIdBut := aButtons[ n1 ][ 5 ]
+      END IF
+      
+      IF ( OBTN_Handle( cMenuName , 5457 ) == nHWnd )
+         nIdBut := 5457
+      END IF
+
+   Next
+
+   // Return
+
+   // If nInd1 > 0
+   // ButHnd := OBTN_Handle( cForm ,nWParam )
+   // msginfo('ok ' + Str(nWParam) )
+   // End If
+
+   // IF ( ButHnd == nHWnd )
+
+   IF ( nIdBut > 0 )
+
+      IF ( nMsg == WM_MOUSEMOVE )
+
+         lTracking := TrackMouseEvent( nHWnd ) // TME_LEAVE is default flag
+
+         OBTN_Color( cForm, nIdBut, aBtnSel, .T. )
+         OBTN_Enable( cForm, nIdBut, .T. )
+         OBTN_Visible( cForm, nIdBut, .T. )
+
+      END IF
+
+      IF ( nMsg == WM_MOUSELEAVE )
+
+         OBTN_Color( cForm,  nIdBut, aBtnColor, .T. )
+         OBTN_Enable( cForm, nIdBut, .T. )
+         OBTN_Visible( cForm, nIdBut, .T. )
+
+         lTracking := .F.
+
+      END IF
+   ELSE
+
+   END IF
+
+RETURN
+
+
+FUNCTION EventHndBut( nHWnd, nMsg, nWParam, nLParam )
+
+   LOCAL nID
+   LOCAL ButHnd
+
+   LOCAL nRow, nCol
+
+   LOCAL nind1
+
+   IF !_IsWindowDefined ( cForm )
+      Return
+   END IF
+   
+   IF !_IsWindowDefined ( cMenuName )
+      Return
+   END IF
+   
+   IF !_IsWindowDefined ( cFormPrin )
+      Return
+   END IF
+   
+   //
+
+   IF nHWnd == GetProperty(  cMenuName, "HANDLE" )
+   
+      //msginfo('ok')
+      //Return
+
+      IF nMsg == WM_DRAWITEM
+	       //msginfo('ok')
+      	 //Return
+         IF nWParam ==  5457 
+            OBTN_Draw( nHWnd,  5457 , nLParam )            
+         END IF
+
+      END IF
+      
+      If nMsg == 273
+      
+         nID := LoWord( nWParam )
+
+         IF nID == IDOK
+            nID := GetDlgCtrlID( GetFocus() )
+         ENDIF
+         
+         If nId == 5457
+            msginfo('nova consulta')
+         End If
+      
+      End If
+
+   END IF
+
+   IF nHWnd == GetProperty(  cForm, "HANDLE" )
+
+      IF nMsg == WM_DRAWITEM
+
+         nInd1 := AScan( aButtons, {| a| a[ 5 ] == nWParam } )
+
+         // IF ( nWParam >= IDC_BTN_1 ) .AND. ( nWParam <= IDC_BTN_5 )
+
+         IF nInd1 > 0
+            // OBTN_Draw( nHWnd, nWParam, nLParam )
+            OBTN_Draw( nHWnd,  aButtons[ nind1 ][ 5 ], nLParam )
+         ENDIF
+
+      ELSEIF ( nMsg == WM_MOUSEMOVE )
+
+
+
+      ELSEIF nMsg == 273 // WM_COMMAND
+
+         nID := LoWord( nWParam )
+
+         IF nID == IDOK
+            nID := GetDlgCtrlID( GetFocus() )
+         ENDIF
+
+         nIdBt1 := AScan( aButtons, {| a| a[ 5 ] == nId } )
+
+         IF ( nIdBt1 > 0 )
+            // msginfo('ok')
+            aBlock := aButtons[ nIdBt1 ][ 2 ]
+            Eval( aBlock )
+
+         END IF
+
+         // Return
+         //
+         // SWITCH nID
+         // CASE IDC_BTN_1
+         // MsgBox( "Button 1 was pressed." )
+         // EXIT
+         // CASE IDC_BTN_2
+         // MsgBox( "Button 2 was pressed." )
+         // EXIT
+         // CASE IDC_BTN_3
+         // MsgBox( "Button 3 was pressed." )
+         // EXIT
+         // CASE IDC_BTN_4
+         // MsgBox( "Button 4 was pressed." )
+         // EXIT
+         // CASE IDC_BTN_5
+         //
+         // CASE IDCANCEL
+         // // MessageBoxQuit()
+         // EXIT
+         // ENDSWITCH
+
+      ELSEIF nMsg == 16 // WM_CLOSE
+         // MessageBoxQuit()
+         RETURN 1
+      ENDIF
+
+   ELSEIF IsWindowDefined( cForm ) .AND. ( nHWnd == GetProperty( cForm, "HANDLE" ) )
+      IF nMsg == 43 // WM_DRAWITEM
+         // IF ( nWParam == IDC_BTN_YES ) .OR. ( nWParam == IDC_BTN_NO )
+         // OBTN_Draw( nHWnd, nWParam, nLParam )
+         // ENDIF
+
+      ELSEIF nMsg == 273 // WM_COMMAND
+         nID := LoWord( nWParam )
+
+         IF nID == IDOK
+            nID := GetDlgCtrlID( GetFocus() )
+         ENDIF
+
+
+      ENDIF
+   ENDIF
+
+RETURN NIL
+
+
+FUNCTION ShowButton( cForm, nID, lShow )
+
+   IF OBTN_Handle( cForm, nID ) == 0
+      MsgBox( "Button does not exist!" )
+   ELSE
+      OBTN_Visible( cForm, nID, lShow )
+   ENDIF
+
+RETURN NIL
+
+
+PROC RDDSYS();  RETURN

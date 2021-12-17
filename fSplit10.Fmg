@@ -1,0 +1,43 @@
+* HMG-IDE UNICODE Form Designer Generated Code
+* (c) Roberto Lopez - http://sites.google.com/site/hmgweb
+
+DEFINE WINDOW TEMPLATE AT 132 , 235 WIDTH 550 HEIGHT 40 VIRTUAL WIDTH Nil VIRTUAL HEIGHT Nil TITLE "" ICON NIL PANEL NOSIZE NOSYSMENU NOCAPTION CURSOR NIL ON INIT Nil ON RELEASE Nil ON INTERACTIVECLOSE Nil ON MOUSECLICK Nil ON MOUSEDRAG Nil ON MOUSEMOVE Nil ON SIZE Nil ON MAXIMIZE Nil ON MINIMIZE Nil ON PAINT d1Black(ThisWindow.name , hBit12 ) BACKCOLOR {9,111,137} NOTIFYICON NIL NOTIFYTOOLTIP NIL ON NOTIFYCLICK Nil ON GOTFOCUS Nil ON LOSTFOCUS Nil ON SCROLLUP Nil ON SCROLLDOWN Nil ON SCROLLLEFT Nil ON SCROLLRIGHT Nil ON HSCROLLBOX Nil ON VSCROLLBOX Nil
+
+    DEFINE IMAGE ImgEsquerda
+        ROW    6
+        COL    11
+        WIDTH  16
+        HEIGHT 16
+        PICTURE "img\esquerda.png"
+        HELPID Nil
+        VISIBLE .f.
+        STRETCH .T.
+        ACTION (ScrolVert(2) , Refreshall('fSplit2') )
+    END IMAGE
+
+    DEFINE IMAGE imgDireita
+        ROW    6
+        COL    27
+        WIDTH  16
+        HEIGHT 16
+        PICTURE "img\Direita.Png"
+        HELPID Nil
+        VISIBLE .f.
+        STRETCH .T.
+        ACTION (ScrolVert(1) , Refreshall('fSplit2') , SysWait(.6) )
+    END IMAGE
+
+    DEFINE IMAGE Image_1
+        ROW    9
+        COL    10
+        WIDTH  22
+        HEIGHT 22
+        PICTURE "img\Estat1.bmp"
+        HELPID Nil
+        VISIBLE .T.
+        STRETCH .T.
+        ACTION Nil
+    END IMAGE
+
+END WINDOW
+
