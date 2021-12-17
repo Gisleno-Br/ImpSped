@@ -1,13 +1,2 @@
- 15:22:42 Importando Linha Tipo |C170| Linha Arquivo : 3258
- 15:22:42 Importando Linha Tipo |C100| Linha Arquivo : 3221
- 15:22:42 Importando Linha Tipo |C170| Linha Arquivo : 3260
- 15:22:42 Importando Linha Tipo |C170| Linha Arquivo : 3261
- 15:22:42 Importando Linha Tipo |C100| Linha Arquivo : 3224
- 15:22:42 Importando Linha Tipo |C100| Linha Arquivo : 3225
- 15:22:42 Importando Linha Tipo |C170| Linha Arquivo : 3263
- 15:22:42 Importando Linha Tipo |C100| Linha Arquivo : 3226
- 15:22:42 Importando Linha Tipo |C170| Linha Arquivo : 3265
- 15:22:42 Importando Linha Tipo |C170| Linha Arquivo : 3266
- 15:22:42 Importando Linha Tipo |C100| Linha Arquivo : 3228
- 15:22:42 Importando Linha Tipo |C170| Linha Arquivo : 3267
- 15:22:42 Importando Linha Tipo |C100| Linha Arquivo : 3230
+ 15:35:55 Importando Linha Tipo |C170| Linha Arquivo : 3267
+ 15:35:55 Importando Linha Tipo |C100| Linha Arquivo : 3219
