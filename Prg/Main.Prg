@@ -108,9 +108,15 @@ FUNCTION Main
 	Public Corg2 := {4,57,70}   
 	
 
-   
+
+
+
+
+
+
+
 	
-	PUBLIC cDiaName := 'fDialogo'
+	PUBLIC cDiaName := 'fDialogo'  
 
    
    Private nacumz := 0

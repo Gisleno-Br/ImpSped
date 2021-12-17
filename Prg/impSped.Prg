@@ -114,6 +114,7 @@ Function ImpSped()
 	
 	Local lRet := .t.
 
+
 	Local cArq1 := xGetArq()
 
 	HB_SetCodePage( "PT850" )
@@ -123,6 +124,7 @@ Function ImpSped()
 		MSGSTOP( "Unable connect to the server" )
 		RETURN
 	ENDIF
+
 
 	//Private cFName := ''
 
