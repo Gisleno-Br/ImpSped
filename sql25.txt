@@ -1,1 +1,0 @@
- Select id,hb_AnsiToOem(nome),hb_AnsiToOem(cpf),hb_AnsiToOem(endereco),hb_AnsiToOem(bairro),hb_AnsiToOem(fantasia),hb_AnsiToOem(contato),hb_AnsiToOem(cidade),hb_AnsiToOem(status),acumulado,qtpeds, from clientes a Where a.Id >= 0 order by Id

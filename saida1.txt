@@ -1,1 +1,0 @@
-insert into tab20190730009325 values(-5,'Bairro Cliente','Telefone 2');

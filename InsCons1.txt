@@ -1,1 +1,0 @@
-Insert into Consultas Values(5,1,1,'Cons5','Cons5 legal...','2020-01-07','Ativo','Clientes')

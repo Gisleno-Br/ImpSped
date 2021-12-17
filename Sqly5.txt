@@ -1,1 +1,0 @@
-Select id,nome,cpf,endereco,bairro,fantasia,contato,fone1,email,cidade,uf,datanasc from clientes  where (id = 1) Order by endereco 

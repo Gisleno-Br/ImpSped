@@ -1,0 +1,57 @@
+[
+	{
+		"path": "$ROOTPATH$\\Funcoes.Prg",
+		"bookmarks": [
+			{
+				"line": 328,
+				"column": 24,
+				"label": ""
+			},
+			{
+				"line": 596,
+				"column": 0,
+				"label": ""
+			},
+			{
+				"line": 711,
+				"column": 0,
+				"label": ""
+			},
+			{
+				"line": 713,
+				"column": 0,
+				"label": "a1"
+			},
+			{
+				"line": 719,
+				"column": 0,
+				"label": ""
+			}
+		]
+	},
+	{
+		"path": "$ROOTPATH$\\Rotinas.Prg",
+		"bookmarks": [
+			{
+				"line": 87,
+				"column": 19,
+				"label": ""
+			},
+			{
+				"line": 90,
+				"column": 0,
+				"label": ""
+			}
+		]
+	},
+	{
+		"path": "$ROOTPATH$\\Clientes.Prg",
+		"bookmarks": [
+			{
+				"line": 319,
+				"column": 30,
+				"label": ""
+			}
+		]
+	}
+]

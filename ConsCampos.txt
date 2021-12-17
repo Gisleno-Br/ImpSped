@@ -1,1 +1,0 @@
-Insert into conscampos values(5,306,'S','Asc')

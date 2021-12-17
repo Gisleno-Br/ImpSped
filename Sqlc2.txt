@@ -1,1 +1,0 @@
-select mascara,tipo,tamdisp,camposistema,campo,conscampos.* from conscampos,dicionario where conscampos.idconsulta = 1 and iddicionario = idcampo order by ordem

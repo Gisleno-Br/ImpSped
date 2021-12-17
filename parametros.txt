@@ -1,1 +1,0 @@
-Select Count(*) as N1 from participantes where idEmpresa = 1 and codparti = 'SA101019L1G3G01' TMP

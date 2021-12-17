@@ -1,1 +1,0 @@
-Insert into Dicionario Values(306,'Cons5','nome','C','Nome                     ','S',267,'                    ','nome',6,'                    ',5)

@@ -1,1 +1,0 @@
-select * from consultas  inner join conscampos on idconsulta = consultas.id  inner join dicionario on iddicionario = idcampo  where consultas.id = 1
