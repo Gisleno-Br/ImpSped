@@ -52,15 +52,15 @@ Function SetCampoOrdem(cTabela , cCampo , nOrdem1 )
    LOCAL cSql  := "update dicionario set ordem = "  + Alltrim(Str(nOrdem1))   
    cSQl += " where tabela = '" + AllTrim( cTabela ) + "' and camposistema = '" + cCampo + "'"
    
-   SETWAITCURSOR()
-   
+      
       
     oServer := GetConexao()
  	  oQuery := oServer:Query( cSql)			  
  			  
 
 		IF oQuery:NetErr()		
-		    SETARROWCURSOR()
+		    
+          
 		    MsgStop( 'Erro ao Executar Atualização -> ' + Chr( 13 ) + Chr( 10 ) + oQuery:Error() )
 		    RETURN .f.
 		 END IF
@@ -70,7 +70,7 @@ Function SetCampoOrdem(cTabela , cCampo , nOrdem1 )
 	  oServer:Destroy()
 	 	oServer := Nil
 	 	
-	 	SETARROWCURSOR()
+	 	
 
 Return lOk
 

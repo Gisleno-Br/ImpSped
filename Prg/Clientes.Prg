@@ -1380,7 +1380,7 @@ Function CrieMenuLabel(aOpcoes , nInd1 , nHeight1 )
 		SetProperty(cParent, cLabelx  , "BACKCOLOR", {7,101,125})                 
 
 		nHandle1 := GetControlHandle( cLabelx, cParent )    
-		SetHandCursor( nHandle1  , "Finger.cur" )   
+		//SetHandCursor( nHandle1  , "Finger.cur" )   
 
 		If (aOpcoes[n1] == 'Consultas') .and. (nHanConsu == 0)
 			nHanConsu := GetControlHandle( cLabelx, cParent ) 
@@ -1504,7 +1504,6 @@ FUNCTION LabelEventBrow()
 			aR1 := GetPos_ScreenToClient( GetFormHandle(cForm)  , nRow, nCol ) 					
 
 
-			SetWaitCursor(  GetControlHandle('imgCabec' , cBrowName )  )
 			nTamanho1 := Abs( nColIni - (ar1[2]+nPos1)  )
 
 			//msginfo(aMtrHeader[nObjSize ][3] + '  ' + Str(nTamanho1) )
@@ -1533,19 +1532,13 @@ FUNCTION LabelEventBrow()
 
 
 				LISTVIEW_SCROLL( GetControlHandle( 'br_grid', cFormPrin ),  nSaveScr , 0 )   			       
-				SetArrowCursor(  GetControlHandle('imgCabec' , cBrowName )  )             
+			
 
 				lModeSize := .f.
-				lAumentou := .f.  			      
-
-				SETARROWCURSOR( GetControlHandle('imgCabec' , cBrowName )   )  			     
-
+				lAumentou := .f.  			   
 				SysWait(.1)
 
 			End If     
-
-
-			SetArrowCursor(  GetControlHandle('imgCabec' , cBrowName )  )         
 
 
 			Return
@@ -1570,14 +1563,13 @@ FUNCTION LabelEventBrow()
 
 			nInd2 := xGetItMtr( ar1[2]+nPos1 )
 
-			SETarrowCursor( GetControlHandle('imgCabec' , cBrowName ) )
 			
 			cTab := Iif(Empty(cConsuAtiva) , cTabela , cConsuAtiva )
 
 			If (nInd2 > 0) .And. (nObjDrag > 0)
 			
 
-				SetWaitCursor(  GetControlHandle('imgCabec' , cBrowName )  )
+				//SetWaitCursor(  GetControlHandle('imgCabec' , cBrowName )  )
 								//SysWait(.1)
 
 				nInd1 := GetCampoOrdem( cTab , aMtrHeader[nind2][3]  )  			     
@@ -1608,15 +1600,14 @@ FUNCTION LabelEventBrow()
 				    
 				End If   
 
-
-				SETARROWCURSOR( GetControlHandle('imgCabec' , cBrowName )   )  			     
+  
 
 				_HMG_PRINTER_SETHSCROLLVALUE( GetFormHandle(  cBrowname )  ,  1 )    
 				_HMG_PRINTER_SETHSCROLLVALUE( GetFormHandle(  cBrowname )  ,  nSaveScr )      			       
 
 
 				LISTVIEW_SCROLL( GetControlHandle( 'br_grid', cFormPrin ),  nSaveScr , 0 )   			       
-				SetArrowCursor(  GetControlHandle('imgCabec' , cBrowName )  )
+		
 
 
 			End If              
@@ -1666,7 +1657,7 @@ FUNCTION LabelEventBrow()
 			//msginfo('ke')
 
 			If nIdx1 == 0
-				SetArrowCursor(  GetControlHandle('imgCabec' , cBrowName )  )                
+			    
 				lmodeSize := .f.
 				nObjSize  := 0
 				//msginfo('ke')
@@ -1678,8 +1669,7 @@ FUNCTION LabelEventBrow()
 		If (!lDragMode) .And. (Alltrim(cControl) = 'ImgCabec' ) .And. (!lModeSize)
 
 			lT1 := .f.
-			SetArrowCursor(  GetControlHandle('imgCabec' , cBrowName )  ) 			 
-
+		
 			lModeSize := .f.  		
 			lAumentou := .f.
 			
@@ -1699,7 +1689,7 @@ FUNCTION LabelEventBrow()
 					
 							If (aMtrHeader[nZ1][3] == aMtrHeader[nInd2][3]) 
 							
-								SetSizeCursor(  GetControlHandle('imgCabec' , cBrowName )  )
+								//SetSizeCursor(  GetControlHandle('imgCabec' , cBrowName )  )
 		
 								nObjSize  := nInd2  			               
 								lModeSize := .t.  		
@@ -1732,7 +1722,7 @@ FUNCTION LabelEventBrow()
 
 			If ((nPos1+ar1[2]) > (nColz1+nWidth))
 
-				SETDRAGCURSOR(  GetControlHandle('imgCabec' , cBrowName )  )
+//				SETDRAGCURSOR(  GetControlHandle('imgCabec' , cBrowName )  )
 
 				//hBit4 := CreateBmp()
 				nColx:=5
@@ -3135,7 +3125,7 @@ Function CrieSubMenu(aSub1)
 		END LABEL
 
 		nHandle1 := GetControlHandle( cLabelx, cMenuName )    
-		SetHandCursor( nHandle1  , "Finger.cur" )                       
+		//SetHandCursor( nHandle1  , "Finger.cur" )                       
 
 
 		//msginfo('criado ')     
@@ -3210,7 +3200,7 @@ FUNCTION CrieOpConsultas( cTabx )
 
 
 		nHandle1 := GetControlHandle( cLabelx, cMenuName )    
-		SetHandCursor( nHandle1  , "Finger.cur" )                      
+		//SetHandCursor( nHandle1  , "Finger.cur" )                      
 
 
 		EventProcessAllHookMessage(EventCreate({ || LabelEventH2() }, nHandle1  ), .T.) 

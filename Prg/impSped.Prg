@@ -128,7 +128,7 @@ Function ImpSped()
 
 	GetFormNameByHandle ( GetActiveWindow(), @cFname )  
 	
-	CursorWait(   GetFormHandle( 'Main'  )       )
+	//CursorWait(   GetFormHandle( 'Main'  )       )
 
 	//msginfo(cFname)
 
@@ -645,7 +645,7 @@ Function xProgress()
 	
 	DoMethod('Main','Show')
 	
-	CursorArrow(   GetFormHandle( 'Main'  )       )
+	//CursorArrow(   GetFormHandle( 'Main'  )       )
 	
 
 Return

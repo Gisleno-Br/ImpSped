@@ -14,10 +14,11 @@ OBTN_Release(cParentFormName, nButtonID)
 
 OBTN_Handle(cParentFormName, nButtonID)
   --> nHWndButton (Get)
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 GetDlgCtrlID(nHWndButton)
   --> nButtonID (Get)
-
+///////////////
 OBTN_Pos(cParentFormName, nButtonID, [nRow], [nCol], [nWidth], [nHeight])
   --> aPos {nRow, nCol, nWidth, nHeight} (Get/Set)
 
@@ -73,370 +74,388 @@ aColor structure: {aColorEnabledButton, aColorDisabledButton, aColorFocusedButto
 
 #include "hmg.ch"
 
-FUNCTION OBTN_Create(cForm, nID, cCaption, nRow, nCol, nWidth, nHeight, lEnabled, lVisible, lTabStop, nShape, aColor, aFont)
-  LOCAL nHButton := _OwnButtonCreate(GetFormHandle(cForm), nID, cCaption, nRow, nCol, nWidth, nHeight, lEnabled, lVisible, lTabStop)
+FUNCTION OBTN_Create( cForm, nID, cCaption, nRow, nCol, nWidth, nHeight, lEnabled, lVisible, lTabStop, nShape, aColor, aFont )
 
-  LOCAL nTxColorE  := 0x000000
-  LOCAL nFrColorE  := 0x000000
-  LOCAL nBkColorE1 := 0xFFFFFF
-  LOCAL nBkColorE2 := 0xFFFFFF
-  LOCAL nGradDirE  := 0
-  LOCAL nTxColorD  := 0x808080
-  LOCAL nFrColorD  := 0x808080
-  LOCAL nBkColorD1 := 0XE0E0E0
-  LOCAL nBkColorD2 := 0XE0E0E0
-  LOCAL nGradDirD  := 0
-  LOCAL nTxColorF  := 0x000000
-  LOCAL nFrColorF  := 0x000000
-  LOCAL nBkColorF1 := 0xFFFFFF
-  LOCAL nBkColorF2 := 0xFFFFFF
-  LOCAL nGradDirF  := 0
+   LOCAL nHButton := _OwnButtonCreate( GetFormHandle( cForm ), nID, cCaption, nRow, nCol, nWidth, nHeight, lEnabled, lVisible, lTabStop )
 
-  LOCAL cFontName  := _HMG_SYSDATA[342]
-  LOCAL nFontSize  := _HMG_SYSDATA[343]
-  LOCAL lBold      := .F.
-  LOCAL lItalic    := .F.
-  LOCAL lUnderline := .F.
-  LOCAL lStrikeOut := .F.
+   LOCAL nTxColorE  := 0x000000
+   LOCAL nFrColorE  := 0x000000
+   LOCAL nBkColorE1 := 0xFFFFFF
+   LOCAL nBkColorE2 := 0xFFFFFF
+   LOCAL nGradDirE  := 0
+   LOCAL nTxColorD  := 0x808080 
+   LOCAL nFrColorD  := 0x808080
+   LOCAL nBkColorD1 := 0XE0E0E0
+   LOCAL nBkColorD2 := 0XE0E0E0
+   LOCAL nGradDirD  := 0
+   LOCAL nTxColorF  := 0x000000
+   LOCAL nFrColorF  := 0x000000
+   LOCAL nBkColorF1 := 0xFFFFFF
+   LOCAL nBkColorF2 := 0xFFFFFF
+   LOCAL nGradDirF  := 0
 
-  IF nHButton != 0
-    IF ValType(aColor) == "A"
-      IF ValType(aColor[1]) == "A"
-        IF ValType(aColor[1][1]) == "N"
-          nTxColorE := aColor[1][1]
-        ENDIF
-        IF ValType(aColor[1][2]) == "N"
-          nFrColorE := aColor[1][2]
-        ENDIF
-        IF ValType(aColor[1][3]) == "N"
-          nBkColorE1 := aColor[1][3]
-        ENDIF
-        IF ValType(aColor[1][4]) == "N"
-          nBkColorE2 := aColor[1][4]
-        ENDIF
-        IF ValType(aColor[1][5]) == "N"
-          nGradDirE := aColor[1][5]
-        ENDIF
+   LOCAL cFontName  := _HMG_SYSDATA[ 342 ]
+   LOCAL nFontSize  := _HMG_SYSDATA[ 343 ]
+   LOCAL lBold      := .F.
+   LOCAL lItalic    := .F.
+   LOCAL lUnderline := .F.
+   LOCAL lStrikeOut := .F.
+
+   IF nHButton != 0
+      IF ValType( aColor ) == "A"
+         IF ValType( aColor[ 1 ] ) == "A"
+            IF ValType( aColor[ 1 ][ 1 ] ) == "N"
+               nTxColorE := aColor[ 1 ][ 1 ]
+            ENDIF
+            IF ValType( aColor[ 1 ][ 2 ] ) == "N"
+               nFrColorE := aColor[ 1 ][ 2 ]
+            ENDIF
+            IF ValType( aColor[ 1 ][ 3 ] ) == "N"
+               nBkColorE1 := aColor[ 1 ][ 3 ]
+            ENDIF
+            IF ValType( aColor[ 1 ][ 4 ] ) == "N"
+               nBkColorE2 := aColor[ 1 ][ 4 ]
+            ENDIF
+            IF ValType( aColor[ 1 ][ 5 ] ) == "N"
+               nGradDirE := aColor[ 1 ][ 5 ]
+            ENDIF
+         ENDIF
+
+         IF ValType( aColor[ 2 ] ) == "A"
+            IF ValType( aColor[ 2 ][ 1 ] ) == "N"
+               nTxColorD := aColor[ 2 ][ 1 ]
+            ENDIF
+            IF ValType( aColor[ 2 ][ 2 ] ) == "N"
+               nFrColorD := aColor[ 2 ][ 2 ]
+            ENDIF
+            IF ValType( aColor[ 2 ][ 3 ] ) == "N"
+               nBkColorD1 := aColor[ 2 ][ 3 ]
+            ENDIF
+            IF ValType( aColor[ 2 ][ 4 ] ) == "N"
+               nBkColorD2 := aColor[ 2 ][ 4 ]
+            ENDIF
+            IF ValType( aColor[ 2 ][ 5 ] ) == "N"
+               nGradDirD := aColor[ 2 ][ 5 ]
+            ENDIF
+         ENDIF
+
+         IF ValType( aColor[ 3 ] ) == "A"
+            IF ValType( aColor[ 3 ][ 1 ] ) == "N"
+               nTxColorF := aColor[ 3 ][ 1 ]
+            ENDIF
+            IF ValType( aColor[ 3 ][ 2 ] ) == "N"
+               nFrColorF := aColor[ 3 ][ 2 ]
+            ENDIF
+            IF ValType( aColor[ 3 ][ 3 ] ) == "N"
+               nBkColorF1 := aColor[ 3 ][ 3 ]
+            ENDIF
+            IF ValType( aColor[ 3 ][ 4 ] ) == "N"
+               nBkColorF2 := aColor[ 3 ][ 4 ]
+            ENDIF
+            IF ValType( aColor[ 3 ][ 5 ] ) == "N"
+               nGradDirF := aColor[ 3 ][ 5 ]
+            ENDIF
+         ENDIF
       ENDIF
 
-      IF ValType(aColor[2]) == "A"
-        IF ValType(aColor[2][1]) == "N"
-          nTxColorD := aColor[2][1]
-        ENDIF
-        IF ValType(aColor[2][2]) == "N"
-          nFrColorD := aColor[2][2]
-        ENDIF
-        IF ValType(aColor[2][3]) == "N"
-          nBkColorD1 := aColor[2][3]
-        ENDIF
-        IF ValType(aColor[2][4]) == "N"
-          nBkColorD2 := aColor[2][4]
-        ENDIF
-        IF ValType(aColor[2][5]) == "N"
-          nGradDirD := aColor[2][5]
-        ENDIF
+      IF ValType( aFont ) == "A"
+         IF ValType( aFont[ 1 ] ) == "C"
+            cFontName := aFont[ 1 ]
+         ENDIF
+         IF ValType( aFont[ 2 ] ) == "N"
+            nFontSize := aFont[ 2 ]
+         ENDIF
+         IF ValType( aFont[ 3 ] ) == "L"
+            lBold := aFont[ 3 ]
+         ENDIF
+         IF ValType( aFont[ 4 ] ) == "L"
+            lItalic := aFont[ 4 ]
+         ENDIF
+         IF ValType( aFont[ 5 ] ) == "L"
+            lUnderline := aFont[ 5 ]
+         ENDIF
+         IF ValType( aFont[ 6 ] ) == "L"
+            lStrikeOut := aFont[ 6 ]
+         ENDIF
       ENDIF
 
-      IF ValType(aColor[3]) == "A"
-        IF ValType(aColor[3][1]) == "N"
-          nTxColorF := aColor[3][1]
-        ENDIF
-        IF ValType(aColor[3][2]) == "N"
-          nFrColorF := aColor[3][2]
-        ENDIF
-        IF ValType(aColor[3][3]) == "N"
-          nBkColorF1 := aColor[3][3]
-        ENDIF
-        IF ValType(aColor[3][4]) == "N"
-          nBkColorF2 := aColor[3][4]
-        ENDIF
-        IF ValType(aColor[3][5]) == "N"
-          nGradDirF := aColor[3][5]
-        ENDIF
-      ENDIF
-    ENDIF
-
-    IF ValType(aFont) == "A"
-      IF ValType(aFont[1]) == "C"
-        cFontName := aFont[1]
-      ENDIF
-      IF ValType(aFont[2]) == "N"
-        nFontSize := aFont[2]
-      ENDIF
-      IF ValType(aFont[3]) == "L"
-        lBold := aFont[3]
-      ENDIF
-      IF ValType(aFont[4]) == "L"
-        lItalic := aFont[4]
-      ENDIF
-      IF ValType(aFont[5]) == "L"
-        lUnderline := aFont[5]
-      ENDIF
-      IF ValType(aFont[6]) == "L"
-        lStrikeOut := aFont[6]
-      ENDIF
-    ENDIF
-
-    OBTN_Shape(cForm, nID, If(ValType(nShape) == "N", nShape, 0))
-    OBTN_Color(cForm, nID, {{nTxColorE, nFrColorE, nBkColorE1, nBkColorE2, nGradDirE}, {nTxColorD, nFrColorD, nBkColorD1, nBkColorD2, nGradDirD}, {nTxColorF, nFrColorF, nBkColorF1, nBkColorF2, nGradDirF}})
-    OBTN_Font(cForm, nID, {cFontName, nFontSize, lBold, lItalic, lUnderline, lStrikeOut})
-  ENDIF
+      OBTN_Shape( cForm, nID, If( ValType(nShape ) == "N", nShape, 0 ) )
+      OBTN_Color( cForm, nID, { { nTxColorE, nFrColorE, nBkColorE1, nBkColorE2, nGradDirE }, { nTxColorD, nFrColorD, nBkColorD1, nBkColorD2, nGradDirD }, { nTxColorF, nFrColorF, nBkColorF1, nBkColorF2, nGradDirF } } )
+      OBTN_Font( cForm, nID, { cFontName, nFontSize, lBold, lItalic, lUnderline, lStrikeOut } )
+   ENDIF
 
 RETURN nHButton
 
 
-FUNCTION OBTN_Release(cForm, nID)
-  LOCAL nHParent := GetFormHandle(cForm)
-  LOCAL nHButton := GetDlgItem(nHParent, nID)
+FUNCTION OBTN_Release( cForm, nID )
 
-  IF GetFocus() == nHButton
-    SetFocus(GetNextDlgTabItem(nHParent, nHButton, .F.))
-  ENDIF
+   LOCAL nHParent := GetFormHandle( cForm )
+   LOCAL nHButton := GetDlgItem( nHParent, nID )
 
-  DestroyWindow(GetDlgItem(nHParent, nID))
+   IF GetFocus() == nHButton
+      SetFocus( GetNextDlgTabItem( nHParent, nHButton, .F. ) )
+   ENDIF
+
+   DestroyWindow( GetDlgItem( nHParent, nID ) )
 
 RETURN NIL
 
 
-FUNCTION OBTN_Handle(cForm, nID)
+FUNCTION OBTN_Handle( cForm, nID )
 
-RETURN GetDlgItem(GetFormHandle(cForm), nID)
-
-
-FUNCTION OBTN_Pos(cForm, nID, nRow, nCol, nWidth, nHeight)
-  LOCAL nHParent := GetFormHandle(cForm)
-  LOCAL nHButton := GetDlgItem(nHParent, nID)
-  LOCAL aPos  := {0, 0, 0, 0}
-
-  GetWindowRect(nHButton, aPos)
-  aPos[3] := aPos[3] - aPos[1]
-  aPos[4] := aPos[4] - aPos[2]
-  ScreenToClient(nHParent, @aPos[1], @aPos[2])
-
-  IF PCount() < 3
-    RETURN {aPos[2], aPos[1], aPos[3], aPos[4]}
-  ENDIF
-
-  IF ValType(nRow) != "N"
-    nRow := aPos[2]
-  ENDIF
-
-  IF ValType(nCol) != "N"
-    nCol := aPos[1]
-  ENDIF
-
-  IF ValType(nWidth) != "N"
-    nWidth := aPos[3]
-  ENDIF
-
-  IF ValType(nHeight) != "N"
-    nHeight := aPos[4]
-  ENDIF
-
-  MoveWindow(nHButton, nCol, nRow, nWidth, nHeight, .T.)
-  //RedrawWindow(nHButton)
-
-RETURN OBTN_Pos(cForm, nID)
+RETURN GetDlgItem( GetFormHandle( cForm ), nID )
 
 
-FUNCTION OBTN_Visible(cForm, nID, lVisible)
-  LOCAL nHButton := GetDlgItem(GetFormHandle(cForm), nID)
+FUNCTION OBTN_Pos( cForm, nID, nRow, nCol, nWidth, nHeight )
 
-  IF ValType(lVisible) == "L"
-    IF lVisible
-      ShowWindow(nHButton)
-    ELSE
-      IF GetFocus() == nHButton
-        SetFocus(GetNextDlgTabItem(GetFormHandle(cForm), nHButton, .F.))
-      ENDIF
+   LOCAL nHParent := GetFormHandle( cForm )
+   LOCAL nHButton := GetDlgItem( nHParent, nID )
+   LOCAL aPos  := { 0, 0, 0, 0 }
 
-      HideWindow(nHButton)
-    ENDIF
-  ENDIF
+   GetWindowRect( nHButton, aPos )
+   aPos[ 3 ] := aPos[ 3 ] - aPos[ 1 ]
+   aPos[ 4 ] := aPos[ 4 ] - aPos[ 2 ]
+   ScreenToClient( nHParent, @aPos[ 1 ], @aPos[ 2 ] )
 
-RETURN IsWindowVisible(nHButton)
+   IF PCount() < 3
+      RETURN { aPos[ 2 ], aPos[ 1 ], aPos[ 3 ], aPos[ 4 ] }
+   ENDIF
 
+   IF ValType( nRow ) != "N"
+      nRow := aPos[ 2 ]
+   ENDIF
 
-FUNCTION OBTN_Enable(cForm, nID, lEnable)
-  LOCAL nHButton := GetDlgItem(GetFormHandle(cForm), nID)
+   IF ValType( nCol ) != "N"
+      nCol := aPos[ 1 ]
+   ENDIF
 
-  IF ValType(lEnable) == "L"
-    IF lEnable
-      EnableWindow(nHButton)
-    ELSE
-      IF GetFocus() == nHButton
-        SetFocus(GetNextDlgTabItem(GetFormHandle(cForm), nHButton, .F.))
-      ENDIF
+   IF ValType( nWidth ) != "N"
+      nWidth := aPos[ 3 ]
+   ENDIF
 
-      DisableWindow(nHButton)
-    ENDIF
-  ENDIF
+   IF ValType( nHeight ) != "N"
+      nHeight := aPos[ 4 ]
+   ENDIF
 
-RETURN IsWindowEnabled(nHButton)
+   MoveWindow( nHButton, nCol, nRow, nWidth, nHeight, .T. )
+   // RedrawWindow(nHButton)
 
-
-FUNCTION OBTN_Focus(cForm, nID, lFocus)
-  LOCAL nHButton := GetDlgItem(GetFormHandle(cForm), nID)
-
-  IF ValType(lFocus) == "L" .and. lFocus .and. IsWindowEnabled(nHButton)
-    SetFocus(nHButton)
-  ENDIF
-
-RETURN (GetFocus() == nHButton)
+RETURN OBTN_Pos( cForm, nID )
 
 
-FUNCTION OBTN_Caption(cForm, nID, cCaption)
-  LOCAL nHButton := GetDlgItem(GetFormHandle(cForm), nID)
+FUNCTION OBTN_Visible( cForm, nID, lVisible )
 
-  IF ValType(cCaption) == "C"
-    SetWindowText(nHButton, cCaption)
-  ENDIF
+   LOCAL nHButton := GetDlgItem( GetFormHandle( cForm ), nID )
 
-RETURN GetWindowText(nHButton)
-
-
-FUNCTION OBTN_Font(cForm, nID, aFont, lRedraw)
-  STATIC hFont := {=>}
-
-  IF ValType(aFont) == "A"
-    IF HB_hHaskey(hFont, cForm)
-      IF HB_hHaskey(hFont[cForm], nID)
-        IF ValType(aFont[1]) == "C"
-          hFont[cForm][nID][1] := aFont[1]
-        ENDIF
-        IF ValType(aFont[2]) == "N"
-          hFont[cForm][nID][2] := aFont[2]
-        ENDIF
-        IF ValType(aFont[3]) == "L"
-          hFont[cForm][nID][3] := aFont[3]
-        ENDIF
-        IF ValType(aFont[4]) == "L"
-          hFont[cForm][nID][4] := aFont[4]
-        ENDIF
-        IF ValType(aFont[5]) == "L"
-          hFont[cForm][nID][5] := aFont[5]
-        ENDIF
-        IF ValType(aFont[6]) == "L"
-          hFont[cForm][nID][6] := aFont[6]
-        ENDIF
+   IF ValType( lVisible ) == "L"
+      IF lVisible
+         ShowWindow( nHButton )
+         // savelog( 'Out453.txt' , 'Hide ' + cForm + ' ' + str(nId) )
       ELSE
-        hFont[cForm][nID] := aFont
+         IF GetFocus() == nHButton
+            SetFocus( GetNextDlgTabItem( GetFormHandle(cForm ), nHButton, .F. ) )
+         ENDIF
+
+         HideWindow( nHButton )
+         // savelog( 'Out43.txt' , 'Hide ' + cForm + ' ' + str(nId) )
+
+
       ENDIF
-    ELSE
-      hFont[cForm] := {nID => aFont}
-    ENDIF
 
-    IF (ValType(lRedraw) == "L") .and. lRedraw
-      RedrawWindow(GetDlgItem(GetFormHandle(cForm), nID))
-    ENDIF
-  ENDIF
+   ENDIF
 
-RETURN If(HB_hHaskey(hFont, cForm) .and. HB_hHaskey(hFont[cForm], nID), hFont[cForm][nID], NIL)
+RETURN IsWindowVisible( nHButton )
+
+/////////////////////////////
+FUNCTION OBTN_Enable( cForm, nID, lEnable )
+
+   LOCAL nHButton := GetDlgItem( GetFormHandle( cForm ), nID )
+
+   IF ValType( lEnable ) == "L"
+      IF lEnable
+         EnableWindow( nHButton )
+      ELSE
+         IF GetFocus() == nHButton
+            SetFocus( GetNextDlgTabItem( GetFormHandle(cForm ), nHButton, .F. ) )
+         ENDIF
+
+         DisableWindow( nHButton )
+      ENDIF
+   ENDIF
+
+RETURN IsWindowEnabled( nHButton )
 
 
-FUNCTION OBTN_Shape(cForm, nID, nShape, lRedraw)
-  STATIC hShape := {=>}
+FUNCTION OBTN_Focus( cForm, nID, lFocus )
 
-  IF ValType(nShape) == "N"
-    IF HB_hHaskey(hShape, cForm)
-      hShape[cForm][nID] := nShape
-    ELSE
-      hShape[cForm] := {nID => nShape}
-    ENDIF
+   LOCAL nHButton := GetDlgItem( GetFormHandle( cForm ), nID )
 
-    IF (ValType(lRedraw) == "L") .and. lRedraw
-      RedrawWindow(GetDlgItem(GetFormHandle(cForm), nID))
-    ENDIF
-  ELSE
-    IF HB_hHaskey(hShape, cForm) .and. HB_hHaskey(hShape[cForm], nID)
-      nShape := hShape[cForm][nID]
-    ENDIF
-  ENDIF
+   IF ValType( lFocus ) == "L" .AND. lFocus .AND. IsWindowEnabled( nHButton )
+      SetFocus( nHButton )
+   ENDIF
+
+RETURN ( GetFocus() == nHButton )
+
+
+FUNCTION OBTN_Caption( cForm, nID, cCaption )
+
+   LOCAL nHButton := GetDlgItem( GetFormHandle( cForm ), nID )
+
+   IF ValType( cCaption ) == "C"
+      SetWindowText( nHButton, cCaption )
+   ENDIF
+
+RETURN GetWindowText( nHButton )
+
+
+FUNCTION OBTN_Font( cForm, nID, aFont, lRedraw )
+
+   STATIC hFont := { => }
+
+   IF ValType( aFont ) == "A"
+      IF hb_HHasKey( hFont, cForm )
+         IF hb_HHasKey( hFont[ cForm ], nID )
+            IF ValType( aFont[ 1 ] ) == "C"
+               hFont[ cForm ][ nID ][ 1 ] := aFont[ 1 ]
+            ENDIF
+            IF ValType( aFont[ 2 ] ) == "N"
+               hFont[ cForm ][ nID ][ 2 ] := aFont[ 2 ]
+            ENDIF
+            IF ValType( aFont[ 3 ] ) == "L"
+               hFont[ cForm ][ nID ][ 3 ] := aFont[ 3 ]
+            ENDIF
+            IF ValType( aFont[ 4 ] ) == "L"
+               hFont[ cForm ][ nID ][ 4 ] := aFont[ 4 ]
+            ENDIF
+            IF ValType( aFont[ 5 ] ) == "L"
+               hFont[ cForm ][ nID ][ 5 ] := aFont[ 5 ]
+            ENDIF
+            IF ValType( aFont[ 6 ] ) == "L"
+               hFont[ cForm ][ nID ][ 6 ] := aFont[ 6 ]
+            ENDIF
+         ELSE
+            hFont[ cForm ][ nID ] := aFont
+         ENDIF
+      ELSE
+         hFont[ cForm ] := { nID => aFont }
+      ENDIF
+
+      IF ( ValType( lRedraw ) == "L" ) .AND. lRedraw
+         RedrawWindow( GetDlgItem( GetFormHandle(cForm ), nID ) )
+      ENDIF
+   ENDIF
+
+RETURN If( hb_HHasKey( hFont, cForm ) .AND. hb_HHasKey( hFont[ cForm ], nID ), hFont[ cForm ][ nID ], NIL )
+
+
+FUNCTION OBTN_Shape( cForm, nID, nShape, lRedraw )
+
+
+   
+   STATIC hShape := { => }
+
+   IF ValType( nShape ) == "N"
+      IF hb_HHasKey( hShape, cForm )
+         hShape[ cForm ][ nID ] := nShape
+      ELSE
+         hShape[ cForm ] := { nID => nShape }
+      ENDIF
+
+      IF ( ValType( lRedraw ) == "L" ) .AND. lRedraw
+         RedrawWindow( GetDlgItem( GetFormHandle(cForm ), nID ) )
+      ENDIF
+   ELSE
+      IF hb_HHasKey( hShape, cForm ) .AND. hb_HHasKey( hShape[ cForm ], nID )
+         nShape := hShape[ cForm ][ nID ]
+      ENDIF
+   ENDIF
 
 RETURN nShape
 
 
-FUNCTION OBTN_Color(cForm, nID, aColor, lRedraw)
-  STATIC hColor := {=>}
+FUNCTION OBTN_Color( cForm, nID, aColor, lRedraw )
 
-  IF ValType(aColor) == "A"
-    IF HB_hHaskey(hColor, cForm)
-      IF HB_hHaskey(hColor[cForm], nID)
-        IF ValType(aColor[1]) == "A"
-          IF ValType(aColor[1][1]) == "N"
-            hColor[cForm][nID][1][1] := aColor[1][1]
-          ENDIF
-          IF ValType(aColor[1][2]) == "N"
-            hColor[cForm][nID][1][2] := aColor[1][2]
-          ENDIF
-          IF ValType(aColor[1][3]) == "N"
-            hColor[cForm][nID][1][3] := aColor[1][3]
-          ENDIF
-          IF ValType(aColor[1][4]) == "N"
-            hColor[cForm][nID][1][4] := aColor[1][4]
-          ENDIF
-          IF ValType(aColor[1][5]) == "N"
-            hColor[cForm][nID][1][5] := aColor[1][5]
-          ENDIF
-        ENDIF
+   STATIC hColor := { => }
 
-        IF ValType(aColor[2]) == "A"
-          IF ValType(aColor[2][1]) == "N"
-            hColor[cForm][nID][2][1] := aColor[2][1]
-          ENDIF
-          IF ValType(aColor[2][2]) == "N"
-            hColor[cForm][nID][2][2] := aColor[2][2]
-          ENDIF
-          IF ValType(aColor[2][3]) == "N"
-            hColor[cForm][nID][2][3] := aColor[2][3]
-          ENDIF
-          IF ValType(aColor[2][4]) == "N"
-            hColor[cForm][nID][2][4] := aColor[2][4]
-          ENDIF
-          IF ValType(aColor[2][5]) == "N"
-            hColor[cForm][nID][2][5] := aColor[2][5]
-          ENDIF
-        ENDIF
+   IF ValType( aColor ) == "A"
+      IF hb_HHasKey( hColor, cForm )
+         IF hb_HHasKey( hColor[ cForm ], nID )
+            IF ValType( aColor[ 1 ] ) == "A"
+               IF ValType( aColor[ 1 ][ 1 ] ) == "N"
+                  hColor[ cForm ][ nID ][ 1 ][ 1 ] := aColor[ 1 ][ 1 ]
+               ENDIF
+               IF ValType( aColor[ 1 ][ 2 ] ) == "N"
+                  hColor[ cForm ][ nID ][ 1 ][ 2 ] := aColor[ 1 ][ 2 ]
+               ENDIF
+               IF ValType( aColor[ 1 ][ 3 ] ) == "N"
+                  hColor[ cForm ][ nID ][ 1 ][ 3 ] := aColor[ 1 ][ 3 ]
+               ENDIF
+               IF ValType( aColor[ 1 ][ 4 ] ) == "N"
+                  hColor[ cForm ][ nID ][ 1 ][ 4 ] := aColor[ 1 ][ 4 ]
+               ENDIF
+               IF ValType( aColor[ 1 ][ 5 ] ) == "N"
+                  hColor[ cForm ][ nID ][ 1 ][ 5 ] := aColor[ 1 ][ 5 ]
+               ENDIF
+            ENDIF
 
-        IF ValType(aColor[3]) == "A"
-          IF ValType(aColor[3][1]) == "N"
-            hColor[cForm][nID][3][1] := aColor[3][1]
-          ENDIF
-          IF ValType(aColor[3][2]) == "N"
-            hColor[cForm][nID][3][2] := aColor[3][2]
-          ENDIF
-          IF ValType(aColor[3][3]) == "N"
-            hColor[cForm][nID][3][3] := aColor[3][3]
-          ENDIF
-          IF ValType(aColor[3][4]) == "N"
-            hColor[cForm][nID][3][4] := aColor[3][4]
-          ENDIF
-          IF ValType(aColor[3][5]) == "N"
-            hColor[cForm][nID][3][5] := aColor[3][5]
-          ENDIF
-        ENDIF
+            IF ValType( aColor[ 2 ] ) == "A"
+               IF ValType( aColor[ 2 ][ 1 ] ) == "N"
+                  hColor[ cForm ][ nID ][ 2 ][ 1 ] := aColor[ 2 ][ 1 ]
+               ENDIF
+               IF ValType( aColor[ 2 ][ 2 ] ) == "N"
+                  hColor[ cForm ][ nID ][ 2 ][ 2 ] := aColor[ 2 ][ 2 ]
+               ENDIF
+               IF ValType( aColor[ 2 ][ 3 ] ) == "N"
+                  hColor[ cForm ][ nID ][ 2 ][ 3 ] := aColor[ 2 ][ 3 ]
+               ENDIF
+               IF ValType( aColor[ 2 ][ 4 ] ) == "N"
+                  hColor[ cForm ][ nID ][ 2 ][ 4 ] := aColor[ 2 ][ 4 ]
+               ENDIF
+               IF ValType( aColor[ 2 ][ 5 ] ) == "N"
+                  hColor[ cForm ][ nID ][ 2 ][ 5 ] := aColor[ 2 ][ 5 ]
+               ENDIF
+            ENDIF
+
+            IF ValType( aColor[ 3 ] ) == "A"
+               IF ValType( aColor[ 3 ][ 1 ] ) == "N"
+                  hColor[ cForm ][ nID ][ 3 ][ 1 ] := aColor[ 3 ][ 1 ]
+               ENDIF
+               IF ValType( aColor[ 3 ][ 2 ] ) == "N"
+                  hColor[ cForm ][ nID ][ 3 ][ 2 ] := aColor[ 3 ][ 2 ]
+               ENDIF
+               IF ValType( aColor[ 3 ][ 3 ] ) == "N"
+                  hColor[ cForm ][ nID ][ 3 ][ 3 ] := aColor[ 3 ][ 3 ]
+               ENDIF
+               IF ValType( aColor[ 3 ][ 4 ] ) == "N"
+                  hColor[ cForm ][ nID ][ 3 ][ 4 ] := aColor[ 3 ][ 4 ]
+               ENDIF
+               IF ValType( aColor[ 3 ][ 5 ] ) == "N"
+                  hColor[ cForm ][ nID ][ 3 ][ 5 ] := aColor[ 3 ][ 5 ]
+               ENDIF
+            ENDIF
+         ELSE
+            hColor[ cForm ][ nID ] := aColor
+         ENDIF
       ELSE
-        hColor[cForm][nID] := aColor
+         hColor[ cForm ] := { nID => aColor }
       ENDIF
-    ELSE
-      hColor[cForm] := {nID => aColor}
-    ENDIF
 
-    IF (ValType(lRedraw) == "L") .and. lRedraw
-      RedrawWindow(GetDlgItem(GetFormHandle(cForm), nID))
-    ENDIF
-  ENDIF
+      IF ( ValType( lRedraw ) == "L" ) .AND. lRedraw
+         RedrawWindow( GetDlgItem( GetFormHandle(cForm ), nID ) )
+      ENDIF
+   ENDIF
 
-RETURN If(HB_hHaskey(hColor, cForm) .and. HB_hHaskey(hColor[cForm], nID), hColor[cForm][nID], NIL)
+RETURN If( hb_HHasKey( hColor, cForm ) .AND. hb_HHasKey( hColor[ cForm ], nID ), hColor[ cForm ][ nID ], NIL )
 
 
-FUNCTION OBTN_Draw(nHParent, nID, nDRAWITEMSTRUCT)
-  LOCAL cForm  := GetFormNameByIndex(GetFormIndexByHandle(nHParent))
-  LOCAL nShape := OBTN_Shape(cForm, nID)
-  LOCAL aColor := OBTN_Color(cForm, nID)
-  LOCAL aFont  := OBTN_Font(cForm, nID)
+FUNCTION OBTN_Draw( nHParent, nID, nDRAWITEMSTRUCT )
 
-  _OwnButtonDraw(nDRAWITEMSTRUCT, nShape, aColor[1], aColor[2], aColor[3], aFont)
+   LOCAL cForm  := GetFormNameByIndex( GetFormIndexByHandle( nHParent ) )
+   LOCAL nShape := OBTN_Shape( cForm, nID )
+   LOCAL aColor := OBTN_Color( cForm, nID )
+   LOCAL aFont  := OBTN_Font( cForm, nID )
+
+   _OwnButtonDraw( nDRAWITEMSTRUCT, nShape, aColor[ 1 ], aColor[ 2 ], aColor[ 3 ], aFont )
 
 RETURN NIL
 
@@ -479,10 +498,15 @@ HB_FUNC( _OWNBUTTONCREATE )
                            (HMENU) HMG_parnl(2),
                            GetModuleHandle(NULL),
                            NULL);
-                           
-  SetClassLong( (LONG_PTR) hButton  , GCL_HCURSOR, ( LONG ) LoadCursor( NULL, IDC_HAND ) );
-                           
+
+  //SetClassLong( (HWND) hButton  , GCL_HCURSOR, ( LONG ) LoadCursor( 0 , IDC_HAND ) );
+
+  SetClassLongPtr( (HWND) hButton  , GCLP_HCURSOR, ( LONG ) LoadCursor( 0 , IDC_HAND ) );
+
+  //SetClassLong( ( HWND ) hButton , -12 , ( LONG ) LoadCursor( NULL, IDC_HAND ) );
+
   HMG_retnl((LONG_PTR) hButton);
+
 }
 
 
@@ -656,7 +680,7 @@ static HBRUSH CreateGradientBrush(HDC hDC, INT nWidth, INT nHeight, INT nShape, 
     rcF.bottom = nHeight;
 
     for (i = 0; i < nHeight; i++)
-    { 
+    {
       rcF.top = i;
       hBrush  = CreateSolidBrush(RGB(R1 + (i * (R2 - R1) / nHeight), G1 + (i * (G2 - G1) / nHeight), B1 + (i * (B2 - B1) / nHeight)));
       FillRect(hDCComp, &rcF, hBrush);
@@ -670,7 +694,7 @@ static HBRUSH CreateGradientBrush(HDC hDC, INT nWidth, INT nHeight, INT nShape, 
     rcF.bottom = nHeight;
 
     for (i = 0; i < nWidth; i++)
-    { 
+    {
       rcF.left = i;
       hBrush   = CreateSolidBrush(RGB(R1 + (i * (R2 - R1) / nWidth), G1 + (i * (G2 - G1) / nWidth), B1 + (i * (B2 - B1) / nWidth)));
       FillRect(hDCComp, &rcF, hBrush);
@@ -688,7 +712,7 @@ static HBRUSH CreateGradientBrush(HDC hDC, INT nWidth, INT nHeight, INT nShape, 
     if (nShape >= 0)
     {
       for (i = 0; i < nCount; i++)
-      { 
+      {
         hBrush = CreateSolidBrush(RGB(R1 + (i * (R2 - R1) / nCount), G1 + (i * (G2 - G1) / nCount), B1 + (i * (B2 - B1) / nCount)));
         FillRect(hDCComp, &rcF, hBrush);
         DeleteObject(hBrush);
@@ -702,7 +726,7 @@ static HBRUSH CreateGradientBrush(HDC hDC, INT nWidth, INT nHeight, INT nShape, 
     else
     {
       for (i = 0; i < nCount; i++)
-      { 
+      {
         hBrush = CreateSolidBrush(RGB(R1 + (i * (R2 - R1) / nCount), G1 + (i * (G2 - G1) / nCount), B1 + (i * (B2 - B1) / nCount)));
         hPen   = CreatePen(PS_NULL, 0, 0);
 

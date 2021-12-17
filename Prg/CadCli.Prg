@@ -37,8 +37,7 @@ Function xInitCad()
    
    //SetWaitCursor( GetControlHandle( 'br_grid' , cFormPrin )  )
    
-   SetWaitCursor( GetControlHandle( 'tab_1' , 'fCadCli' )  )
-   
+      
    //SetWaitCursor(GetControlHandle( 'imgLupa' , cJanx ) )
    
    
@@ -91,7 +90,7 @@ Function xInitCad()
     
 //    SetArrowCursor( fCadCli.Handle )
 
-    SetArrowCursor( GetControlHandle( 'br_grid' , cFormPrin )  )
+    
     
     ON KEY ESCAPE OF fCadCli Action (SysWait(.1) , fCadCli.Release , fCadCli := Nil)
    
@@ -182,7 +181,7 @@ Function GrvClien(lNovo)
           oQuery := oServer:Query( cSqlInsert)
 
 				   IF oQuery:NetErr()
-				      CursorArrow()
+
 				      yAviso( 'Erro ao Executar Atualização -> ' + Chr( 13 ) + Chr( 10 ) + oQuery:Error() )
 				      RETURN
 				  END IF
@@ -343,7 +342,7 @@ FUNCTION InpCadCli()
          
          If (cControl = 'ImgLupa') .Or. (cControl = 'ImgEnd')
            _SetToolTip(cControl,'fCadCli',hb_AnsiToOem("Resgata Endereço Baseado no CEP Informado.") )
-            SetHandCursor(GetControlHandle( cControl , 'fCadCli' )   , "Finger.cur" )          
+          //  SetHandCursor(GetControlHandle( cControl , 'fCadCli' )   , "Finger.cur" )          
          End If
          
    END IF
@@ -418,8 +417,6 @@ Function xChgUf()
 
   If !Empty(cUf1)
 
-		  SetWaitCursor( fCadCli.Handle )
-		  
 		  sysWait(.1)
 		  		  
 		
@@ -428,8 +425,6 @@ Function xChgUf()
 		  
 		  EncheCmb( 'fCadcli' , 'CmbCidade' , "select municipio from ibge where uf = '" + cUf1  + "' order by 1" )
 		  EncheCmb( 'fCadcli' , 'CmbCidEnt' , "select municipio from ibge where uf = '" + cUf1  + "' order by 1" )
-		  
-		  SetArrowCursor( fCadCli.Handle )
 		  
   End If
 
@@ -448,7 +443,7 @@ Function xPesqCep()
   
   Local cJanx := 'fCadCli'
    
-  SetWaitCursor(GetControlHandle( 'imgLupa' , cJanx ) )
+  //SetWaitCursor(GetControlHandle( 'imgLupa' , cJanx ) )
     
   oQry := oServer:Query("select * from cep where cep = '" + cCep + "'")
   
@@ -480,12 +475,9 @@ Function xPesqCep()
   Else
       
       SetProperty( 'fCadCli','Endereco','Value' , '' )
-      SetArrowCursor(GetControlHandle( 'imgLupa' , cJanx ) )
-      yAviso('Cep não Localizado.' , .f. )
+          yAviso('Cep não Localizado.' , .f. )
       
   End If
-  
-  SetArrowCursor(GetControlHandle( 'imgLupa' , cJanx ) )
   
   
   
@@ -507,12 +499,12 @@ Function xChgCidade()
 
   If !Empty(cCid)
 
-		  SetHandCursor( fCadCli.Handle )
+		//  SetHandCursor( fCadCli.Handle )
 		  //DoMethod( 'fCadcli' , 'CmbBairros'  , 'DeleteAllItems' )
 		  EncheCmb( 'fCadcli' , 'CmbBairros' , "select  bairro from bairros where uf = '" + cUf1  + "' and cidade = '"  + cCid + "' order by 1" )
 		  EncheCmb( 'fCadcli' , 'CmbBaiEnt' , "select  bairro from bairros where uf = '" + cUf1  + "' and cidade = '"  + cCid + "' order by 1" )
 		  //EncheCmb( 'fCadcli' , 'CmbBaEnt' , "select municipio from ibge where uf = 'AL' order by 1" )
-		  SetArrowCursor( fCadCli.Handle )
+	
 		  
   End If
 
@@ -638,9 +630,7 @@ Function xPesqEnt()
   Local oRow
   Local nCidade
   
-  Local cJanx := 'fCadCli'
-   
-  SetWaitCursor(GetControlHandle( 'imgEnd' , cJanx ) )
+  Local cJanx := 'fCadCl'
     
   oQry := oServer:Query("select * from cep where cep = '" + cCep + "'")
   
@@ -672,14 +662,10 @@ Function xPesqEnt()
   Else
       
       SetProperty( 'fCadCli','EndEnt','Value' , '' )
-      SetArrowCursor(GetControlHandle( 'imgEnd' , cJanx ) )
+     
       yAviso('Cep não Localizado.' , .f. )
       
   End If
-  
-  SetArrowCursor(GetControlHandle( 'imgEnd' , cJanx ) )
-  
-  
   
   oServer:Destroy()
   oSErver := Nil

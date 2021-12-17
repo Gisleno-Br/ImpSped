@@ -1640,8 +1640,6 @@ FUNCTION GrvConsul( cTab  , nId1)
    
    //msginfo(cActiveJan + ' ' + cformPrin)
 
-   SetWaitCursor(  GetformHandle(cActiveJan) )
-   
    SysWait(.1)
 
    nTpVend := 1
@@ -1767,7 +1765,7 @@ FUNCTION GrvConsul( cTab  , nId1)
    lREtOk2 := .T.
    lOk     := .t.
    
-   SetArrowCursor(  GetformHandle(cActiveJan) )
+   
  
   
 RETURN .T.

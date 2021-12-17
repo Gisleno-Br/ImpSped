@@ -352,7 +352,7 @@ FUNCTION Main
 	
 	      aOpcoes[n][LABEL_HWND] := GetProperty("fSplit6", aOpcoes[n][LABEL_NAME] , "HANDLE")
 	      
-	      SetHandCursor( GetControlHandle(aOpcoes[n][LABEL_NAME] , "fSplit6"), "Finger.cur" )      
+	      //SetHandCursor( GetControlHandle(aOpcoes[n][LABEL_NAME] , "fSplit6"), "Finger.cur" )      
 	
 	      
 	      EventProcessAllHookMessage(EventCreate({ || LabelEventHandler(aOpcoes) }, aOpcoes[n][LABEL_HWND]), .T.)	      
@@ -712,7 +712,7 @@ Function CrieLabel( nCol ,cTexto )
          SetProperty( 'fSplit2',cLabel2,'BACKCOLOR', {5,102,126} )       
          
          nHandle1 := GetControlHandle( cLabel2, 'fSplit2' )    
-         SetHandCursor( nHandle1  , "Finger.cur" )          
+        // SetHandCursor( nHandle1  , "Finger.cur" )          
          
          EventProcessAllHookMessage(EventCreate({ || LabelEvX() }, nHandle1  ), .T.)  
          
@@ -1497,6 +1497,11 @@ Function OpMenu(aOpcoes , cJan , nLinha , cTitx )
 	        				BACKCOLOR {229,237,242}
 					        
 		       END LABEL
+
+
+
+
+
 		       
 		       //msginfo('f1')
 		       
@@ -1507,7 +1512,7 @@ Function OpMenu(aOpcoes , cJan , nLinha , cTitx )
 		       //msginfo(hb_ansiToOem(aOpcoes[n1])  )
 		       
 		       EventProcessAllHookMessage(EventCreate({ || LabelEventHandler(aOpcoes) }, nHnd1  ), .T.)		  
-	         SetHandCursor( nHnd1, "Finger.cur" )      
+	         //SetHandCursor( nHnd1, "Finger.cur" )      
 	    
 		       
 		   Else		   
@@ -2337,34 +2342,6 @@ HB_FUNC( TRACKMOUSEEVENT )
 
   hb_retl(TrackMouseEvent(&tmi));
 }
-
-
-HB_FUNC( SETARROWCURSOR )
-{
-   SetClassLong( ( HWND ) hb_parnl( 1 ), GCL_HCURSOR, ( LONG ) LoadCursor( NULL, IDC_ARROW ) );
-}
-
-HB_FUNC( SETHANDCURSOR )
-{
-   SetClassLong( ( HWND ) hb_parnl( 1 ), GCL_HCURSOR, ( LONG ) LoadCursor( NULL, IDC_HAND ) );
-}
-
-HB_FUNC( SETWAITCURSOR )
-{
-   SetClassLong( ( HWND ) hb_parnl( 1 ), GCL_HCURSOR, ( LONG ) LoadCursor( NULL, IDC_WAIT ) );
-}
-
-HB_FUNC( SETSIZECURSOR )
-{
-   SetClassLong( ( HWND ) hb_parnl( 1 ), GCL_HCURSOR, ( LONG ) LoadCursor( NULL, IDC_SIZEWE ) );
-}
-
-
-HB_FUNC( SETDRAGCURSOR )
-{
-   SetClassLong( ( HWND ) hb_parnl( 1 ), GCL_HCURSOR, ( LONG ) LoadCursor( NULL, IDC_SIZEALL ) );
-}
-
 
 //IDC_SIZENESW
 
