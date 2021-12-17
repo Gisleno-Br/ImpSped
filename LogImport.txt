@@ -1,2 +1,7 @@
- 15:35:55 Importando Linha Tipo |C170| Linha Arquivo : 3267
- 15:35:55 Importando Linha Tipo |C100| Linha Arquivo : 3219
+ 16:42:40 Importando Linha Tipo |C100| Linha Arquivo : 3299
+ 16:42:40 Importando Linha Tipo |C170| Linha Arquivo : 3265
+ 16:42:40 Importando Linha Tipo |C170| Linha Arquivo : 3266
+ 16:42:40 Importando Linha Tipo |C100| Linha Arquivo : 3301
+ 16:42:40 Importando Linha Tipo |C100| Linha Arquivo : 3302
+ 16:42:40 Importando Linha Tipo |C170| Linha Arquivo : 3267
+ 16:42:40 Importando Linha Tipo |C100| Linha Arquivo : 3303

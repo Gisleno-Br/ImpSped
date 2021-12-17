@@ -918,7 +918,8 @@ Function ProcArq(  aMtr1, cStr1, lProgress )
 
             If ( Val( aMp[ 12 ] ) > 0 )
 
-               lOkInsert := !CheckChv( 'notasfiscais', nIdEmp, 'CONCAT( codpart ,  serie , numdoc)', alltrim( QuotedStr( aMp[ 4 ] + aMp[ 7 ] + aMp[ 8 ] ) )    )
+               lOkInsert := !CheckChv( 'notasfiscais', nIdEmp, 'CONCAT( codpart ,  serie , numdoc , chave)', alltrim( QuotedStr( aMp[ 4 ] + aMp[ 7 ] + aMp[8] + Alltrim(aMp[ 9 ] )     ) )    )
+
 
                cSqlx := SqlInsert( cSqlInsC100,  {  Alltrim( Str(nIdEmp ) ), QuotedStr( aMp[ 4 ] ), QuotedStr( aMp[ 5 ] ), QuotedStr( aMp[ 6 ] ), ;
                   QuotedStr( aMp[ 7 ] ), QuotedStr( aMp[ 8 ] ), QuotedStr( fTiraChar( aMp[ 9 ] ) ), QuotedStr( ConvDt( aMp[ 10 ] ) ), ;
