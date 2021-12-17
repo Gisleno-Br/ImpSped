@@ -1,7 +1,29 @@
+#require "rddsql"
+#require "sddmy"
+
 #include <hmg.ch>
 #include "hbthread.ch"
 
+
+
+#include <hbdyn.ch>
+
+
+
+#include "dbinfo.ch"
+#include "error.ch"
+//#include "simpleio.ch"
+
+
+
+//#include "hmg.ch"
+
+
+#require "hbxpp"
+
+
 #define QUEBRA Chr(13)+Chr(10)
+
 
 
 Static cArq1
@@ -86,6 +108,8 @@ Static oServer2
 Static nSe1
 
 
+
+/*
 #define DBI_QUERY             1001
 #define RDDI_CONNECT          1001
 #define RDDI_DISCONNECT       1002
@@ -95,13 +119,16 @@ Static nSe1
 #define RDDI_NEWID            1006
 #define RDDI_AFFECTEDROWS     1007
 #define RDDI_QUERY            1008
+*/
 
+
+REQUEST HB_LANG_PT
+REQUEST HB_CODEPAGE_PT850
 
 
 REQUEST SDDMY, SQLMIX
 
-REQUEST HB_LANG_PT
-REQUEST HB_CODEPAGE_PT850
+ANNOUNCE RDDSYS
 
 
 Function ImpSped()
@@ -115,15 +142,36 @@ Function ImpSped()
 	Local lRet := .t.
 
 
+
 	Local cArq1 := xGetArq()
 
 	HB_SetCodePage( "PT850" )
-	rddSetDefault( "SQLMIX" )
 
+
+	rddSetDefault( "SQLMIX" )
+	RDDSETDEFAULT( "SQLMIX" )
+
+/*
 	IF rddInfo( RDDI_CONNECT, { "MYSQL", cServer, cUserDb, cPassDb, cBanco } ) == 0
 		MSGSTOP( "Unable connect to the server" )
 		RETURN
 	ENDIF
+	*/
+
+
+
+
+	nConnection := RDDINFO( RDDI_CONNECT, { "MYSQL", cServer , cUserDb , cPassDb , "impSped"} )
+
+
+	IF nConnection = 0
+		hb_alert("Unable connect to the server!"+Chr(13)+Chr(10)+Str(RDDINFO( RDDI_ERRORNO ))+Chr(13)+Chr(10)+RDDINFO( RDDI_ERROR ))
+		Return nConnectionInfo := 1 // 0 in nLogin means Mediator is sucessfully logged
+	ENDIF
+
+
+
+
 
 
 	//Private cFName := ''
@@ -145,6 +193,7 @@ Function ImpSped()
 		MSGSTOP("There is no support for multi-threading")
 		QUIT
 	ENDIF
+
 
 	If !Empty(Alltrim(cArq1))     
 	
@@ -226,9 +275,11 @@ Function ImpSped()
 
 		aThread2 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC  , @ProcArq()    ,  aM150   , 'Reg 150' ,    .f.    )
 		aThread3 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC  , @ProcArq()    ,  aM200   , 'Reg 200' ,    .f.    )
+
+		//aThread  := hb_threadStart(  HB_THREAD_INHERIT_PUBLIC, @xRode(), cArqT1, cArqCSV )
 		
 		
-		//aThread4 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC  , @ProcArq()    ,  aMC100  , 'Reg C100'  , .t.    )		
+		aThread4 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC  , @ProcArq()    ,  aMC100  , 'Reg C100'  , .t.    )		
 		
 		aThread5 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC  , @ProcArq()    ,  aMC170  , 'Reg C170'  , .t.    )
 		
@@ -249,6 +300,8 @@ Function ImpSped()
 		
 		aThread15 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC  , @ProcArq()    ,  aMz5  , 'Reg C100-5'  , .t.    )		
 		aThread16 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC  , @ProcArq()    ,  aMz6  , 'Reg C100-6'  , .t.    )				
+
+
 		
 
 		lTermino := .f.      
@@ -872,8 +925,6 @@ Function ProcArq(  aMtr1   , cStr1  , lProgress )
 			
 							aMP := StrToArray("|" , Alltrim(cLine)  )
 			
-							//If !Empty(Alltrim
-							
 							If ( Val(aMp[12]) > 0) 			
 			
 								lOkInsert := !CheckChv( 'notasfiscais'  , nIdEmp , 'CONCAT( codpart ,  serie , numdoc)'  , alltrim(QuotedStr( aMp[4]+aMp[7]+aMp[8] ))    )		            
@@ -883,20 +934,16 @@ Function ProcArq(  aMtr1   , cStr1  , lProgress )
 								QuotedStr( ConvDt(aMp[11]) ) ,   Alltrim( xFormat(aMp[12])  ) ,   alltrim (QuotedStr(aMp[13]))  ,;
 								Alltrim( xFormat(aMp[14])), Alltrim(QuotedStr(aMp[17])),Alltrim(xFormat(aMp[18])),Alltrim(xFormat(aMp[19])) , ;
 								Alltrim(xFormat(aMp[20])),Alltrim(xFormat(aMp[21])),Alltrim(xFormat(aMp[22])),Alltrim(xFormat(aMp[23])),Alltrim(xFormat(aMp[24])) , ;
-								Alltrim(xFormat(aMp[25])),Alltrim(xFormat(aMp[26])),Alltrim(xFormat(aMp[27])), QuotedStr( alltrim(aMp[3]) ) , QuotedStr( alltrim(aMp[2]) )  , Alltrim(xFormat(aMp[16]))  }  ) 
-			/*
-								cNota     := aMp[8]
-								cSerie    := aMp[7]
-								cCodParti := aMp[4]
-								*/
+								Alltrim(xFormat(aMp[25])),Alltrim(xFormat(aMp[26])),Alltrim(xFormat(aMp[27])), QuotedStr( alltrim(aMp[3]) ) , QuotedStr( alltrim(aMp[2]) )  } ) 
+					
 								
 								nItem     := 0
-								nItem1    := 0
-			
-								//hb_memoWrit('sql' + Alltrim(aMp[4]+aMp[7]+aMp[8]) + '.txt' , cSqlx )		            
+								nItem1    := 0			
+					
 			
 							Else
 			
+
 								cNota     := ''
 								cSerie    := ''
 								cCodParti := ''
@@ -917,10 +964,12 @@ Function ProcArq(  aMtr1   , cStr1  , lProgress )
 							IF oQuery:NetErr()						      
 									Hb_memoWrit('sqlError.txt', cSqlx )
 									yAviso( 'Erro ao Executar Atualização -> ' + Chr( 13 ) + Chr( 10 ) + oQuery:Error()  + Chr(13)+chr(10) + ;
-									' Registro : ' + cStr1 )
+									' Registro : ' + cStr1 , .f.  )
+									lTermino := .t. 
 									Return 
 							Else					
 								  
+
 			
 			
 							End If
@@ -929,7 +978,7 @@ Function ProcArq(  aMtr1   , cStr1  , lProgress )
 							oQuery := Nil
 			
 			
-							SaveLog('LogImport.txt', time() + ' Importando Linha Tipo '  + Left(cLine , 6) + QUEBRA )
+							SaveLog('LogImport.txt', time() + ' Importando Linha Tipo '  + Left(cLine , 6) + " Linha Arquivo : " + Alltrim(Str(nI)) +  QUEBRA )
 			
 							If Left(cLine , 6) = '|0100|'
 								nQ1++								      
@@ -1060,6 +1109,7 @@ Function ProcArq(  aMtr1   , cStr1  , lProgress )
 
 
 Return
+
 
 Function xFormat(nPar1)
 
@@ -1211,10 +1261,11 @@ Function cSqlz1(  cTabela )
 	cSql2 := 'insert into ' + cTabela + '(' 
 
 	For n1 := 1 To FCount()       
-		cSql2+=( Alltrim(Fieldname(n1))  +',' )
+		cSql2+=( Alltrim(Fieldname(n1))  +',' ) + QUEBRA
 	Next    
 
-	cSql1 := Left(cSql2,Len(cSql2) - 1 )  
+	// - 1
+	cSql1 := Left(cSql2,Len(cSql2) - 3 )  
 
 	dbSelectArea( cAlias )
 	Use
@@ -1222,62 +1273,24 @@ Function cSqlz1(  cTabela )
 REturn cSql1
 
 
+
 Function SqlInsert(cSql1 , aValores ,aCamposF )
 
-	//   Local cSql := "select * from " + alltrim(cTabela)
 	Local cAlias := 'Tmp'
 	Local cSql2
 	Local cValues := ''
-	// Local nId     := GetReg(cTabela)+1
-	//Local cSql1
 	Local cSqlx1 := ''
-	/*
-	Default aCamposF := {}
-
-	dbUseArea( .T.,,  cSql, cAlias )
-	dbSelectArea( cAlias )
-	dbGoTop()
-
-	cSql2 := 'insert into ' + cTabela + '(' 
-
-	For n1 := 1 To FCount()       
-
-	If (Len(aCamposf) > 0)
-
-	If Ascan(aCamposF,   lower(Alltrim(Fieldname(n1)))  ) == 0
-
-	cSql2+=( Alltrim(Fieldname(n1))  +',' )
-	cValues += aValores[n1]+","		       
-
-	End If
-
-	Else
-
-	cSql2+=( Alltrim(Fieldname(n1))  +',' )
-	cValues += aValores[n1]+","		       
-
-
-
-	End If
-
-	Next    
-
-
-
-	cSql1 := Left(cSql2,Len(cSql2) - 1 ) + ") Values (" + Left(cValues,Len(cValues) - 1 ) + ")" 
-
-	dbSelectArea( cAlias )
-	Use
-
-	*/
-
+	
 	cValues := ''
 
+
 	For n1 := 1 to Len(   aValores )
-		cValues += aValores[n1]+","	
+		cValues += aValores[n1]+","	+ QUEBRA
 	Next
 
-	cSqlx1 := cSql1 + ") Values (" + Left(cValues,Len(cValues) - 1 )  + ")"
+	//-1
+	cSqlx1 := cSql1 + ") Values (" + Left(cValues,Len(cValues) - 3 )  + ")"
+
 
 REturn cSqlx1
 

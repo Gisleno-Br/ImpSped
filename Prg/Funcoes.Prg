@@ -326,17 +326,18 @@ FUNCTION GetConexao()
    oServer := TMySQLServer():New( cServer, cUserDb, cPassDb )
 
    IF oServer:NetErr()
-      MsGInfo( "Error ao Conectar SQL Server: " + QUEBRA + oServer:Error() )
+      yaviso( "Error ao Conectar SQL Server: " + QUEBRA + oServer:Error() , .f.  )
       RELEASE Window ALL
       QUIT
       oServer := Nil 
       Return Nil
    ENDIF
 
+
    oServer:SelectDB( cBanco )
 
    IF oServer:NetErr()
-      MsGInfo( "Error ao Conectar Banco " + cBanco + " : " + QUEBRA + oServer:Error() )
+      yaviso( "Error ao Conectar Banco " + cBanco + " : " + QUEBRA + oServer:Error() , .f.  )
       RELEASE Window ALL
       QUIT
    ENDIF
@@ -359,6 +360,7 @@ FUNCTION xInit()
    
    
    //msginfo(  GetCurrentFolder() )
+
    
    IF !File( Alltrim(cInifile) )
       MsgInfo( 'Arquivo DataBase.ini não Localizado , Impossivel Continuar.' )
@@ -388,42 +390,57 @@ FUNCTION xInit()
    cUserDb := cUser1
    cPassDb := cSen1
 
+
+
+
+
    
    DO EVENTS
+
    
-   SetProperty("fSplit4","fUserDb","Value",cBanco)
-   SetProperty("fSplit4","fServerDb","Value",cServer)
-   
-   np1 := (nDesktopHeight - 81) - GetProperty("fSplit4","Height" )
-   np2 := np1 - GetProperty("fSplit3","Height" )  
-   
-   SetProperty("fSplit3","Row", np2 )   
-   SetProperty("fSplit4","Row", np1 )   
-   
-   SetProperty("fSplit5","Row",nDesktopHeight - 80 )   
-   
-   SetProperty("fSplit6","Row",61 )      
-   
-   //np2 := np1 - GetProperty("fSplit3","Height" )     
-   SetProperty("fSplit6","Height", (np2 - 22) - GetProperty( "fSplit6","Row" ) )   
-   
-   SetProperty("fSplit5","Width",nDesktopWidth - nLop)   
-   
-   SetProperty("fSplit2","Width",nDesktopWidth - 50 )   
-   
-   SetProperty("fSplit10","Height", GetProperty("fSplit2","Height" ) )
-   
-   SetProperty("fSplit10","Width", nDesktopWidth - 1232 )   
-    
-   SetProperty("fSplit10","Col",  nDesktopWidth - 50)   
-   
-   SetProperty('fSplit10', 'Image_1','Transparent', .t. )
+	If (GetConexao() == Nil)
+       yAviso("Erro ao Acessar Servidor de Banco de Dados" , .f. )
+
+   Else     
    
    
-   SetProperty("fSplit10","Row", GetProperty("fSplit2","Row" )+23)  
-   
+      SetProperty("fSplit4","fUserDb","Value",cBanco)
+      SetProperty("fSplit4","fServerDb","Value",cServer)
+      
+      np1 := (nDesktopHeight - 81) - GetProperty("fSplit4","Height" )
+      np2 := np1 - GetProperty("fSplit3","Height" )  
+      
+      SetProperty("fSplit3","Row", np2 )   
+      SetProperty("fSplit4","Row", np1 )   
+      
+      SetProperty("fSplit5","Row",nDesktopHeight - 80 )   
+      
+      SetProperty("fSplit6","Row",61 )      
+      
+      //np2 := np1 - GetProperty("fSplit3","Height" )     
+      SetProperty("fSplit6","Height", (np2 - 22) - GetProperty( "fSplit6","Row" ) )   
+      
+      SetProperty("fSplit5","Width",nDesktopWidth - nLop)   
+      
+      SetProperty("fSplit2","Width",nDesktopWidth - 50 )   
+      
+      SetProperty("fSplit10","Height", GetProperty("fSplit2","Height" ) )
+      
+      SetProperty("fSplit10","Width", nDesktopWidth - 1232 )   
+      
+      SetProperty("fSplit10","Col",  nDesktopWidth - 50)   
+      
+      SetProperty('fSplit10', 'Image_1','Transparent', .t. )
+      
+      
+      SetProperty("fSplit10","Row", GetProperty("fSplit2","Row" )+23)  
+
+  End If 
+
+  
    ShowScrollBar( GetFormHandle( 'fSplit2' ), 0, .F. )		         
-	 ShowScrollBar( GetFormHandle( 'fSplit2' ), 1, .F. )	 
+	ShowScrollBar( GetFormHandle( 'fSplit2' ), 1, .F. )	 
+
 	 
 	// SysWait(10)
    

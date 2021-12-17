@@ -3019,7 +3019,7 @@ FUNCTION ShowButton( cForm, nID, lShow )
 	RETURN NIL
 
 
-	PROC RDDSYS();  RETURN
+	//PROC RDDSYS();  RETURN
 
 
 

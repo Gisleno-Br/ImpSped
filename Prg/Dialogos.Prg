@@ -24,11 +24,7 @@ Function EfectEnd(cFname1)
      
    lAtivaBlack := .f.
    //
-   If !ResButSel()
-      ShowButTop( .t. )   
-   End If
-
-
+ 
 Return
 
 Function yEfect(cFormName , lEfect)
@@ -69,6 +65,9 @@ Function yEfect(cFormName , lEfect)
    End If	   
   
 REturn
+
+
+
 
 
 Function yRun(  cMsg1 , bBlock , lEfect , cFormName)  
@@ -277,6 +276,7 @@ Static FUNCTION MsgAviso( cMsg1, nTp1 )
    Center Window fDialogo
    
    //msginfo( cMsg1 )
+   
    
 
    SetProperty( "fDialogo", "lblMsg", "Value",  hb_AnsiToOem(    AllTrim( cMsg1 )  )     )

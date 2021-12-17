@@ -61,7 +61,7 @@ FUNCTION Main
 
    PUBLIC aBackColor := { 57, 108, 164 }
    
-   Public nVirtualMenu := Nil
+     Public nVirtualMenu := Nil
    
    Public aRotHnd := {}
    
@@ -104,15 +104,8 @@ FUNCTION Main
    Public lVScrool := .f.
    
    
-  Public Corg1 := {255,255,125} 
+   Public Corg1 := {255,255,125} 
 	Public Corg2 := {4,57,70}   
-	
-
-
-
-
-
-
 
 
 	
@@ -149,6 +142,8 @@ FUNCTION Main
    PUBLIC cEnderecoEmp  := ''
    
    Public lDrawMain := .f.
+   
+   
    
    Private nLinSc := 0
    PUBLIC  cServer := ''
