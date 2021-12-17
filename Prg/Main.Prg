@@ -1455,6 +1455,7 @@ Function HideAll(cForm1 , lVisible)
 Return
 
 
+
 Function SetTitMenu(cMenu)
 
   //SetProperty("fSplit2","LblTitMenu","Value",cMenu)
