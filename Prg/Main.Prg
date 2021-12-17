@@ -107,6 +107,8 @@ FUNCTION Main
   Public Corg1 := {255,255,125} 
 	Public Corg2 := {4,57,70}   
 	
+
+   
 	
 	PUBLIC cDiaName := 'fDialogo'
 
@@ -1453,6 +1455,8 @@ Function HideAll(cForm1 , lVisible)
      Next
      
 Return
+
+
 
 
 

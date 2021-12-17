@@ -22,3 +22,8 @@
 .hbmk/win/mingw64/OwnButton.o
 .hbmk/win/mingw64/Rotinas.c
 .hbmk/win/mingw64/Rotinas.o
+.hbmk/win/mingw64/Debugger.c
+.hbmk/win/mingw64/Debugger.o
+Prg/Debugger.prg
+ImpSped.exe
+ErrorLog.Htm

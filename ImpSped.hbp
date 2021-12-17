@@ -6,6 +6,7 @@ Prg\Dialogos.Prg
 Prg\Filtros.Prg
 Prg\Funcoes.Prg
 Prg\impSped.Prg
+Prg\Debugger.Prg
 Prg\InputWindowEx.prg
 Prg\OwnButton.prg
 Prg\Rotinas.Prg
