@@ -301,7 +301,7 @@ FUNCTION Main
    HMG_ActivateMainWindowFirst(.t.)
    
 
-   Load Window Main
+   Load Window Main 
 
    Main.Center
    
