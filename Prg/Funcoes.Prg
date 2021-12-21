@@ -326,18 +326,19 @@ FUNCTION GetConexao()
    oServer := TMySQLServer():New( cServer, cUserDb, cPassDb )
 
    IF oServer:NetErr()
-      yaviso( "Error ao Conectar SQL Server: " + QUEBRA + oServer:Error() , .f.  )
+      msginfo( "Error ao Conectar SQL Server: " + QUEBRA + oServer:Error() , .f.  )
       RELEASE Window ALL
       QUIT
       oServer := Nil 
       Return Nil
    ENDIF
+   
 
 
    oServer:SelectDB( cBanco )
 
    IF oServer:NetErr()
-      yaviso( "Error ao Conectar Banco " + cBanco + " : " + QUEBRA + oServer:Error() , .f.  )
+      MSGINFO( "Error ao Conectar Banco " + cBanco + " : " + QUEBRA + oServer:Error() , .f.  )
       RELEASE Window ALL
       QUIT
    ENDIF

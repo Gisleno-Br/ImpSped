@@ -239,6 +239,12 @@ FUNCTION xMsgRun( cMsg1  , bBlock )
    PRIVATE lRet := .F.
 
 
+
+
+
+
+
+
    Load Window fProgress
    
    //SetProperty('fDialogo','Progress1','Visible' , .t.)

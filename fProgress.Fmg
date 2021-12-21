@@ -25,6 +25,29 @@ DEFINE WINDOW TEMPLATE AT 314 , 350 WIDTH 672 HEIGHT 183 VIRTUAL WIDTH Nil VIRTU
         FONTCOLOR NIL
     END LABEL
 
+
+      DEFINE LABEL LblErro1
+        ROW    115
+        COL    60
+        WIDTH  460
+        HEIGHT 20
+        VALUE "                      "
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        HELPID Nil
+        VISIBLE .T.
+        TRANSPARENT .T.
+        ACTION Nil
+        AUTOSIZE .F.
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+    END LABEL
+
     DEFINE PROGRESSBAR Progress1
         ROW    71
         COL    60
