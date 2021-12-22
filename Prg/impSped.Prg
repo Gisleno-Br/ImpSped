@@ -364,26 +364,34 @@ Function xPMatriz( cArqx )
 	nCont1 := 0
 
 
+	HB_SetCodePage("PT850")
+
+
 	While oFile:MoreToRead()
 
 
 		cLine := oFile:ReadLine()
 
 		If Left( cLine, 6 ) = '|0150|'
-			Aadd( aM150, cLine )
+			Aadd( aM150, Hb_Utf8ToStr( NoAcento(cLine)   ) )
+
+
+			//If At("SA10107034895" , cLine) > 0
+			//	Altd()
+			//End If 
+
 		End If
+		
+
 
 		If Left( cLine, 6 ) = '|0200|'
-			Aadd( aM200, cLine )
+			Aadd( aM200, Hb_Utf8ToStr(cLine) )
 		End If
 
 		If Left( cLine, 6 ) = '|0100|'
-
-			Aadd( aM150, cLine )
-
-
-
+			Aadd( aM150, Hb_Utf8ToStr(cLine) )
 		End If
+
 
 		If Left( cLine, 6 ) = '|C100|'
 
@@ -405,8 +413,11 @@ Function xPMatriz( cArqx )
 
 		End If
 
+
+
 		If ( Left( cLine, 6 ) = '|C170|' ) .And. ( !Empty(  Alltrim(cNota )  ) )
-			Aadd( aMC170,  { cNota, cSerie, cCodParti, cLine }  )
+			Aadd( aMC170,  { cNota, cSerie, cCodParti,   hb_UTF8TOSTR(cLine) }  )
+
 		End If
 
 		If ( Left( cLine, 6 ) = '|C190|' ) .And. ( !Empty(  Alltrim(cNota )  ) )
@@ -869,9 +880,9 @@ Function ProcArq(  aMtr1, cStr1, lProgress )
 				lOkInsert := !CheckChv( 'participantes', nIdEmp, 'id',   Alltrim( Str(nIdCliente ) )      )
 
 
-				cSqlx := SqlInsert( cSqlIns150,   {  Alltrim( Str(nIdEmp ) ),  Alltrim( Str(nIdCliente ) ) , NoAcento(hb_ansitoOem(QuotedStr( aMp[ 3 ] ))), QuotedStr( aMp[ 5 ] ), QuotedStr( aMp[ 7 ] ), ;
-					QuotedStr( aMp[ 6 ] ), QuotedStr( aMp[ 8 ] ), QuotedStr( fTiraChar( aMp[ 10 ] ) ), QuotedStr( NoAcento(fTiraChar( aMp[ 12 ] ) )), ;
-					QuotedStr( NoAcento(aMp[ 13 ])  ),  QuotedStr( aMp[ 2 ] )  } )
+				cSqlx := SqlInsert( cSqlIns150,   {  Alltrim( Str(nIdEmp ) ),  Alltrim( Str(nIdCliente ) ) , Hb_AnsiToOem(NoAcento((QuotedStr( aMp[ 3 ] )))), QuotedStr( aMp[ 5 ] ), QuotedStr( aMp[ 7 ] ), ;
+				QuotedStr( aMp[ 6 ] ), QuotedStr( aMp[ 8 ] ), QuotedStr( fTiraChar( aMp[ 10 ] ) ), QuotedStr( NoAcento(fTiraChar( aMp[ 12 ] ) )), ;
+				Hb_AnsiToOem(QuotedStr(NoAcento( fTiraChar(   aMp[ 13 ]  ))  )),  QuotedStr( aMp[ 2 ] )  } )
 
 
 			End If
@@ -890,60 +901,57 @@ Function ProcArq(  aMtr1, cStr1, lProgress )
 
 
 				cRazaoEmp := Alltrim( aM1[ 2 ] )
-			Do Events
+		
+			End If
 
 
-		End If
+			*// Produtos
+			If Left( cLine, 6 ) = '|0200|'
+
+				aMP := StrToArray( "|", Alltrim( cLine )  )
+
+				nseqProd++
 
 
-            *// Produtos
-		If Left( cLine, 6 ) = '|0200|'
+				lOkInsert := !CheckChv( 'produtos', nIdEmp, 'id',    Alltrim( Str(nseqProd ) )     )
 
-			aMP := StrToArray( "|", Alltrim( cLine )  )
-
-			nseqProd++
-
-			lOkInsert := !CheckChv( 'produtos', nIdEmp, 'id',    Alltrim( Str(nseqProd ) )     )
-
-			cSqlx := SqlInsert(  cSqlIns200,    {  Alltrim( Str(nIdEmp ) ),   Alltrim( Str(nseqProd ) ) ,  QuotedStr( aMp[ 2 ] ), QuotedStr( fTiraChar(aMp[ 3 ] ) ), QuotedStr( aMp[ 4 ] ), ;
-				QuotedStr( aMp[ 6 ] ), QuotedStr( aMp[ 7 ] ), QuotedStr( aMp[ 8 ] ), ;
-				QuotedStr( aMp[ 9 ] ), QuotedStr( aMp[ 10 ] ), QuotedStr( aMp[ 11 ] ), xFormat( aMp[ 12 ] ),  QuotedStr( aMp[ 13 ] )  } )
-
-
-
-		End If
-
-         *// Resumo NFE
-		If ( Left( cLine, 6 ) = '|C190|' ) .And. ( !Empty( cNota ) )
-
-			aMP := StrToArray( "|", Alltrim( cLine )  )
-
-			nItem1++
-
-			lOkInsert := !CheckChv( 'resumonfe', nIdEmp, 'CONCAT( codpart , numdoc , serie , cfop)', alltrim( QuotedStr( cCodParti + cNota + cSerie + aMp[ 3 ] ))    )
-
-			cSqlx := SqlInsert( cSqlInsC190,  {  Alltrim( Str(nIdEmp ) ), QuotedStr( cCodParti ), QuotedStr( cNota ), QuotedStr( cSerie ),  ;
-				QuotedStr( aMp[ 2 ] ), QuotedStr( alltrim( aMp[ 3 ] ) ), Alltrim( xFormat( aMp[ 4 ] ) ), Alltrim( xFormat( aMp[ 5 ] ) ), Alltrim( xFormat( aMp[ 6 ] ) ), ;
-				Alltrim( xFormat( aMp[ 7 ] ) ), Alltrim( xFormat( aMp[ 8 ] ) ), Alltrim( xFormat( aMp[ 9 ] ) ), Alltrim( xFormat( aMp[ 10 ] ) ), Alltrim( xFormat( aMp[ 11 ] ) ) } )
-
-
-		End If
-
-		If ( Left( cLine, 6 ) = '|C170|' ) .And. ( !Empty( cCodParti ) )
-
-			aMP := StrToArray( "|", Alltrim( cLine )  )
-
-			lOkInsert := !CheckChv( 'itemnf', nIdEmp, 'CONCAT( codparti , numdoc , serie , coditem)', alltrim( QuotedStr( cCodParti + cNota + cSerie + aMp[ 3 ] ) )  )
+				cSqlx := SqlInsert(  cSqlIns200,    {  Alltrim( Str(nIdEmp ) ),   Alltrim( Str(nseqProd ) ) ,  QuotedStr( aMp[ 2 ] ), QuotedStr( Hb_ansiToOem(fTiraChar(aMp[ 3 ] )) ), QuotedStr( aMp[ 4 ] ), ;
+					QuotedStr( aMp[ 6 ] ), QuotedStr( aMp[ 7 ] ), QuotedStr( aMp[ 8 ] ), ;
+					QuotedStr( aMp[ 9 ] ), QuotedStr( aMp[ 10 ] ), QuotedStr( aMp[ 11 ] ), xFormat( aMp[ 12 ] ),  QuotedStr( aMp[ 13 ] )  } )
 
 
 
+			End If
 
-			nItem++
+			*// Resumo NFE
+			If ( Left( cLine, 6 ) = '|C190|' ) .And. ( !Empty( cNota ) )
 
-			//	If !lOkInsert
+				aMP := StrToArray( "|", Alltrim( cLine )  )
 
-			cSqlx := SqlInsert( cSqlInsC170,  {  Alltrim( Str(nIdEmp ) ), QuotedStr( cCodParti ), QuotedStr( cNota ), QuotedStr( cSerie ),  ;
-				QuotedStr( aMp[ 3 ] ), QuotedStr( NoAcento(Hb_AnsitoOem(fTiraChar( aMp[ 4 ] ) ))), Alltrim( xFormat( aMp[ 5 ] ) ), ;
+				nItem1++
+
+				lOkInsert := !CheckChv( 'resumonfe', nIdEmp, 'CONCAT( codpart , numdoc , serie , cfop)', alltrim( QuotedStr( cCodParti + cNota + cSerie + aMp[ 3 ] ))    )
+
+				cSqlx := SqlInsert( cSqlInsC190,  {  Alltrim( Str(nIdEmp ) ), QuotedStr( cCodParti ), QuotedStr( cNota ), QuotedStr( cSerie ),  ;
+					QuotedStr( aMp[ 2 ] ), QuotedStr( alltrim( aMp[ 3 ] ) ), Alltrim( xFormat( aMp[ 4 ] ) ), Alltrim( xFormat( aMp[ 5 ] ) ), Alltrim( xFormat( aMp[ 6 ] ) ), ;
+					Alltrim( xFormat( aMp[ 7 ] ) ), Alltrim( xFormat( aMp[ 8 ] ) ), Alltrim( xFormat( aMp[ 9 ] ) ), Alltrim( xFormat( aMp[ 10 ] ) ), Alltrim( xFormat( aMp[ 11 ] ) ) } )
+
+
+			End If
+
+			If ( Left( cLine, 6 ) = '|C170|' ) .And. ( !Empty( cCodParti ) )
+
+				aMP := StrToArray( "|", Alltrim( cLine )  )
+
+				lOkInsert := !CheckChv( 'itemnf', nIdEmp, 'CONCAT( codparti , numdoc , serie , coditem)', alltrim( QuotedStr( cCodParti + cNota + cSerie + aMp[ 3 ] ) )  )
+
+				nItem++
+
+
+				//	If !lOkInsert
+
+				cSqlx := SqlInsert( cSqlInsC170,  {  Alltrim( Str(nIdEmp ) ), QuotedStr( cCodParti ), QuotedStr( cNota ), QuotedStr( cSerie ),  ;
+				QuotedStr( aMp[ 3 ] ), QuotedStr( NoAcento(fTiraChar( aMp[ 4 ] ) )), Alltrim( xFormat( aMp[ 5 ] ) ), ;
 				QuotedStr( aMp[ 6 ] ), Alltrim( xFormat( aMp[ 7 ] ) ), Alltrim( xFormat( aMp[ 8 ] ) ), QuotedStr( Alltrim( aMp[ 10 ] ) ), QuotedStr( Alltrim( aMp[ 11 ] ) ), QuotedStr( Alltrim( aMp[ 12 ] ) ),  ;
 				Alltrim( xFormat( aMp[ 13 ] ) ), Alltrim( xFormat( aMp[ 14 ] ) ), Alltrim( xFormat( aMp[ 15 ] ) ), Alltrim( xFormat( aMp[ 16 ] ) ), ;
 				QuotedStr( Alltrim( aMp[ 17 ] ) ), Alltrim( xFormat( aMp[ 18 ] ) ), ;
@@ -951,51 +959,45 @@ Function ProcArq(  aMtr1, cStr1, lProgress )
 				QuotedStr( Alltrim( aMp[ 25 ] ) ), Alltrim( xFormat( aMp[ 26 ] ) ), Alltrim( xFormat( aMp[ 27 ] ) ), Alltrim( xFormat( aMp[ 30 ] ) ), ;
 				QuotedStr( Alltrim( aMp[ 31 ] ) ), Alltrim( xFormat( aMp[ 32 ] ) ), Alltrim( xFormat( aMp[ 33 ] ) ), Alltrim( xFormat( aMp[ 36 ] ) ), ;
 				Alltrim( xFormat( aMp[ 38 ] ) ) }  )
-//
-			//End If
-
-
-			//QuotedStr( StrZero( nItem,3 ) )   } )
-
-
-		End If
-
-
-         *// Notas Entrada \Cabecalho
-		If Left( cLine, 6 ) = '|C100|'
-
-			aMP := StrToArray( "|", Alltrim( cLine )  )
-
-			If ( Val( aMp[ 12 ] ) > 0 )
-
-				lOkInsert := !CheckChv( 'notasfiscais', nIdEmp, 'CONCAT( codparti ,  serie , numdoc , chave)', alltrim( QuotedStr( aMp[ 4 ] + aMp[ 7 ] + aMp[8] + Alltrim(aMp[ 9 ] )     ) )  )
-
-				//nSeqNt := GetMax()
-
-				nSeqNt++
-
-
-				//	If !lOkInsert
-				cSqlx := SqlInsert( cSqlInsC100,  {  Alltrim( Str(nIdEmp ) ),  Alltrim(Str(nSeqNt))  ,  QuotedStr( aMp[ 4 ] ), QuotedStr( aMp[ 5 ] ), QuotedStr( aMp[ 6 ] ), ;
-					QuotedStr( aMp[ 7 ] ), QuotedStr( aMp[ 8 ] ), QuotedStr( fTiraChar( aMp[ 9 ] ) ), QuotedStr( ConvDt( aMp[ 10 ] ) ), ;
-					QuotedStr( ConvDt( aMp[ 11 ] ) ),   Alltrim( xFormat( aMp[ 12 ] )  ),   alltrim ( QuotedStr( aMp[ 13 ] ) ), ;
-					Alltrim( xFormat( aMp[ 14 ] ) ), Alltrim( QuotedStr( aMp[ 17 ] ) ), Alltrim( xFormat( aMp[ 18 ] ) ), Alltrim( xFormat( aMp[ 19 ] ) ), ;
-					Alltrim( xFormat( aMp[ 20 ] ) ), Alltrim( xFormat( aMp[ 21 ] ) ), Alltrim( xFormat( aMp[ 22 ] ) ), Alltrim( xFormat( aMp[ 23 ] ) ), Alltrim( xFormat( aMp[ 24 ] ) ), ;
-					Alltrim( xFormat( aMp[ 25 ] ) ), Alltrim( xFormat( aMp[ 26 ] ) ), Alltrim( xFormat( aMp[ 27 ] ) ), QuotedStr( alltrim( aMp[ 3 ] ) ), QuotedStr( alltrim( aMp[ 2 ] ) )  } )
-				//		End If
-
-				nItem     := 0
-				nItem1    := 0
-
-			Else
-
-				cNota     := ''
-				cSerie    := ''
-				cCodParti := ''
-				nItem     := 0
-				nItem1    := 0
 
 			End If
+
+
+			*// Notas Entrada \Cabecalho
+			If Left( cLine, 6 ) = '|C100|'
+
+				aMP := StrToArray( "|", Alltrim( cLine )  )
+
+				If ( Val( aMp[ 12 ] ) > 0 )
+
+					lOkInsert := !CheckChv( 'notasfiscais', nIdEmp, 'CONCAT( codparti ,  serie , numdoc , chave)', alltrim( QuotedStr( aMp[ 4 ] + aMp[ 7 ] + aMp[8] + Alltrim(aMp[ 9 ] )     ) )  )
+
+					//nSeqNt := GetMax()
+
+					nSeqNt++
+
+
+					//	If !lOkInsert
+					cSqlx := SqlInsert( cSqlInsC100,  {  Alltrim( Str(nIdEmp ) ),  Alltrim(Str(nSeqNt))  ,  QuotedStr( aMp[ 4 ] ), QuotedStr( aMp[ 5 ] ), QuotedStr( aMp[ 6 ] ), ;
+						QuotedStr( aMp[ 7 ] ), QuotedStr( aMp[ 8 ] ), QuotedStr( fTiraChar( aMp[ 9 ] ) ), QuotedStr( ConvDt( aMp[ 10 ] ) ), ;
+						QuotedStr( ConvDt( aMp[ 11 ] ) ),   Alltrim( xFormat( aMp[ 12 ] )  ),   alltrim ( QuotedStr( aMp[ 13 ] ) ), ;
+						Alltrim( xFormat( aMp[ 14 ] ) ), Alltrim( QuotedStr( aMp[ 17 ] ) ), Alltrim( xFormat( aMp[ 18 ] ) ), Alltrim( xFormat( aMp[ 19 ] ) ), ;
+						Alltrim( xFormat( aMp[ 20 ] ) ), Alltrim( xFormat( aMp[ 21 ] ) ), Alltrim( xFormat( aMp[ 22 ] ) ), Alltrim( xFormat( aMp[ 23 ] ) ), Alltrim( xFormat( aMp[ 24 ] ) ), ;
+						Alltrim( xFormat( aMp[ 25 ] ) ), Alltrim( xFormat( aMp[ 26 ] ) ), Alltrim( xFormat( aMp[ 27 ] ) ), QuotedStr( alltrim( aMp[ 3 ] ) ), QuotedStr( alltrim( aMp[ 2 ] ) )  } )
+					//		End If
+
+					nItem     := 0
+					nItem1    := 0
+
+				Else
+
+					cNota     := ''
+					cSerie    := ''
+					cCodParti := ''
+					nItem     := 0
+					nItem1    := 0
+
+				End If
 
 		End If
 
@@ -1188,7 +1190,7 @@ Function StrToArray( cLetra, cChar )
 				End If
 
 				if !Empty( cC2 )
-					Aadd( aMtr, Iif( cC2 = 'Vazio','', cC2 )  )
+					Aadd( aMtr, Iif( cC2 = 'Vazio','', Hb_AnsitoOem(  cC2   )     )  )
 					nCol++
 				End If
 
@@ -1355,6 +1357,7 @@ REturn cSql1
 
 
 
+
 Function SqlInsert( cSql1, aValores, aCamposF )
 
 	Local cAlias := 'Tmp'
@@ -1365,8 +1368,9 @@ Function SqlInsert( cSql1, aValores, aCamposF )
 	cValues := ''
 
 
+
 	For n1 := 1 to Len(   aValores )
-		cValues += aValores[ n1 ] + "," + QUEBRA
+		cValues += Hb_AnsiToOem(aValores[ n1 ]) + "," + QUEBRA
 	Next
 
 // -1
@@ -1416,8 +1420,6 @@ RETURN d1
 
 
 
-
-
 Static FUNCTION fTiraChar( wCampo )
 
 // // Remover Caracteres Especiais (/,*)
@@ -1429,7 +1431,7 @@ Static FUNCTION fTiraChar( wCampo )
 
 	FOR i := 1 TO Len( wCampo )
 		IF SubStr( wCampo, i, 1 ) == "'" .OR. SubStr( wCampo, i, 1 ) == ")" .OR. SubStr( wCampo, i, 1 ) == "(" .OR. SubStr( wCampo, i, 1 ) == "*" .OR. SubStr( wCampo, i, 1 ) == "/"  .OR. SubStr( wCampo, i, 1 ) == "\"  .OR. SubStr( wCampo, i, 1 ) == '%' .OR. SubStr( wCampo, i, 1 ) == "-" ;
-				.OR. SubStr( wCampo, i, 1 ) == "\"
+				.OR. SubStr( wCampo, i, 1 ) == "\" .or. SubStr( wCampo, i, 1 ) == "á"
 
 		ELSE
 			cStr1 += SubStr( wCampo, i, 1 )
@@ -1442,22 +1444,29 @@ static FUNCTION NoAcento(cString)
 	Local cChar  := ""
 	Local nX     := 0
 	Local nY     := 0
-	Local cVogal := "aeiouAEIOU"
+	Local cVogal := "aeiouAEIOU"  
 	Local cAgudo := "áéíóú"+"ÁÉÍÓÚ"
 	Local cCircu := "âêîôû"+"ÂÊÎÔÛ"
 	Local cTrema := "äëïöü"+"ÄËÏÖÜ"
 	Local cCrase := "àèìòù"+"ÀÈÌÒÙ"
 	Local cTio   := "ãõÃÕ"
 	Local cCecid := "çÇ"
-	Local cMaior := "&lt;"
+	Local cMaior := "&lt;"   
 	Local cMenor := "&gt;"
+	Local c1 := "½"
+
+	//¢
+	//"á"
+
 
 	For nX:= 1 To Len(cString)
 		cChar:=SubStr(cString, nX, 1)
 		IF cChar$cAgudo+cCircu+cTrema+cCecid+cTio+cCrase
 			nY:= At(cChar,cAgudo)
 			If nY > 0
-				cString := StrTran(cString,cChar,SubStr(cVogal,nY,1))
+				cString := StrTran(cString,cChar,SubStr(cVogal,nY,1))				
+   				//SaveLog('acento.txt',cString + '  ' + SubStr(cVogal,nY,1) + QUEBRA)
+
 			EndIf
 			nY:= At(cChar,cCircu)
 			If nY > 0
@@ -1491,5 +1500,5 @@ static FUNCTION NoAcento(cString)
 
 	cString := StrTran( cString, CRLF, " " )
 
-Return cString
+Return hb_AnsiToOem(cString)
 

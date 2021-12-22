@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version 8.0.18)
-# Date: 2021-12-17 15:29:28
+# Date: 2021-12-22 14:19:50
 # Generator: MySQL-Front 6.0  (Build 2.20)
 
 
@@ -29,7 +29,7 @@ CREATE TABLE `empresas` (
   PRIMARY KEY (`Id`),
   KEY `t1` (`razao`),
   KEY `t33` (`cnpj`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 #
 # Data for table "empresas"
@@ -77,7 +77,7 @@ CREATE TABLE `itemnf` (
   PRIMARY KEY (`Idempresa`,`codparti`,`numdoc`,`serie`,`coditem`),
   KEY `f1` (`codparti`),
   KEY `numdoc` (`numdoc`,`serie`,`coditem`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 #
 # Data for table "itemnf"
@@ -90,7 +90,8 @@ CREATE TABLE `itemnf` (
 
 DROP TABLE IF EXISTS `notasfiscais`;
 CREATE TABLE `notasfiscais` (
-  `idempresa` int(11) NOT NULL AUTO_INCREMENT,
+  `idempresa` int(11) NOT NULL,
+  `idnotaf` int(11) NOT NULL DEFAULT '0',
   `codparti` varchar(60) NOT NULL DEFAULT '',
   `codmodelo` varchar(2) NOT NULL DEFAULT '',
   `situacao` int(2) NOT NULL DEFAULT '0',
@@ -115,8 +116,10 @@ CREATE TABLE `notasfiscais` (
   `vlrconfins` decimal(10,2) DEFAULT NULL,
   `indemitente` varchar(1) DEFAULT NULL,
   `indoperacao` varchar(1) DEFAULT NULL,
-  PRIMARY KEY (`idempresa`,`codparti`,`serie`,`numdoc`,`dtemissao`,`chave`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`idempresa`,`idnotaf`),
+  KEY `f1` (`idempresa`,`numdoc`,`serie`,`chave`),
+  KEY `f2` (`idempresa`,`dtemissao`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 #
 # Data for table "notasfiscais"
@@ -138,13 +141,13 @@ CREATE TABLE `participantes` (
   `municipio` varchar(7) DEFAULT NULL,
   `endereco` varchar(75) DEFAULT NULL,
   `complemento` varchar(65) DEFAULT NULL,
-  `bairro` varchar(60) DEFAULT NULL,
+  `bairro` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `codparti` varchar(60) DEFAULT NULL,
   PRIMARY KEY (`idempresa`,`Id`),
   KEY `f1` (`nome`),
   KEY `f2` (`cnpj`),
   KEY `f3` (`cpf`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 #
 # Data for table "participantes"
@@ -173,7 +176,7 @@ CREATE TABLE `produtos` (
   PRIMARY KEY (`Idempresa`,`id`),
   KEY `f1` (`descricao`),
   KEY `f2` (`codncm`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 #
 # Data for table "produtos"
@@ -202,7 +205,7 @@ CREATE TABLE `resumonfe` (
   `vlripi` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`Idempresa`,`numdoc`,`codpart`,`serie`,`cst`,`cfop`,`aliquota`),
   KEY `f1` (`numdoc`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 #
 # Data for table "resumonfe"
