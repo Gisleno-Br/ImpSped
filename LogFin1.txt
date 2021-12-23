@@ -64,3 +64,17 @@
  23/12/2021 16:51:16 Concluido !  Importação Reg C100-6 Tempo : 00:01:43
  23/12/2021 16:51:16 Concluido !  Importação Reg C100-3 Tempo : 00:01:43
  23/12/2021 16:51:16 Concluido !  Importação Reg C100-1 Tempo : 00:01:43
+ 23/12/2021 17:43:45 Concluido !  Importação Reg 150 Tempo : 00:00:12
+ 23/12/2021 17:43:56 Concluido !  Importação Reg 200 Tempo : 00:00:22
+ 23/12/2021 17:44:01 Concluido !  Importação Reg C190-4 Tempo : 00:00:27
+ 23/12/2021 17:44:01 Concluido !  Importação Reg C190-2 Tempo : 00:00:27
+ 23/12/2021 17:44:01 Concluido !  Importação Reg C190-3 Tempo : 00:00:27
+ 23/12/2021 17:44:01 Concluido !  Importação Reg C170 Tempo : 00:00:27
+ 23/12/2021 17:44:01 Concluido !  Importação Reg C190-6 Tempo : 00:00:27
+ 23/12/2021 17:44:01 Concluido !  Importação Reg C190-1 Tempo : 00:00:27
+ 23/12/2021 17:44:58 Concluido !  Importação Reg C100-3 Tempo : 00:01:24
+ 23/12/2021 17:44:58 Concluido !  Importação Reg C100-5 Tempo : 00:01:24
+ 23/12/2021 17:44:58 Concluido !  Importação Reg C100-2 Tempo : 00:01:24
+ 23/12/2021 17:45:01 Concluido !  Importação Reg C100-6 Tempo : 00:01:27
+ 23/12/2021 17:45:01 Concluido !  Importação Reg C100-4 Tempo : 00:01:27
+ 23/12/2021 17:45:01 Concluido !  Importação Reg C100-1 Tempo : 00:01:27

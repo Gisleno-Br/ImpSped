@@ -571,9 +571,7 @@ Enddo
 oFile:Close()
 
 
-
 //msginfo( Str( Len( aMC100 ) )  )
-
 
 
 _ReleaseWindow( 'fWaitMsg' )
