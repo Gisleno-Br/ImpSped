@@ -60,6 +60,7 @@ Static oServer190
 Static nSeqNt := 0
 
 
+
 Static aThread16 := Nil
 
 Static lAborted := .f.
@@ -87,6 +88,8 @@ Static nLinha := 0
 STATIC nIdCliente := 0
 STATIC nseqProd   := 0
 
+STATIC nIdSeq1 := 0
+
 Static aMSped := {}
 
 Static nQErros := 0
@@ -105,6 +108,8 @@ Static aMy3 := {}
 Static aMy4 := {}
 Static aMy5 := {}
 Static aMy6 := {}
+
+Static aChaves := {}
 
 
 Static aMz1 := {}
@@ -171,13 +176,16 @@ Function ImpSped()
 	//Public oServer190
 
 
-
+ /*
 	oServer170 := GetConexao()
 	oServer150 := GetConexao()
 	oServer120 := GetConexao()
 
 	oServer200 := GetConexao()
 	oServer190 := GetConexao()
+
+	*/
+
 
 
 
@@ -202,8 +210,11 @@ Function ImpSped()
 	nIdCliente := 0
 	nseqProd   := 0
 
+	nIdSeq1 := 0
+
 	oServer  := GetConexao()
 	oServer2 := GetConexao()
+
 
 
 
@@ -249,9 +260,13 @@ Function ImpSped()
 
 		yEfect( cFName  )
 
+
 	Do Events
 
+
 	xWaitMsg( "Aguarde Preparando Estrutura...", {|| lRet := xPMatriz( cArq1 ) } )
+
+
 
 
 	cMs1 := "Qt Reg 1 " + StrTran( Alltrim( Transform(Len( aMz1 ),"999,999,999,999"   ) ), ',', '.' )   + QUEBRA
@@ -259,6 +274,7 @@ Function ImpSped()
 	cmS1 += "Qt Reg 3 " + Alltrim( Transform( Len( aMz3 ),"999,999,999,999"   )   ) + QUEBRA
 	cmS1 += "Qt Reg 4 " + Alltrim( Transform( Len( aMz4 ),"999,999,999,999"   )   ) + QUEBRA
 	cmS1 += "Qt Reg Total " + Alltrim( Transform( Len( aMC100 ),"999,999,999,999"   )   ) + QUEBRA
+
 
 	If ( Len( aM150 ) + Len( aM200 ) == 0 )
 		MsgInfo( hb_AnsitoOem( 'Registros não localizado (M150,M200)!' ), .f. )
@@ -282,7 +298,24 @@ Function ImpSped()
 		Return
 	End If
 
+	
+	If ( Len( aMz1 ) == 0 ) 
+		msginfo( hb_AnsitoOem( 'Registros não localizado (Z1 MC100 + MC170)!' ), .f. )
+		Return
+	else
+
+	//	 msginfo( aMz2[1] )	
+
+	End If
+
+
+
+	
+
+
 	cTermino := ''
+
+
 
 	aThread  := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @DoSped() )
 
@@ -293,7 +326,7 @@ Function ImpSped()
 	// aThread  := hb_threadStart(  HB_THREAD_INHERIT_PUBLIC, @xRode(), cArqT1, cArqCSV )
 
 
-	aThread4 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMC100, 'Reg C100', .t.    )
+	//aThread4 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMC100, 'Reg C100', .t.     )
 
 	aThread5 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMC170, 'Reg C170', .t.    )
 
@@ -307,15 +340,13 @@ Function ImpSped()
 	aThread14 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMy6, 'Reg C190-6', .t.    )
 
 
-	aThread4  := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz1, 'Reg C100-1', .t.    )
-	aThread10 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz2, 'Reg C100-2', .t.    )
-	aThread11 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz3, 'Reg C100-3', .t.    )
-	aThread12 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz4, 'Reg C100-4', .t.    )
+	aThread4  := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz1, 'Reg C100-1', .t.       )
+	aThread10 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz2, 'Reg C100-2', .t.     )
+	aThread11 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz3, 'Reg C100-3', .t.     )
+	aThread12 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz4, 'Reg C100-4', .t.     )
 
 
-	aThread15 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz5, 'Reg C100-5', .t.    )
-
-
+	aThread15 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz5, 'Reg C100-5', .t.     )
 	aThread16 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz6, 'Reg C100-6', .t.    )
 
 
@@ -349,6 +380,8 @@ Function xPMatriz( cArqx )
 
 	nQErros := 0
 
+	nIdSeq1 := 0
+
 	aM150 := {}
 	aM200 := {}
 
@@ -374,14 +407,7 @@ Function xPMatriz( cArqx )
 
 		If Left( cLine, 6 ) = '|0150|'
 			Aadd( aM150, Hb_Utf8ToStr( NoAcento(cLine)   ) )
-
-
-			//If At("SA10107034895" , cLine) > 0
-			//	Altd()
-			//End If 
-
-		End If
-		
+		End If		
 
 
 		If Left( cLine, 6 ) = '|0200|'
@@ -399,7 +425,8 @@ Function xPMatriz( cArqx )
 
 			cNota     := ''
 			cSerie    := ''
-			cCodParti := ''
+			cCodParti := ''			
+
 
 			If ( Val( aMp[ 12 ] ) > 0 )
 
@@ -412,7 +439,6 @@ Function xPMatriz( cArqx )
 			End If
 
 		End If
-
 
 
 		If ( Left( cLine, 6 ) = '|C170|' ) .And. ( !Empty(  Alltrim(cNota )  ) )
@@ -507,6 +533,7 @@ aMz6 := {}
 n := 1
 nPasso := 1
 
+
 While n <= Len( aMC100 )
 
 	If nPasso = 1
@@ -543,6 +570,12 @@ Enddo
 
 oFile:Close()
 
+
+
+//msginfo( Str( Len( aMC100 ) )  )
+
+
+
 _ReleaseWindow( 'fWaitMsg' )
 
 Return .t.
@@ -564,8 +597,8 @@ Function xStop1()
 
 	lTermino := .t.
 	lAborted := .t.
-Do Events
-Do Events
+	Do Events
+	Do Events
 
 
 // hb_threadDetach( aThread )   // close thread handle
@@ -731,10 +764,10 @@ RETURN StrZero( INT( Mod(nSeconds / 3600, 24 ) ), 2, 0 ) + ":" + ;
 		StrZero( INT( Mod(nSeconds, 60 ) ), 2, 0 )
 
 
-Function ProcArq(  aMtr1, cStr1, lProgress )
+Function ProcArq(  aMtr1, cStr1, lProgress    )
 
 // Local cArq := xGetArq()
-	LOCAL cLine
+	LOCAL cLine := ''
 	Local n1
 	Local nI
 // msginfo(cArq)
@@ -776,6 +809,14 @@ Function ProcArq(  aMtr1, cStr1, lProgress )
 
 	Local oSrv2 := GetConexao()
 
+	//DEFAULT oSrv := Nil 
+
+	
+	//Local aChaves := {}
+
+
+	//oSrv2 := GetConexao()	
+
 
 	SET DATE BRIT
 
@@ -796,7 +837,17 @@ Function ProcArq(  aMtr1, cStr1, lProgress )
 
 
 
-	//oSrv2:Query( 'SET global max_allowed_packet=104857600')
+//	oSrv2:Query( 'SET global max_allowed_packet=104857600')
+
+	//oSrv2:Query( 'SET autocommit=0')
+
+
+
+//	oSrv2:Query( 'SET GLOBAL innodb_lock_wait_timeout = 25000')
+
+    //oSrv2:Query( 'SET innodb_lock_wait_timeout = 25000' )	
+//
+
 
 
 
@@ -819,19 +870,28 @@ Function ProcArq(  aMtr1, cStr1, lProgress )
 // Return
 
 
+	
+	//saveLog('nota.txt' , cStr1 + '  z1  ' +  QUEBRA)
+
+
 	nI := 1
 
 	While ( nI <=  Len( aMtr1 ) ) .And. ( !lTermino )
+
+
+		
+		//saveLog('nota.txt' , cStr1 + '  z1  ' + aMtr1[ nI ] +  QUEBRA)
 
 
 		If ( oSrv2 != Nil )
 
 			lOkDb    := .t.
 
+
 			If ( Alltrim( cStr1 ) != "Reg C170" ) .And. ( Alltrim( cStr1 ) != "Reg C190-1" ) .And. ( Alltrim( cStr1 ) != "Reg C190-2" ) .And. ;
 					( Alltrim( cStr1 ) != "Reg C190-3" ) .And. ( Alltrim( cStr1 ) != "Reg C190-4" ) .And. ;
 					( Alltrim( cStr1 ) != "Reg C190-5" ) .And. ( Alltrim( cStr1 ) != "Reg C190-6" )
-				cLine    := aMtr1[ nI ]
+				cLine    := Hb_AnsitoOem(aMtr1[ nI ])
 
 			Else
 
@@ -839,7 +899,7 @@ Function ProcArq(  aMtr1, cStr1, lProgress )
 				cSerie    := aMtr1[ nI ][ 2 ]
 				cCodParti := aMtr1[ nI ][ 3 ]
 
-				cLine     := aMtr1[ nI ][ 4 ]
+				cLine     := Hb_ansiToOem(aMtr1[nI][4]	)
 
 
 				If ( cChave1 != cNota + cSerie + cCodParti )
@@ -877,8 +937,6 @@ Function ProcArq(  aMtr1, cStr1, lProgress )
 
 				nIdCliente++
 
-				lOkInsert := !CheckChv( 'participantes', nIdEmp, 'id',   Alltrim( Str(nIdCliente ) )      )
-
 
 				cSqlx := SqlInsert( cSqlIns150,   {  Alltrim( Str(nIdEmp ) ),  Alltrim( Str(nIdCliente ) ) , Hb_AnsiToOem(NoAcento((QuotedStr( aMp[ 3 ] )))), QuotedStr( aMp[ 5 ] ), QuotedStr( aMp[ 7 ] ), ;
 				QuotedStr( aMp[ 6 ] ), QuotedStr( aMp[ 8 ] ), QuotedStr( fTiraChar( aMp[ 10 ] ) ), QuotedStr( NoAcento(fTiraChar( aMp[ 12 ] ) )), ;
@@ -913,8 +971,6 @@ Function ProcArq(  aMtr1, cStr1, lProgress )
 				nseqProd++
 
 
-				lOkInsert := !CheckChv( 'produtos', nIdEmp, 'id',    Alltrim( Str(nseqProd ) )     )
-
 				cSqlx := SqlInsert(  cSqlIns200,    {  Alltrim( Str(nIdEmp ) ),   Alltrim( Str(nseqProd ) ) ,  QuotedStr( aMp[ 2 ] ), QuotedStr( Hb_ansiToOem(fTiraChar(aMp[ 3 ] )) ), QuotedStr( aMp[ 4 ] ), ;
 					QuotedStr( aMp[ 6 ] ), QuotedStr( aMp[ 7 ] ), QuotedStr( aMp[ 8 ] ), ;
 					QuotedStr( aMp[ 9 ] ), QuotedStr( aMp[ 10 ] ), QuotedStr( aMp[ 11 ] ), xFormat( aMp[ 12 ] ),  QuotedStr( aMp[ 13 ] )  } )
@@ -930,8 +986,6 @@ Function ProcArq(  aMtr1, cStr1, lProgress )
 
 				nItem1++
 
-				lOkInsert := !CheckChv( 'resumonfe', nIdEmp, 'CONCAT( codpart , numdoc , serie , cfop)', alltrim( QuotedStr( cCodParti + cNota + cSerie + aMp[ 3 ] ))    )
-
 				cSqlx := SqlInsert( cSqlInsC190,  {  Alltrim( Str(nIdEmp ) ), QuotedStr( cCodParti ), QuotedStr( cNota ), QuotedStr( cSerie ),  ;
 					QuotedStr( aMp[ 2 ] ), QuotedStr( alltrim( aMp[ 3 ] ) ), Alltrim( xFormat( aMp[ 4 ] ) ), Alltrim( xFormat( aMp[ 5 ] ) ), Alltrim( xFormat( aMp[ 6 ] ) ), ;
 					Alltrim( xFormat( aMp[ 7 ] ) ), Alltrim( xFormat( aMp[ 8 ] ) ), Alltrim( xFormat( aMp[ 9 ] ) ), Alltrim( xFormat( aMp[ 10 ] ) ), Alltrim( xFormat( aMp[ 11 ] ) ) } )
@@ -943,14 +997,15 @@ Function ProcArq(  aMtr1, cStr1, lProgress )
 
 				aMP := StrToArray( "|", Alltrim( cLine )  )
 
-				lOkInsert := !CheckChv( 'itemnf', nIdEmp, 'CONCAT( codparti , numdoc , serie , coditem)', alltrim( QuotedStr( cCodParti + cNota + cSerie + aMp[ 3 ] ) )  )
+				//lOkInsert := !CheckChv( 'itemnf', nIdEmp, 'CONCAT( codparti , numdoc , serie , coditem)', alltrim( QuotedStr( cCodParti + cNota + cSerie + aMp[ 3 ] ) )  )
 
-				nItem++
+				//nItem++
 
+				nIdSeq1++
 
 				//	If !lOkInsert
 
-				cSqlx := SqlInsert( cSqlInsC170,  {  Alltrim( Str(nIdEmp ) ), QuotedStr( cCodParti ), QuotedStr( cNota ), QuotedStr( cSerie ),  ;
+				cSqlx := SqlInsert( cSqlInsC170,  {  Alltrim( Str(nIdEmp ) ),   Alltrim( Str(  nIdSeq1   ) )  ,    QuotedStr( cCodParti ), QuotedStr( cNota ), QuotedStr( cSerie ),  ;
 				QuotedStr( aMp[ 3 ] ), QuotedStr( NoAcento(fTiraChar( aMp[ 4 ] ) )), Alltrim( xFormat( aMp[ 5 ] ) ), ;
 				QuotedStr( aMp[ 6 ] ), Alltrim( xFormat( aMp[ 7 ] ) ), Alltrim( xFormat( aMp[ 8 ] ) ), QuotedStr( Alltrim( aMp[ 10 ] ) ), QuotedStr( Alltrim( aMp[ 11 ] ) ), QuotedStr( Alltrim( aMp[ 12 ] ) ),  ;
 				Alltrim( xFormat( aMp[ 13 ] ) ), Alltrim( xFormat( aMp[ 14 ] ) ), Alltrim( xFormat( aMp[ 15 ] ) ), Alltrim( xFormat( aMp[ 16 ] ) ), ;
@@ -963,6 +1018,7 @@ Function ProcArq(  aMtr1, cStr1, lProgress )
 			End If
 
 
+
 			*// Notas Entrada \Cabecalho
 			If Left( cLine, 6 ) = '|C100|'
 
@@ -970,21 +1026,47 @@ Function ProcArq(  aMtr1, cStr1, lProgress )
 
 				If ( Val( aMp[ 12 ] ) > 0 )
 
-					lOkInsert := !CheckChv( 'notasfiscais', nIdEmp, 'CONCAT( codparti ,  serie , numdoc , chave)', alltrim( QuotedStr( aMp[ 4 ] + aMp[ 7 ] + aMp[8] + Alltrim(aMp[ 9 ] )     ) )  )
-
-					//nSeqNt := GetMax()
-
-					nSeqNt++
+					//lOkInsert := !CheckChv( 'notasfiscais', nIdEmp, 'CONCAT( codparti ,  serie , numdoc , chave)', alltrim( QuotedStr( aMp[ 4 ] + aMp[ 7 ] + aMp[8] + Alltrim(aMp[ 9 ] )     ) )  )
 
 
-					//	If !lOkInsert
-					cSqlx := SqlInsert( cSqlInsC100,  {  Alltrim( Str(nIdEmp ) ),  Alltrim(Str(nSeqNt))  ,  QuotedStr( aMp[ 4 ] ), QuotedStr( aMp[ 5 ] ), QuotedStr( aMp[ 6 ] ), ;
+					//nSeqNt := xGetMax(  oSrv )
+
+					cAlias := "TMP"
+
+					cSql := "Select Count(*) AS T1 From Notasfiscais"
+
+					oQry13 := oSrv2:Query( cSql  )				
+
+					
+					oRow1 := oQry13:GetRow(1)
+
+					nSeqNt := RandomN()
+					//(oRow1:FieldGet(1)+1) 					
+
+					oQry13 := Nil 
+
+
+					//nSeqNt++
+					If nSeqNt > 0 
+
+						cSqlx := SqlInsert( cSqlInsC100,  {  Alltrim( Str(nIdEmp ) ),  Alltrim(Str(nSeqNt  ))  ,  QuotedStr( aMp[ 4 ] ), QuotedStr( aMp[ 5 ] ), QuotedStr( aMp[ 6 ] ), ;
 						QuotedStr( aMp[ 7 ] ), QuotedStr( aMp[ 8 ] ), QuotedStr( fTiraChar( aMp[ 9 ] ) ), QuotedStr( ConvDt( aMp[ 10 ] ) ), ;
 						QuotedStr( ConvDt( aMp[ 11 ] ) ),   Alltrim( xFormat( aMp[ 12 ] )  ),   alltrim ( QuotedStr( aMp[ 13 ] ) ), ;
 						Alltrim( xFormat( aMp[ 14 ] ) ), Alltrim( QuotedStr( aMp[ 17 ] ) ), Alltrim( xFormat( aMp[ 18 ] ) ), Alltrim( xFormat( aMp[ 19 ] ) ), ;
 						Alltrim( xFormat( aMp[ 20 ] ) ), Alltrim( xFormat( aMp[ 21 ] ) ), Alltrim( xFormat( aMp[ 22 ] ) ), Alltrim( xFormat( aMp[ 23 ] ) ), Alltrim( xFormat( aMp[ 24 ] ) ), ;
 						Alltrim( xFormat( aMp[ 25 ] ) ), Alltrim( xFormat( aMp[ 26 ] ) ), Alltrim( xFormat( aMp[ 27 ] ) ), QuotedStr( alltrim( aMp[ 3 ] ) ), QuotedStr( alltrim( aMp[ 2 ] ) )  } )
-					//		End If
+						
+					End If 	
+
+
+
+					//End If					
+					//hb_idlesleep(0.07)
+
+					
+   					//hb_threadWaitForAll()
+
+
 
 					nItem     := 0
 					nItem1    := 0
@@ -1009,21 +1091,16 @@ Function ProcArq(  aMtr1, cStr1, lProgress )
 			oQuery := oSrv2:Query( cSqlx )
 
 			IF oQuery:NetErr()
-				Hb_MemoWrit( 'sqlError.txt', Hb_MemoRead( 'sqlError.txt' ) +  " Error : " + oQuery:Error() + QUEBRA + cSqlx + QUEBRA )
-				nQErros++
-
-
-			Else
-
-
-
+				Hb_MemoWrit( 'sqlError.txt', Hb_MemoRead( 'sqlError.txt' ) +  " Error : " + cStr1 + "  ] " + oQuery:Error() + QUEBRA + cSqlx + QUEBRA )
+				nQErros++	
 			End If
-
+		
 			oQuery:Destroy()
 			oQuery := Nil
 
 
-			SaveLog( 'LogImport.txt', time() + ' Importando Linha Tipo '  + Left( cLine, 6 ) + " Linha Arquivo : " + Alltrim( Str(nI ) ) +  QUEBRA )
+			SaveLog( 'LogImport.txt', time() + ' Seq C100 : ' + Alltrim(Str(   nSeqNt  )) + " Importando Linha Tipo "  + Left( cLine, 6 ) + " Linha Arquivo : " + Alltrim( Str(nI ) ) +  QUEBRA  )
+
 
 			If Left( cLine, 6 ) = '|0100|'
 				nQ1++
@@ -1103,6 +1180,7 @@ End If
 
 cMsg := ''
 
+
 If ( nQ6 > 0 )
 
 // If nQ6 > 0
@@ -1153,6 +1231,78 @@ Do Events
 // Do Events
 
 Return
+
+/*/{PrxGetMax()
+
+
+
+REturn 
+	(long_description)
+	@type  Function
+	@author user
+	@since 23/12/2021
+	@version version
+	@param param_name, param_type, param_descr
+	@return return_var, return_type, return_description
+	@example
+	(examples)
+	@see (links_or_references)
+	/*/
+Function xGetMax(  oSrsv1 )
+  
+//	Local oSrvx1 := GetConexao()
+
+	Local cSql := "Select Count(*) AS T1 From Notasfiscais"
+	Local nQt1 := 0
+	Local oQry 
+	Local oRow1 
+
+	Local cAlias := 'TMP'
+
+
+/*
+	oQry := oSrsv1:Query(cSql)
+	//SaveLog('sqlcheck.txt'  , cSql + QUEBRA)
+	//SaveLo
+
+
+	If oSrsv1:NetErr()
+
+		MsgInfo( "Error ao Executar a Consulta COUNT : " + cSql + " : " + QUEBRA + oSrsv1:Error()  )
+
+		hb_memoWrit('sqlcheck.txt'  , cSql )		
+		oQry := Nil
+		Return 0
+
+	End If
+
+
+	oRow1 := oQry:GetRow(1)
+
+	nQt1 := oRow1:FieldGet(1)
+
+	//oSrvx1:Destroy()
+	//oSrvx1:=Nil 
+
+
+	oQry := NIL
+	*/
+
+	dbUseArea( .T.,,  cSql, cAlias )
+	dbSelectArea( cAlias )
+	dbGoTop()
+
+	hb_memoWrit('sqlcheck.txt'  , cSql )
+
+	nQt1 := T1
+
+	dbSelectArea( cAlias )
+	Use  
+
+
+REturn nQt1 
+	
+Return return_var
 
 
 Function xFormat( nPar1 )
@@ -1215,6 +1365,8 @@ Return aMtr
 
 
 
+
+
 Function xGetArq()
 
 	Local cFile := Getfile ( { { 'SPed','*.Txt' } }, 'Open File', '', .f., .t. )
@@ -1224,36 +1376,34 @@ Return cFile
 
 
 
-Function CheckChv(  cTabela, nIdEmp, cChave1, cValor , oObj  )
+Function CheckChv(  cTabela, nIdEmp , cCampo ,  nId1 )
 
 	Local lRet := .f.
 	Local cAlias := 'TMP'
 	Local oQry
 	Local oRow1
-/*
+
 	Local oSrvx1 := GetConexao()
 
 
-	Local cSql := "Select Count(*) as N1 from " + cTabela  + " where idEmpresa = " + Alltrim(Str(nIdEmp))
+	Local cSql := "Select Count(*) as N1 from " + cTabela  + " where idEmpresa = " + Alltrim(Str(nIdEmp)) + " and " + cCampo + " = " + ;
+	Alltrim(Str(  nId1 ))
 
 
-
-	If !Empty(Alltrim(cChave1))
-		cSql       += (" and " + cChave1 + " = " + Alltrim(cValor) )
-	End If
-
+	//oQry := oSrvx1:Query(cSql)
 
 	oQry := oSrvx1:Query(cSql)
 
    
-	//hb_memoWrit('sqlcheck.txt'  , hb_memoRead('sqlcheck.txt') +  cSql + QUEBRA)
+	SaveLog('sqlcheck.txt'  , cSql + QUEBRA)
 
 
+	//SaveLo
 
 
 	If oSrvx1:NetErr()
 
-		MsgInfo( "Error ao Executar a Consulta : " + cSql + " : " + QUEBRA + oSrvx1:Error()  , .f. )
+		MsgInfo( "Error ao Executar a Consulta : " + cSql + " : " + QUEBRA + oSrvx1:Error()  )
 
 		hb_memoWrit('sqlcheck.txt'  , cSql )
 
@@ -1264,66 +1414,25 @@ Function CheckChv(  cTabela, nIdEmp, cChave1, cValor , oObj  )
 
 		Return ''
 
+
 	End If
-
-
-
 
 
 	oRow1 := oQry:GetRow(1)
 	lRet := (oRow1:FieldGet(1) > 0)
 
-   oSrvx1:Destroy()
+	oSrvx1:Destroy()
+	oSrvx1:=Nil 
 
 
 	oQry := NIL
 
-	*/
-
 
 REturn lRet
 
 
 
-/*
 
-Function CheckChv(  cTabela  , nIdEmp , cChave1  , cValor )
-
-	Local lRet := .f.
-	Local cAlias := 'TMP'
-	
-	Local cSql := "Select Count(*) as N1 from " + cTabela  + " where idEmpresa = " + Alltrim(Str(nIdEmp)) 
-
-   
-   Do Events
-
-	If !Empty(Alltrim(cChave1))
-   	cSql       += (" and " + cChave1 + " = " + Alltrim(cValor) )
-	End If   
-
-	hb_memoWrit('parametros.txt'  , cSql + ' ' + cAlias )
-
-	dbUseArea( .T.   ,   ,  cSql, cAlias )
-	dbSelectArea( cAlias )
-	dbGoTop()
-
-	hb_memoWrit('sqlcheck.txt'  , cSql )
-
-	lRet := (n1 > 0)
-
-	dbSelectArea( cAlias )
-	Use  
-	
-
-   Do Events
-   Do Events
-
-	//lRet := .f.
-
-
-REturn lRet
-
-*/
 
 Function cSqlz1(  cTabela )
 
@@ -1348,7 +1457,8 @@ Function cSqlz1(  cTabela )
 	Next
 
 // - 1
-	cSql1 := Left( cSql2, Len( cSql2 ) - 3 )
+	cSql1 := Left( cSql2, Len( cSql2 ) - 3 ) 
+	
 
 	dbSelectArea( cAlias )
 	Use
@@ -1367,14 +1477,11 @@ Function SqlInsert( cSql1, aValores, aCamposF )
 
 	cValues := ''
 
-
-
 	For n1 := 1 to Len(   aValores )
 		cValues += Hb_AnsiToOem(aValores[ n1 ]) + "," + QUEBRA
 	Next
 
-// -1
-	cSqlx1 := cSql1 + ") Values (" + Left( cValues, Len( cValues ) - 3 )  + ")"
+	cSqlx1 := cSql1 + ") Values (" + Left( cValues, Len( cValues ) - 3 ) + ")"
 
 REturn cSqlx1
 
@@ -1501,4 +1608,16 @@ static FUNCTION NoAcento(cString)
 	cString := StrTran( cString, CRLF, " " )
 
 Return hb_AnsiToOem(cString)
+
+
+
+
+FUNCTION RandomN()
+
+   LOCAL cString
+
+   //hb_default( @cPath, hb_DirTemp() )
+   //hb_default( @cExt, "tmp" )
+
+   RETURN Int( 2.5 * hb_Random( Val(  '323' + StrTran( Time(), ":" )   ) ) )
 

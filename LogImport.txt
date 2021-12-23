@@ -1,55 +1,26 @@
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3145
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3146
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3236
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3237
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3238
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3148
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3239
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3150
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3151
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3152
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3153
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3240
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3241
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3155
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3242
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3157
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3243
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3159
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3244
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3161
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3245
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3163
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3246
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3247
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3165
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3166
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3249
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3250
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3168
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3169
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3252
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3253
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3171
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3254
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3173
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3255
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3175
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3256
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3257
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3258
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3259
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3260
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3177
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3178
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3262
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3179
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3263
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3181
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3264
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3183
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3265
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3185
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3186
- 17:50:22 Importando Linha Tipo |C170| Linha Arquivo : 3267
- 17:50:22 Importando Linha Tipo |C100| Linha Arquivo : 3187
+ 16:51:13 Seq C100 : 635689007 Importando Linha Tipo |C100| Linha Arquivo : 2341
+ 16:51:13 Seq C100 : 312816965 Importando Linha Tipo |C100| Linha Arquivo : 2350
+ 16:51:13 Seq C100 : 312816965 Importando Linha Tipo |C100| Linha Arquivo : 2342
+ 16:51:13 Seq C100 : 65439904 Importando Linha Tipo |C100| Linha Arquivo : 2351
+ 16:51:13 Seq C100 : 65439904 Importando Linha Tipo |C100| Linha Arquivo : 2343
+ 16:51:13 Seq C100 : 65439904 Importando Linha Tipo |C100| Linha Arquivo : 2343
+ 16:51:16 Seq C100 : 718576851 Importando Linha Tipo |C100| Linha Arquivo : 2344
+ 16:51:16 Seq C100 : 718576851 Importando Linha Tipo |C100| Linha Arquivo : 2344
+ 16:51:16 Seq C100 : 303382231 Importando Linha Tipo |C100| Linha Arquivo : 2345
+ 16:51:16 Seq C100 : 303382231 Importando Linha Tipo |C100| Linha Arquivo : 2353
+ 16:51:16 Seq C100 : 336466208 Importando Linha Tipo |C100| Linha Arquivo : 2346
+ 16:51:16 Seq C100 : 89537985 Importando Linha Tipo |C100| Linha Arquivo : 2346
+ 16:51:16 Seq C100 : 89537985 Importando Linha Tipo |C100| Linha Arquivo : 2347
+ 16:51:16 Seq C100 : 562609731 Importando Linha Tipo |C100| Linha Arquivo : 2348
+ 16:51:16 Seq C100 : 562609731 Importando Linha Tipo |C100| Linha Arquivo : 2347
+ 16:51:16 Seq C100 : 202246408 Importando Linha Tipo |C100| Linha Arquivo : 2349
+ 16:51:16 Seq C100 : 202246408 Importando Linha Tipo |C100| Linha Arquivo : 2348
+ 16:51:16 Seq C100 : 626149148 Importando Linha Tipo |C100| Linha Arquivo : 2350
+ 16:51:16 Seq C100 : 20170662 Importando Linha Tipo |C100| Linha Arquivo : 2350
+ 16:51:16 Seq C100 : 483160401 Importando Linha Tipo |C100| Linha Arquivo : 2351
+ 16:51:16 Seq C100 : 123147121 Importando Linha Tipo |C100| Linha Arquivo : 2351
+ 16:51:16 Seq C100 : 123147121 Importando Linha Tipo |C100| Linha Arquivo : 2352
+ 16:51:16 Seq C100 : 620297584 Importando Linha Tipo |C100| Linha Arquivo : 2352
+ 16:51:16 Seq C100 : 620297584 Importando Linha Tipo |C100| Linha Arquivo : 2353
+ 16:51:16 Seq C100 : 600451224 Importando Linha Tipo |C100| Linha Arquivo : 2353
+ 16:51:16 Seq C100 : 600451224 Importando Linha Tipo |C100| Linha Arquivo : 2354
