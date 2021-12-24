@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version 8.0.18)
-# Date: 2021-12-23 13:56:32
+# Date: 2021-12-24 12:59:24
 # Generator: MySQL-Front 6.0  (Build 2.20)
 
 
@@ -75,9 +75,11 @@ CREATE TABLE `itemnf` (
   `aliqconfins` decimal(8,4) DEFAULT NULL,
   `valconfins` decimal(10,2) DEFAULT NULL,
   `vlrabatido` decimal(10,2) DEFAULT NULL,
-  PRIMARY KEY (`Idempresa`,`iditemnf`),
+  `idsped` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Idempresa`,`iditemnf`,`idsped`),
   KEY `f1` (`codparti`),
-  KEY `numdoc` (`numdoc`,`serie`,`coditem`)
+  KEY `numdoc` (`numdoc`,`serie`,`coditem`),
+  KEY `fk9` (`Idempresa`,`idsped`,`iditemnf`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 #
@@ -117,9 +119,11 @@ CREATE TABLE `notasfiscais` (
   `vlrconfins` decimal(10,2) DEFAULT NULL,
   `indemitente` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `indoperacao` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`idempresa`,`idnotaf`,`codmodelo`),
+  `idsped` int(11) NOT NULL DEFAULT '0',
+  UNIQUE KEY `fk1` (`idempresa`,`idnotaf`,`chave`,`serie`,`numdoc`,`idsped`),
   KEY `f1` (`idempresa`,`numdoc`,`serie`,`chave`),
-  KEY `f2` (`idempresa`,`dtemissao`)
+  KEY `f2` (`idempresa`,`dtemissao`),
+  KEY `fk5` (`idempresa`,`idsped`,`idnotaf`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 #
@@ -144,10 +148,12 @@ CREATE TABLE `participantes` (
   `complemento` varchar(65) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `bairro` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `codparti` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`idempresa`,`Id`),
+  `idsped` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idempresa`,`Id`,`idsped`),
   KEY `f1` (`nome`),
   KEY `f2` (`cnpj`),
-  KEY `f3` (`cpf`)
+  KEY `f3` (`cpf`),
+  KEY `fk9` (`idempresa`,`idsped`,`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 #
@@ -174,9 +180,11 @@ CREATE TABLE `produtos` (
   `lista` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `icms` decimal(10,2) DEFAULT NULL,
   `cest` varchar(7) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`Idempresa`,`id`),
+  `idsped` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Idempresa`,`id`,`idsped`),
   KEY `f1` (`descricao`),
-  KEY `f2` (`codncm`)
+  KEY `f2` (`codncm`),
+  KEY `fk9` (`Idempresa`,`idsped`,`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 #
@@ -204,11 +212,33 @@ CREATE TABLE `resumonfe` (
   `valoricmsst` decimal(10,2) DEFAULT NULL,
   `valreducao` decimal(10,2) DEFAULT NULL,
   `vlripi` decimal(10,2) DEFAULT NULL,
-  PRIMARY KEY (`Idempresa`,`numdoc`,`codpart`,`serie`,`cst`,`cfop`,`aliquota`),
-  KEY `f1` (`numdoc`)
+  `idsped` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Idempresa`,`numdoc`,`codpart`,`serie`,`cst`,`cfop`,`aliquota`,`idsped`),
+  KEY `f1` (`numdoc`),
+  KEY `f2` (`Idempresa`,`idsped`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 #
 # Data for table "resumonfe"
+#
+
+
+#
+# Structure for table "speds"
+#
+
+DROP TABLE IF EXISTS `speds`;
+CREATE TABLE `speds` (
+  `idemp` int(11) NOT NULL DEFAULT '0',
+  `Id` int(11) NOT NULL DEFAULT '0',
+  `tipoarq` varchar(1) NOT NULL DEFAULT '',
+  `periodo` varchar(16) NOT NULL DEFAULT '',
+  `data` date DEFAULT NULL,
+  PRIMARY KEY (`idemp`,`Id`),
+  KEY `fk1` (`data`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+#
+# Data for table "speds"
 #
 

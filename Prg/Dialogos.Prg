@@ -306,6 +306,8 @@ Function RlesaBt()
 Return
 
 
+
+
 FUNCTION xIniDialog( nTp )
 
    LOCAL cJanx 
@@ -314,6 +316,7 @@ FUNCTION xIniDialog( nTp )
    //:= cJanxDialog
    
    HB_SetCodePage( "PT850" )
+
    
    
    If (nTp == 1) .Or. ( nTp == 2 )
@@ -342,6 +345,8 @@ FUNCTION xIniDialog( nTp )
 		   End If
    End If
    
+
+
    
    If (nTp = 5)
    
@@ -497,6 +502,10 @@ FUNCTION InputEv2( cJan1 )
    
    End If
    
+
+
+
+   
    
    If (alltrim(cJan1) != "fDialogo")
    
@@ -576,7 +585,12 @@ FUNCTION InitDlg( aHandle, nTp1 )
    
    //msginfo('3')
 
+
+
+
 RETURN
+
+
 
 FUNCTION RetColor1( nInd1, nModel )
 
