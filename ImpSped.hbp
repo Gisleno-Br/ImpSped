@@ -2,11 +2,11 @@ Prg\Main.Prg
 Prg\CadCli.Prg
 Prg\Clientes.Prg
 Prg\Consultas.Prg
+Prg\Debugger.Prg
 Prg\Dialogos.Prg
 Prg\Filtros.Prg
 Prg\Funcoes.Prg
 Prg\impSped.Prg
-Prg\Debugger.Prg
 Prg\InputWindowEx.prg
 Prg\OwnButton.prg
 Prg\Rotinas.Prg

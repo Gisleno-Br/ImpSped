@@ -160,7 +160,7 @@ REQUEST SDDMY, SQLMIX
 
 ANNOUNCE RDDSYS
 
-DECLARE WINDOW fProgress 
+DECLARE WINDOW fProgress
 
 
 Function ImpSped()
@@ -211,10 +211,10 @@ Function ImpSped()
 
 
 
-	IF !hb_mtvm()
+	If !hb_mtvm()
 		MSGSTOP( "There is no support for multi-threading" )
 		QUIT
-	ENDIF
+	End If 
 
 
 	If !Empty( Alltrim( cArq1 ) )
@@ -255,108 +255,99 @@ Function ImpSped()
 
 		yEfect( cFName  )
 
-
-	Do Events
-
-
-	nIdEmpre := xGetMax( 'empresas' )+1
-	nIdSped  := Random(4356543)
+		Do Events
 
 
-
-	xWaitMsg( "Aguarde Preparando Estrutura...", {|| lRet := xPMatriz( cArq1 , nIdEmpre , nIdSped  ) } )
-
-
-	cMs1 := "Qt Reg 1 " + StrTran( Alltrim( Transform(Len( aMz1 ),"999,999,999,999"   ) ), ',', '.' )   + QUEBRA
-	cmS1 += "Qt Reg 2 " + Alltrim( Transform( Len( aMz2 ),"999,999,999,999"   )   ) + QUEBRA
-	cmS1 += "Qt Reg 3 " + Alltrim( Transform( Len( aMz3 ),"999,999,999,999"   )   ) + QUEBRA
-	cmS1 += "Qt Reg 4 " + Alltrim( Transform( Len( aMz4 ),"999,999,999,999"   )   ) + QUEBRA
-	cmS1 += "Qt Reg Total " + Alltrim( Transform( Len( aMC100 ),"999,999,999,999"   )   ) + QUEBRA
+		nIdEmpre := xGetIdEmp(    aMCabec[7]     )
 
 
-	If ( Len( aM150 ) + Len( aM200 ) == 0 )
-		MsgInfo( hb_AnsitoOem( 'Registros não localizado (M150,M200)!' ), .f. )
-		Return
+		If (nIdEmpre == 0)
+			nIdEmpre := xGetMax( 'empresas' )+1
+		End If 	
+
+		nIdSped  := Random(4356543)
+
+
+		xWaitMsg( "Aguarde Preparando Estrutura...", {|| lRet := xPMatriz( cArq1 , nIdEmpre , nIdSped  ) } )
+
+
+		cMs1 := "Qt Reg 1 " + StrTran( Alltrim( Transform(Len( aMz1 ),"999,999,999,999"   ) ), ',', '.' )   + QUEBRA
+		cmS1 += "Qt Reg 2 " + Alltrim( Transform( Len( aMz2 ),"999,999,999,999"   )   ) + QUEBRA
+		cmS1 += "Qt Reg 3 " + Alltrim( Transform( Len( aMz3 ),"999,999,999,999"   )   ) + QUEBRA
+		cmS1 += "Qt Reg 4 " + Alltrim( Transform( Len( aMz4 ),"999,999,999,999"   )   ) + QUEBRA
+		cmS1 += "Qt Reg Total " + Alltrim( Transform( Len( aMC100 ),"999,999,999,999"   )   ) + QUEBRA
+
+
+		If ( Len( aM150 ) + Len( aM200 ) == 0 )
+			MsgInfo( hb_AnsitoOem( 'Registros não localizado (M150,M200)!' ), .f. )
+			Return
+		End If
+
+
+		If Len( aMC170 ) == 0
+			msginfo( hb_AnsitoOem( 'Registros não localizado (M170)!' ), .f. )
+			Return
+		End If
+
+		If Len( aMC190 ) == 0
+			msginfo( hb_AnsitoOem( 'Registros não localizado (M190)!' ), .f. )
+			Return
+		End If
+
+
+		If ( Len( aMC100 ) == 0 )
+			msginfo( hb_AnsitoOem( 'Registros não localizado (MC100 + MC170)!' ), .f. )
+			Return
+		End If
+
+
+		If ( Len( aMz1 ) == 0 )
+			msginfo( hb_AnsitoOem( 'Registros não localizado (Z1 MC100 + MC170)!' ), .f. )
+			Return
+		Else
+
+			//	 msginfo( aMz2[1] )
+
+		End If
+
+		cTermino := ''
+
+
+		aThread  := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @DoSped() )
+
+
+
+		aThread2 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aM150, 'Reg 150',    .f.  , nIdSped  , nIdEmpre  )
+		aThread3 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aM200, 'Reg 200',    .f.  , nIdSped , nIdEmpre  )
+
+
+		aThread5 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMC170, 'Reg C170', .t.  ,  nIdSped , nIdEmpre    )
+
+
+		aThread6 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMy1, 'Reg C190-1', .t.   , nIdSped , nIdEmpre  )
+		aThread7 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMy2, 'Reg C190-2', .t.   , nIdSped , nIdEmpre  )
+		aThread8 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMy3, 'Reg C190-3', .t.   , nIdSped , nIdEmpre )
+		aThread9 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMy4, 'Reg C190-4', .t.   , nIdSped , nIdEmpre )
+
+		aThread13 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMy5, 'Reg C190-5', .t.  , nIdSped , nIdEmpre  )
+		aThread14 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMy6, 'Reg C190-6', .t.   , nIdSped , nIdEmpre )
+
+
+		aThread4  := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz1, 'Reg C100-1', .t.  , nIdSped  , nIdEmpre    )
+		aThread10 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz2, 'Reg C100-2', .t.  , nIdSped  , nIdEmpre   )
+		aThread11 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz3, 'Reg C100-3', .t.   , nIdSped , nIdEmpre  )
+		aThread12 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz4, 'Reg C100-4', .t.  , nIdSped  , nIdEmpre  )
+
+
+		aThread15 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz5, 'Reg C100-5', .t.   , nIdSped , nIdEmpre  )
+		aThread16 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz6, 'Reg C100-6', .t.   , nIdSped , nIdEmpre   )
+
+		lTermino := .f.
+		lSAida   := .f.
+
+
+
 	End If
-
-
-	If Len( aMC170 ) == 0
-		msginfo( hb_AnsitoOem( 'Registros não localizado (M170)!' ), .f. )
-		Return
-	End If
-
-	If Len( aMC190 ) == 0
-		msginfo( hb_AnsitoOem( 'Registros não localizado (M190)!' ), .f. )
-		Return
-	End If
-
-
-	If ( Len( aMC100 ) == 0 )
-		msginfo( hb_AnsitoOem( 'Registros não localizado (MC100 + MC170)!' ), .f. )
-		Return
-	End If
-
-	
-	If ( Len( aMz1 ) == 0 ) 
-		msginfo( hb_AnsitoOem( 'Registros não localizado (Z1 MC100 + MC170)!' ), .f. )
-		Return
-	else
-
-	//	 msginfo( aMz2[1] )	
-
-	End If
-
-
-
-	
-	cTermino := ''
-
-
-
-	aThread  := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @DoSped() )
-
-
-
-	aThread2 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aM150, 'Reg 150',    .f.  , nIdSped  , nIdEmpre  )
-	aThread3 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aM200, 'Reg 200',    .f.  , nIdSped , nIdEmpre  )
-
-
-	// aThread  := hb_threadStart(  HB_THREAD_INHERIT_PUBLIC, @xRode(), cArqT1, cArqCSV )
-
-
-	//aThread4 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMC100, 'Reg C100', .t.     )
-
-	aThread5 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMC170, 'Reg C170', .t.  ,  nIdSped , nIdEmpre    )
-
-
-	aThread6 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMy1, 'Reg C190-1', .t.   , nIdSped , nIdEmpre  )
-	aThread7 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMy2, 'Reg C190-2', .t.   , nIdSped , nIdEmpre  )
-	aThread8 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMy3, 'Reg C190-3', .t.   , nIdSped , nIdEmpre )
-	aThread9 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMy4, 'Reg C190-4', .t.   , nIdSped , nIdEmpre )
-
-	aThread13 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMy5, 'Reg C190-5', .t.  , nIdSped , nIdEmpre  )
-	aThread14 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMy6, 'Reg C190-6', .t.   , nIdSped , nIdEmpre )
-
-
-	aThread4  := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz1, 'Reg C100-1', .t.  , nIdSped  , nIdEmpre    )
-	aThread10 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz2, 'Reg C100-2', .t.  , nIdSped  , nIdEmpre   )
-	aThread11 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz3, 'Reg C100-3', .t.   , nIdSped , nIdEmpre  )
-	aThread12 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz4, 'Reg C100-4', .t.  , nIdSped  , nIdEmpre  )
-
-
-	aThread15 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz5, 'Reg C100-5', .t.   , nIdSped , nIdEmpre  )
-	aThread16 := hb_threadStart( HB_THREAD_INHERIT_PUBLIC, @ProcArq(),  aMz6, 'Reg C100-6', .t.   , nIdSped , nIdEmpre   )
-
-
-
-
-
-
-	lTermino := .f.
-	lSAida   := .f.
-
-
-End If
 
 REturn
 
@@ -414,7 +405,7 @@ Function xPMatriz( cArqx , nIdEmpre1 , nIdSpd1 )
 
 		If Left( cLine, 6 ) = '|0150|'
 			Aadd( aM150, Hb_AnsitoOem( NoAcento(cLine)   ) )
-		End If		
+		End If
 
 
 		If Left( cLine, 6 ) = '|0200|'
@@ -432,7 +423,7 @@ Function xPMatriz( cArqx , nIdEmpre1 , nIdSpd1 )
 
 			cNota     := ''
 			cSerie    := ''
-			cCodParti := ''			
+			cCodParti := ''
 
 
 			If ( Val( aMp[ 12 ] ) > 0 )
@@ -469,119 +460,119 @@ Function xPMatriz( cArqx , nIdEmpre1 , nIdSpd1 )
 			Aadd( aM150, cLine )
 		End If
 
-		Do Events
+	Do Events
 
-	Enddo
+Enddo
 
 
-	If lTermino
-		Return .f.
+If lTermino
+Return .f.
+End If
+
+n1 := 1
+
+nPasso := 1
+
+aMy1 := {}
+aMy2 := {}
+aMy3 := {}
+aMy4 := {}
+
+aMy5 := {}
+aMy6 := {}
+
+// Divide a Matriz principal em Seis menores para acelerar o processamento nos Threads.
+
+While ( n1 <= nCont1 )
+
+	If nPasso = 1
+		Aadd( aMy1, aMC190[ n1 ] )
 	End If
 
-	n1 := 1
+	If nPasso = 2
+		Aadd( aMy2, aMC190[ n1 ] )
+	End If
 
-	nPasso := 1
+	If nPasso = 3
+		Aadd( aMy3, aMC190[ n1 ] )
+	End If
 
-	aMy1 := {}
-	aMy2 := {}
-	aMy3 := {}
-	aMy4 := {}
+	If nPasso = 4
+		Aadd( aMy4, aMC190[ n1 ] )
+	End If
 
-	aMy5 := {}
-	aMy6 := {}
+	If nPasso = 5
+		Aadd( aMy5, aMC190[ n1 ] )
+	End If
 
-	// Divide a Matriz principal em Seis menores para acelerar o processamento nos Threads.
+	If nPasso = 6
+		Aadd( aMy6, aMC190[ n1 ] )
+		nPasso := 0
+	End If
 
-	While ( n1 <= nCont1 )
+	nPasso++
+	n1++
 
-		If nPasso = 1
-			Aadd( aMy1, aMC190[ n1 ] )
-		End If
+Do Events
 
-		If nPasso = 2
-			Aadd( aMy2, aMC190[ n1 ] )
-		End If
-
-		If nPasso = 3
-			Aadd( aMy3, aMC190[ n1 ] )
-		End If
-
-		If nPasso = 4
-			Aadd( aMy4, aMC190[ n1 ] )
-		End If
-
-		If nPasso = 5
-			Aadd( aMy5, aMC190[ n1 ] )
-		End If
-
-		If nPasso = 6
-			Aadd( aMy6, aMC190[ n1 ] )
-			nPasso := 0
-		End If
-
-		nPasso++
-		n1++
-
-		Do Events
-
-	Enddo
+Enddo
 
 
-	aMz1 := {}
-	aMz2 := {}
-	aMz3 := {}
-	aMz4 := {}
+aMz1 := {}
+aMz2 := {}
+aMz3 := {}
+aMz4 := {}
 
-	aMz5 := {}
-	aMz6 := {}
+aMz5 := {}
+aMz6 := {}
 
-	// Divide a Matriz principal em Quatro menores para acelerar o processamento nos Threads.
+// Divide a Matriz principal em Quatro menores para acelerar o processamento nos Threads.
 
-	n := 1
-	nPasso := 1
-
-
-	While n <= Len( aMC100 )
-
-		If nPasso = 1
-			Aadd( aMz1, aMC100[ n ] )
-		End If
-
-		If nPasso = 2
-			Aadd( aMz2, aMC100[ n ] )
-		End If
-
-		If nPasso = 3
-			Aadd( aMz3, aMC100[ n ] )
-		End If
-
-		If nPasso = 4
-			Aadd( aMz4, aMC100[ n ] )
-		End If
-
-		If nPasso = 5
-			Aadd( aMz5, aMC100[ n ] )
-		End If
-
-		If nPasso = 6
-			Aadd( aMz6, aMC100[ n ] )
-			nPasso := 0
-		End If
-
-		nPasso++
-		n++
-
-		Do Events
-
-	Enddo
-
-	oFile:Close()
+n := 1
+nPasso := 1
 
 
-	//msginfo( Str( Len( aMC100 ) )  )
+While n <= Len( aMC100 )
+
+	If nPasso = 1
+		Aadd( aMz1, aMC100[ n ] )
+	End If
+
+	If nPasso = 2
+		Aadd( aMz2, aMC100[ n ] )
+	End If
+
+	If nPasso = 3
+		Aadd( aMz3, aMC100[ n ] )
+	End If
+
+	If nPasso = 4
+		Aadd( aMz4, aMC100[ n ] )
+	End If
+
+	If nPasso = 5
+		Aadd( aMz5, aMC100[ n ] )
+	End If
+
+	If nPasso = 6
+		Aadd( aMz6, aMC100[ n ] )
+		nPasso := 0
+	End If
+
+	nPasso++
+	n++
+
+Do Events
+
+Enddo
+
+oFile:Close()
 
 
-	_ReleaseWindow( 'fWaitMsg' )
+//msginfo( Str( Len( aMC100 ) )  )
+
+
+_ReleaseWindow( 'fWaitMsg' )
 
 Return .t.
 
@@ -602,8 +593,8 @@ Function xStop1()
 
 	lTermino := .t.
 	lAborted := .t.
-	Do Events
-	Do Events
+Do Events
+Do Events
 
 
 // hb_threadDetach( aThread )   // close thread handle
@@ -637,12 +628,12 @@ Function xProgress()
 
 		SetProperty( 'fProgress', 'Progress1', 'Value', nGauge )
 
-		
-   		fProgress.Statusbar.Item(1) := "Id Sped : " + Alltrim(Str(nIdSped ))
+
+		fProgress.Statusbar.Item(1) := "Id Sped : " + Alltrim(Str(nIdSped ))
 
 
 		fProgress.Statusbar.Item(2) := "Registro Atual : " + Alltrim(cRegAtual) + "   -  " + ;
-		Iif( cTipoSped = '0' , " Remessa Original " , " Remessa Substituto ")  
+			Iif( cTipoSped = '0' , " Remessa Original " , " Remessa Substituto ")
 
 
 		If nGauge >= 85
@@ -654,114 +645,114 @@ Function xProgress()
 			SetProperty( "fProgress" , "LblErro1" , "Value" , Alltrim(Str(   nQErros ) ) + ' Erros Encontrados! ' )
 		End If
 
-		Do Events
+	Do Events
 
-		hb_idleSleep( .01  )
+	hb_idleSleep( .01  )
 
-		If !lOkDb
-			If !lAviso
-				SetProperty( 'fProgress', 'LblMsg', 'Value', ' Tentando Conectar ao Banco de Dados.. ' )
-				lAviso := .t.
-			End If
-		Else
+	If !lOkDb
+		If !lAviso
+			SetProperty( 'fProgress', 'LblMsg', 'Value', ' Tentando Conectar ao Banco de Dados.. ' )
+			lAviso := .t.
+		End If
+	Else
 
-			If ( ( lAviso ) .And. ( !lAviso2 ) )
-				SetProperty( 'fProgress', 'LblMsg', 'Value', ' Lendo Linhas Arquivo e Gravando.. ' )
-				lAviso2 := .t.
-			End If
-
+		If ( ( lAviso ) .And. ( !lAviso2 ) )
+			SetProperty( 'fProgress', 'LblMsg', 'Value', ' Lendo Linhas Arquivo e Gravando.. ' )
+			lAviso2 := .t.
 		End If
 
-	Enddo
-
-
-
-	SetProperty( 'fProgress', 'LblMsg', 'Value', ' Processo Finalizado! .. ' )
-
-	hb_threadDetach( aThread2 )   // close thread handle
-	hb_threadQuitRequest( aThread2 )   //
-
-	hb_threadDetach( aThread3 )   // close thread handle
-	hb_threadQuitRequest( aThread3 )   //
-
-	hb_threadDetach( aThread4 )   // close thread handle
-	hb_threadQuitRequest( aThread4 )   //
-
-	hb_threadDetach( aThread5 )   // close thread handle
-	hb_threadQuitRequest( aThread5 )   //
-
-	hb_threadDetach( aThread6 )   // close thread handle
-	hb_threadQuitRequest( aThread6 )   //
-
-	hb_threadDetach( aThread7 )   // close thread handle
-	hb_threadQuitRequest( aThread7 )   //
-
-	hb_threadDetach( aThread8 )   // close thread handle
-	hb_threadQuitRequest( aThread8 )   //
-
-	hb_threadDetach( aThread9 )   // close thread handle
-	hb_threadQuitRequest( aThread9 )   //
-
-	hb_threadDetach( aThread10 )   // close thread handle
-	hb_threadQuitRequest( aThread10 )   //
-
-	hb_threadDetach( aThread11 )   // close thread handle
-	hb_threadQuitRequest( aThread11 )   //
-
-	hb_threadDetach( aThread12 )   // close thread handle
-	hb_threadQuitRequest( aThread12 )   //
-
-	hb_threadDetach( aThread13 )   // close thread handle
-	hb_threadQuitRequest( aThread13 )   //
-
-
-	hb_threadDetach( aThread14 )   // close thread handle
-	hb_threadQuitRequest( aThread14 )   //
-
-	hb_threadDetach( aThread15 )   // close thread handle
-	hb_threadQuitRequest( aThread15 )   //
-
-
-	hb_threadDetach( aThread16 )   // close thread handle
-	hb_threadQuitRequest( aThread16 )   //
-
-
-	
-	fProgress.Statusbar.Item(1) := "           "
-	fProgress.Statusbar.Item(2) := "           "
-
-
-	_ReleaseWindow( 'fProgress' )
-
-
-	If lAborted
-		yAviso( 'Processo de Importação Interrompido pelo Usuario.', .f. )
-	Else
-		yaviso( 'Processo Completo ! ' + QUEBRA + "Tempo Decorrido : " + timeAsString( Seconds() - nSe1  )   + ;
-			Iif(nQErros > 0 , QUEBRA + 'Alguns Erros Ocorreram no Processamento(SqlError.txt)'  , '' )    , .f. )
 	End If
 
-
-	nQErros := 0
-
+Enddo
 
 
-	//
 
-	DoMethod( 'Main', 'Refresh' )
-	DoMethod( 'Main', 'Show' )
+SetProperty( 'fProgress', 'LblMsg', 'Value', ' Processo Finalizado! .. ' )
 
-	EfectEnd( cFname )
+hb_threadDetach( aThread2 )   // close thread handle
+hb_threadQuitRequest( aThread2 )   //
 
-	DoMethod( 'Main', 'SetFocus' )
+hb_threadDetach( aThread3 )   // close thread handle
+hb_threadQuitRequest( aThread3 )   //
+
+hb_threadDetach( aThread4 )   // close thread handle
+hb_threadQuitRequest( aThread4 )   //
+
+hb_threadDetach( aThread5 )   // close thread handle
+hb_threadQuitRequest( aThread5 )   //
+
+hb_threadDetach( aThread6 )   // close thread handle
+hb_threadQuitRequest( aThread6 )   //
+
+hb_threadDetach( aThread7 )   // close thread handle
+hb_threadQuitRequest( aThread7 )   //
+
+hb_threadDetach( aThread8 )   // close thread handle
+hb_threadQuitRequest( aThread8 )   //
+
+hb_threadDetach( aThread9 )   // close thread handle
+hb_threadQuitRequest( aThread9 )   //
+
+hb_threadDetach( aThread10 )   // close thread handle
+hb_threadQuitRequest( aThread10 )   //
+
+hb_threadDetach( aThread11 )   // close thread handle
+hb_threadQuitRequest( aThread11 )   //
+
+hb_threadDetach( aThread12 )   // close thread handle
+hb_threadQuitRequest( aThread12 )   //
+
+hb_threadDetach( aThread13 )   // close thread handle
+hb_threadQuitRequest( aThread13 )   //
 
 
-	Flag_AlphaBlend_Effect := .f.
+hb_threadDetach( aThread14 )   // close thread handle
+hb_threadQuitRequest( aThread14 )   //
 
-	BT_ClientAreaInvalidateAll ( 'Main' )
+hb_threadDetach( aThread15 )   // close thread handle
+hb_threadQuitRequest( aThread15 )   //
 
 
-	DoMethod( 'Main', 'Show' )
+hb_threadDetach( aThread16 )   // close thread handle
+hb_threadQuitRequest( aThread16 )   //
+
+
+
+fProgress.Statusbar.Item(1) := "           "
+fProgress.Statusbar.Item(2) := "           "
+
+
+_ReleaseWindow( 'fProgress' )
+
+
+If lAborted
+	yAviso( 'Processo de Importação Interrompido pelo Usuario.', .f. )
+Else
+	yaviso( 'Processo Completo ! ' + QUEBRA + "Tempo Decorrido : " + timeAsString( Seconds() - nSe1  )   + ;
+		Iif(nQErros > 0 , QUEBRA + 'Alguns Erros Ocorreram no Processamento(SqlError.txt)'  , '' )    , .f. )
+End If
+
+
+nQErros := 0
+
+
+
+//
+
+DoMethod( 'Main', 'Refresh' )
+DoMethod( 'Main', 'Show' )
+
+EfectEnd( cFname )
+
+DoMethod( 'Main', 'SetFocus' )
+
+
+Flag_AlphaBlend_Effect := .f.
+
+BT_ClientAreaInvalidateAll ( 'Main' )
+
+
+DoMethod( 'Main', 'Show' )
 
 Return
 
@@ -817,13 +808,13 @@ Function ProcArq(  aMtr1, cStr1, lProgress  , nIdSped1  , nEmpresa  )
 
 	Local oSrv2 := GetConexao()
 
-	//DEFAULT oSrv := Nil 
+	//DEFAULT oSrv := Nil
 
-	
+
 	//Local aChaves := {}
 
 
-	//oSrv2 := GetConexao()	
+	//oSrv2 := GetConexao()
 
 
 	SET DATE BRIT
@@ -845,161 +836,159 @@ Function ProcArq(  aMtr1, cStr1, lProgress  , nIdSped1  , nEmpresa  )
 
 
 
-//	oSrv2:Query( 'SET global max_allowed_packet=104857600')
-
-	//oSrv2:Query( 'SET autocommit=0')
-
-
-
-	//oSrv2:Query( 'SET GLOBAL innodb_lock_wait_timeout = 25000')
-
-    //oSrv2:Query( 'SET innodb_lock_wait_timeout = 25000' )	
-
-
-
-
-	//rddSetDefault( "SQLMIX" )
 	HB_SetCodePage( "PT850" )
 
 	nIdEmp := nEmpresa
 
 	nI := 1
 
-	While ( nI <=  Len( aMtr1 ) ) .And. ( !lTermino )		
+	While ( nI <=  Len( aMtr1 ) ) .And. ( !lTermino )
+
+
+		lOkDb    := .t.
+
+
+		If ( Alltrim( cStr1 ) != "Reg C170" ) .And. ( Alltrim( cStr1 ) != "Reg C190-1" ) .And. ( Alltrim( cStr1 ) != "Reg C190-2" ) .And. ;
+				( Alltrim( cStr1 ) != "Reg C190-3" ) .And. ( Alltrim( cStr1 ) != "Reg C190-4" ) .And. ;
+				( Alltrim( cStr1 ) != "Reg C190-5" ) .And. ( Alltrim( cStr1 ) != "Reg C190-6" )
+			cLine    := Hb_AnsitoOem(aMtr1[ nI ])
+
+		Else
+
+			cNota     := aMtr1[ nI ][ 1 ]
+			cSerie    := aMtr1[ nI ][ 2 ]
+			cCodParti := aMtr1[ nI ][ 3 ]
+
+			cLine     := Hb_ansiToOem(aMtr1[nI][4]	)
+
+
+			If ( cChave1 != cNota + cSerie + cCodParti )
+				nItem     := 0
+				nItem1    := 0
+				cChave1   := cNota + cSerie + cCodParti
+			End If
+
+		End If
+
+
+		nLinha++
+
+		cSqlx := ''
+		lOkInsert := .f.
+
+		cRegAtual := Left( cLine, 6 )
+
+
+		If (Left( cLine, 6 ) = '|0000|')
+
+			aMCabec := StrToArray( "|", Alltrim( cLine )  )			
+			
+			If !xVerSped( aMCabec[4] , aMCabec[7] , aMCabec[3] )
+				yAviso("Ja Existe Sped importado para Essa Empresa neste Periodo." + QUEBRA + "Excluir Antes para importar Novamente." , .f.)
+				lTermino := .t.
+				Exit 
+			End If 
+
+
+			cValor   := DToC( date() )
+			cValDate := Right( cValor, 4 ) + '-' + SubStr( cValor, 4, 2 ) + '-' + Left( cValor, 2 )
+
+			cSqlX := SqlInsert(cSqlInsSPED ,  {  Alltrim( Str(nIdEmp ) ) ,    Alltrim(Str(nIdSped1))  , ;
+			QuotedStr(aMCabec[3]) ,  QuotedStr(aMCabec[4]+aMCabec[5]) , QuotedStr(cValDate)  , QuotedStr("Normal")   } )
+
 		
 
-			lOkDb    := .t.
+			cTipoSped := aMCabec[3]
+		
 
 
-			If ( Alltrim( cStr1 ) != "Reg C170" ) .And. ( Alltrim( cStr1 ) != "Reg C190-1" ) .And. ( Alltrim( cStr1 ) != "Reg C190-2" ) .And. ;
-					( Alltrim( cStr1 ) != "Reg C190-3" ) .And. ( Alltrim( cStr1 ) != "Reg C190-4" ) .And. ;
-					( Alltrim( cStr1 ) != "Reg C190-5" ) .And. ( Alltrim( cStr1 ) != "Reg C190-6" )
-				cLine    := Hb_AnsitoOem(aMtr1[ nI ])
 
-			Else
+		End If
 
-				cNota     := aMtr1[ nI ][ 1 ]
-				cSerie    := aMtr1[ nI ][ 2 ]
-				cCodParti := aMtr1[ nI ][ 3 ]
+		If Left( cLine, 6 ) = '|0005|'
+			aM1 := StrToArray( "|", Alltrim( cLine )  )
+		End If
 
-				cLine     := Hb_ansiToOem(aMtr1[nI][4]	)
+		// Clientes / Fornecedores
 
+		If Left( cLine, 6 ) = '|0150|'
 
-				If ( cChave1 != cNota + cSerie + cCodParti )
-					nItem     := 0
-					nItem1    := 0
-					cChave1   := cNota + cSerie + cCodParti
-				End If
+			aMP := StrToArray( "|", Alltrim( cLine )  )
 
-			End If
+			nIdCliente++
 
-
-			nLinha++
-
-			cSqlx := ''
-			lOkInsert := .f.
-
-			cRegAtual := Left( cLine, 6 )
-
-			If Left( cLine, 6 ) = '|0000|'
-
-				aMCabec := StrToArray( "|", Alltrim( cLine )  )
-
-				cValor   := DToC( date() )
-      			cValDate := Right( cValor, 4 ) + '-' + SubStr( cValor, 4, 2 ) + '-' + Left( cValor, 2 )
-
-				cSqlX := SqlInsert(cSqlInsSPED ,  {  Alltrim( Str(nIdEmp ) ) ,    Alltrim(Str(nIdSped1))  , ;
-				   aMCabec[3 ] ,  aMCabec[4]+aMCabec[5] , QuotedStr(cValDate)     } )   
-
-				cTipoSped := aMCabec[3 ]   
-
-				//msginfo(cSqlx )   
-
-
-			End If
-
-			If Left( cLine, 6 ) = '|0005|'
-				aM1 := StrToArray( "|", Alltrim( cLine )  )
-			End If
-
-			// Clientes / Fornecedores
-
-			If Left( cLine, 6 ) = '|0150|'
-
-				aMP := StrToArray( "|", Alltrim( cLine )  )
-
-				nIdCliente++
-
-				cSqlx := SqlInsert( cSqlIns150,   {  Alltrim( Str(nIdEmp ) ),  Alltrim( Str(nIdCliente ) ) , Hb_AnsiToOem(NoAcento((QuotedStr( aMp[ 3 ] )))), QuotedStr( aMp[ 5 ] ), QuotedStr( aMp[ 7 ] ), ;
+			cSqlx := SqlInsert( cSqlIns150,   {  Alltrim( Str(nIdEmp ) ),  Alltrim( Str(nIdCliente ) ) , Hb_AnsiToOem(NoAcento((QuotedStr( aMp[ 3 ] )))), QuotedStr( aMp[ 5 ] ), QuotedStr( aMp[ 7 ] ), ;
 				QuotedStr( aMp[ 6 ] ), QuotedStr( aMp[ 8 ] ), QuotedStr( fTiraChar( aMp[ 10 ] ) ), QuotedStr( NoAcento(fTiraChar( aMp[ 12 ] ) )), ;
-				Hb_AnsiToOem(QuotedStr(NoAcento( fTiraChar(   aMp[ 13 ]  ))  )),  QuotedStr( aMp[ 2 ] )  ,  Alltrim(Str(nIdSped1))   } )
+				Hb_AnsiToOem(QuotedStr(NoAcento( fTiraChar(   aMp[ 13 ]  ))  )),  QuotedStr( aMp[ 2 ] )  ,  Alltrim(Str(nIdSped1))  , QuotedStr("Normal")  } )
 
 
-			End If
+		End If
 
 
 
 
          *// Empresa
-			If Left( cLine, 6 ) = '|0100|'
+		If Left( cLine, 6 ) = '|0100|'
 
-				aM2 := StrToArray( "|", Alltrim( cLine )  )
-
-
-				cSqlx := SqlInsert( cSqlInsEMP, { Alltrim( Str(nIdEmp ) ),  QuotedStr( aMCabec[ 6 ] ), QuotedStr( aMCabec[ 7 ] ), QuotedStr( aMCabec[ 9 ] ), QuotedStr( aMCabec[ 10 ] ), ;
-					QuotedStr( aMCabec[ 14 ] ), QuotedStr( aMCabec[ 15 ] ), QuotedStr( aM1[ 2 ] ),  QuotedStr( aM1[ 4 ] ), QuotedStr( aM1[ 5 ] ), QuotedStr( aM1[ 6 ] ), ;
-					QuotedStr( aM1[ 7 ] ), QuotedStr( aM1[ 8 ] ), QuotedStr( aM1[ 10 ] ), QuotedStr( aM2[ 2 ] ), QuotedStr( aM2[ 3 ] ), QuotedStr( aM2[ 4 ] )      } )
+			aM2 := StrToArray( "|", Alltrim( cLine )  )
 
 
-				cRazaoEmp := Alltrim( aM1[ 2 ] )
-				//	cPeriodo := 
-		
-			End If
+
+
+			cSqlx := SqlInsert( cSqlInsEMP, { Alltrim( Str(nIdEmp ) ),  QuotedStr( aMCabec[ 6 ] ), QuotedStr( aMCabec[ 7 ] ), QuotedStr( aMCabec[ 9 ] ), QuotedStr( aMCabec[ 10 ] ), ;
+				QuotedStr( aMCabec[ 14 ] ), QuotedStr( aMCabec[ 15 ] ), QuotedStr( aM1[ 2 ] ),  QuotedStr( aM1[ 4 ] ), QuotedStr( aM1[ 5 ] ), QuotedStr( aM1[ 6 ] ), ;
+				QuotedStr( aM1[ 7 ] ), QuotedStr( aM1[ 8 ] ), QuotedStr( aM1[ 10 ] ), QuotedStr( aM2[ 2 ] ), QuotedStr( aM2[ 3 ] ), QuotedStr( aM2[ 4 ] )   , QuotedStr("Normal")    } )
+
+
+			cRazaoEmp := Alltrim( aM1[ 2 ] )
+			//	cPeriodo :=
+
+		End If
 
 
 			*// Produtos
-			If Left( cLine, 6 ) = '|0200|'
+		If Left( cLine, 6 ) = '|0200|'
 
-				aMP := StrToArray( "|", Alltrim( cLine )  )
+			aMP := StrToArray( "|", Alltrim( cLine )  )
 
-				nseqProd++
-
-
-				cSqlx := SqlInsert(  cSqlIns200,    {  Alltrim( Str(nIdEmp ) ),   Alltrim( Str(nseqProd ) ) ,  QuotedStr( aMp[ 2 ] ), QuotedStr( Hb_ansiToOem(fTiraChar(aMp[ 3 ] )) ), QuotedStr( aMp[ 4 ] ), ;
-					QuotedStr( aMp[ 6 ] ), QuotedStr( aMp[ 7 ] ), QuotedStr( aMp[ 8 ] ), ;
-					QuotedStr( aMp[ 9 ] ), QuotedStr( aMp[ 10 ] ), QuotedStr( aMp[ 11 ] ), xFormat( aMp[ 12 ] ),  QuotedStr( aMp[ 13 ] ) ,  Alltrim(Str(nIdSped1)) } )
+			nseqProd++
 
 
+			cSqlx := SqlInsert(  cSqlIns200,    {  Alltrim( Str(nIdEmp ) ),   Alltrim( Str(nseqProd ) ) ,  QuotedStr( aMp[ 2 ] ), QuotedStr( Hb_ansiToOem(fTiraChar(aMp[ 3 ] )) ), QuotedStr( aMp[ 4 ] ), ;
+				QuotedStr( aMp[ 6 ] ), QuotedStr( aMp[ 7 ] ), QuotedStr( aMp[ 8 ] ), ;
+				QuotedStr( aMp[ 9 ] ), QuotedStr( aMp[ 10 ] ), QuotedStr( aMp[ 11 ] ), xFormat( aMp[ 12 ] ),  QuotedStr( aMp[ 13 ] ) ,  Alltrim(Str(nIdSped1)) , QuotedStr("Normal")  } )
 
-			End If
+
+
+		End If
 
 			*// Resumo NFE
-			If ( Left( cLine, 6 ) = '|C190|' ) .And. ( !Empty( cNota ) )
+		If ( Left( cLine, 6 ) = '|C190|' ) .And. ( !Empty( cNota ) )
 
-				aMP := StrToArray( "|", Alltrim( cLine )  )
+			aMP := StrToArray( "|", Alltrim( cLine )  )
 
-				nItem1++
+			nItem1++
 
-				cSqlx := SqlInsert( cSqlInsC190,  {  Alltrim( Str(nIdEmp ) ), QuotedStr( cCodParti ), QuotedStr( cNota ), QuotedStr( cSerie ),  ;
-					QuotedStr( aMp[ 2 ] ), QuotedStr( alltrim( aMp[ 3 ] ) ), Alltrim( xFormat( aMp[ 4 ] ) ), Alltrim( xFormat( aMp[ 5 ] ) ), Alltrim( xFormat( aMp[ 6 ] ) ), ;
-					Alltrim( xFormat( aMp[ 7 ] ) ), Alltrim( xFormat( aMp[ 8 ] ) ), Alltrim( xFormat( aMp[ 9 ] ) ), Alltrim( xFormat( aMp[ 10 ] ) ), Alltrim( xFormat( aMp[ 11 ] ) )    , Alltrim(Str(nIdSped1))   } )
+			cSqlx := SqlInsert( cSqlInsC190,  {  Alltrim( Str(nIdEmp ) ), QuotedStr( cCodParti ), QuotedStr( cNota ), QuotedStr( cSerie ),  ;
+				QuotedStr( aMp[ 2 ] ), QuotedStr( alltrim( aMp[ 3 ] ) ), Alltrim( xFormat( aMp[ 4 ] ) ), Alltrim( xFormat( aMp[ 5 ] ) ), Alltrim( xFormat( aMp[ 6 ] ) ), ;
+				Alltrim( xFormat( aMp[ 7 ] ) ), Alltrim( xFormat( aMp[ 8 ] ) ), Alltrim( xFormat( aMp[ 9 ] ) ), Alltrim( xFormat( aMp[ 10 ] ) ), Alltrim( xFormat( aMp[ 11 ] ) )    , Alltrim(Str(nIdSped1))  , QuotedStr("Normal")  } )
 
 
-			End If
+		End If
 
-			If ( Left( cLine, 6 ) = '|C170|' ) .And. ( !Empty( cCodParti ) )
+		If ( Left( cLine, 6 ) = '|C170|' ) .And. ( !Empty( cCodParti ) )
 
-				aMP := StrToArray( "|", Alltrim( cLine )  )
+			aMP := StrToArray( "|", Alltrim( cLine )  )
 
-				//lOkInsert := !CheckChv( 'itemnf', nIdEmp, 'CONCAT( codparti , numdoc , serie , coditem)', alltrim( QuotedStr( cCodParti + cNota + cSerie + aMp[ 3 ] ) )  )
+			//lOkInsert := !CheckChv( 'itemnf', nIdEmp, 'CONCAT( codparti , numdoc , serie , coditem)', alltrim( QuotedStr( cCodParti + cNota + cSerie + aMp[ 3 ] ) )  )
 
-				//nItem++
+			//nItem++
 
-				nIdSeq1++
+			nIdSeq1++
 
-				//	If !lOkInsert
+			//	If !lOkInsert
 
-				cSqlx := SqlInsert( cSqlInsC170,  {  Alltrim( Str(nIdEmp ) ),   Alltrim( Str(  nIdSeq1   ) )  ,    QuotedStr( cCodParti ), QuotedStr( cNota ), QuotedStr( cSerie ),  ;
+			cSqlx := SqlInsert( cSqlInsC170,  {  Alltrim( Str(nIdEmp ) ),   Alltrim( Str(  nIdSeq1   ) )  ,    QuotedStr( cCodParti ), QuotedStr( cNota ), QuotedStr( cSerie ),  ;
 				QuotedStr( aMp[ 3 ] ), QuotedStr( NoAcento(fTiraChar( aMp[ 4 ] ) )), Alltrim( xFormat( aMp[ 5 ] ) ), ;
 				QuotedStr( aMp[ 6 ] ), Alltrim( xFormat( aMp[ 7 ] ) ), Alltrim( xFormat( aMp[ 8 ] ) ), QuotedStr( Alltrim( aMp[ 10 ] ) ), QuotedStr( Alltrim( aMp[ 11 ] ) ), QuotedStr( Alltrim( aMp[ 12 ] ) ),  ;
 				Alltrim( xFormat( aMp[ 13 ] ) ), Alltrim( xFormat( aMp[ 14 ] ) ), Alltrim( xFormat( aMp[ 15 ] ) ), Alltrim( xFormat( aMp[ 16 ] ) ), ;
@@ -1007,104 +996,102 @@ Function ProcArq(  aMtr1, cStr1, lProgress  , nIdSped1  , nEmpresa  )
 				QuotedStr( Alltrim( aMp[ 20 ] ) ),   Alltrim( xFormat( aMp[ 22 ] ) ), Alltrim( xFormat( aMp[ 23 ] ) ), Alltrim( xFormat( aMp[ 24 ] ) ), ;
 				QuotedStr( Alltrim( aMp[ 25 ] ) ), Alltrim( xFormat( aMp[ 26 ] ) ), Alltrim( xFormat( aMp[ 27 ] ) ), Alltrim( xFormat( aMp[ 30 ] ) ), ;
 				QuotedStr( Alltrim( aMp[ 31 ] ) ), Alltrim( xFormat( aMp[ 32 ] ) ), Alltrim( xFormat( aMp[ 33 ] ) ), Alltrim( xFormat( aMp[ 36 ] ) ), ;
-				Alltrim( xFormat( aMp[ 38 ] ) )  , Alltrim(Str(nIdSped1))    }  )
+				Alltrim( xFormat( aMp[ 38 ] ) )  , Alltrim(Str(nIdSped1))    , QuotedStr("Normal")  }  )
 
-			End If
+		End If
 
 
 
 			*// Notas Entrada \Cabecalho
-			If Left( cLine, 6 ) = '|C100|'
+		If Left( cLine, 6 ) = '|C100|'
 
-				aMP := StrToArray( "|", Alltrim( cLine )  )
+			aMP := StrToArray( "|", Alltrim( cLine )  )
 
-				If ( Val( aMp[ 12 ] ) > 0 )
+			If ( Val( aMp[ 12 ] ) > 0 )
 
-				
+				nSeqNt := RandomN()
 
-					nSeqNt := RandomN()
-				
 
-					
-					If nSeqNt > 0 
+				If nSeqNt > 0
 
-						cSqlx := SqlInsert( cSqlInsC100,  {  Alltrim( Str(nIdEmp ) ),  Alltrim(Str(nSeqNt  ))  ,  QuotedStr( aMp[ 4 ] ), QuotedStr( aMp[ 5 ] ), QuotedStr( aMp[ 6 ] ), ;
+					cSqlx := SqlInsert( cSqlInsC100,  {  Alltrim( Str(nIdEmp ) ),  Alltrim(Str(nSeqNt  ))  ,  QuotedStr( aMp[ 4 ] ), QuotedStr( aMp[ 5 ] ), QuotedStr( aMp[ 6 ] ), ;
 						QuotedStr( aMp[ 7 ] ), QuotedStr( aMp[ 8 ] ), QuotedStr( fTiraChar( aMp[ 9 ] ) ), QuotedStr( ConvDt( aMp[ 10 ] ) ), ;
 						QuotedStr( ConvDt( aMp[ 11 ] ) ),   Alltrim( xFormat( aMp[ 12 ] )  ),   alltrim ( QuotedStr( aMp[ 13 ] ) ), ;
 						Alltrim( xFormat( aMp[ 14 ] ) ), Alltrim( QuotedStr( aMp[ 17 ] ) ), Alltrim( xFormat( aMp[ 18 ] ) ), Alltrim( xFormat( aMp[ 19 ] ) ), ;
 						Alltrim( xFormat( aMp[ 20 ] ) ), Alltrim( xFormat( aMp[ 21 ] ) ), Alltrim( xFormat( aMp[ 22 ] ) ), Alltrim( xFormat( aMp[ 23 ] ) ), Alltrim( xFormat( aMp[ 24 ] ) ), ;
-						Alltrim( xFormat( aMp[ 25 ] ) ), Alltrim( xFormat( aMp[ 26 ] ) ), Alltrim( xFormat( aMp[ 27 ] ) ), QuotedStr( alltrim( aMp[ 3 ] ) ), QuotedStr( alltrim( aMp[ 2 ] ) )   ,  Alltrim(Str(nIdSped1))   }   )
-						
-					End If 	
-
-
-
-					//End If					
-					//hb_idlesleep(0.07)
-
-					
-   					//hb_threadWaitForAll()
-
-
-
-					nItem     := 0
-					nItem1    := 0
-
-				Else
-
-					cNota     := ''
-					cSerie    := ''
-					cCodParti := ''
-					nItem     := 0
-					nItem1    := 0
+						Alltrim( xFormat( aMp[ 25 ] ) ), Alltrim( xFormat( aMp[ 26 ] ) ), Alltrim( xFormat( aMp[ 27 ] ) ), QuotedStr( alltrim( aMp[ 3 ] ) ), QuotedStr( alltrim( aMp[ 2 ] ) )   ,  Alltrim(Str(nIdSped1))   , ;
+						QuotedStr("Normal") }   )
 
 				End If
-			End If 
-
-			If ( !Empty( cSqlx ) )
-
-				oQuery := oSrv2:Query( cSqlx )
-
-				IF oQuery:NetErr()
-					Hb_MemoWrit( 'sqlError.txt', Hb_MemoRead( 'sqlError.txt' ) +  " Error : " + cStr1 + "  ] " + oQuery:Error() + QUEBRA + cSqlx + QUEBRA )
-					nQErros++	
-				End If
-			
-				oQuery:Destroy()
-				oQuery := Nil
 
 
-				SaveLog( 'LogImport.txt', time() + ' Seq C100 : ' + Alltrim(Str(   nSeqNt  )) + " Importando Linha Tipo "  + Left( cLine, 6 ) + " Linha Arquivo : " + Alltrim( Str(nI ) ) +  QUEBRA  )
+
+				//End If
+				//hb_idlesleep(0.07)
 
 
-				If Left( cLine, 6 ) = '|0100|'
-					nQ1++
-				End If
+				//hb_threadWaitForAll()
 
-				If Left( cLine, 6 ) = '|0150|'
-					nQ2++
-				End If
 
-				If Left( cLine, 6 ) = '|0200|'
-					nQ3++
-				End If
 
-				If Left( cLine, 6 ) = '|C100|'
-					nQ4++
-				End If
+				nItem     := 0
+				nItem1    := 0
 
-				If Left( cLine, 6 ) = '|C170|'
-					nQ5++
-				End If
+			Else
 
-				If Left( cLine, 6 ) = '|C190|'
-					nQ6++
-				End If
-
+				cNota     := ''
+				cSerie    := ''
+				cCodParti := ''
+				nItem     := 0
+				nItem1    := 0
 
 			End If
+		End If
 
-			nI++
+		If ( !Empty( cSqlx ) )
+
+			oQuery := oSrv2:Query( cSqlx )
+
+			IF oQuery:NetErr()
+				Hb_MemoWrit( 'sqlError.txt', Hb_MemoRead( 'sqlError.txt' ) +  " Error : " + cStr1 + "  ] " + oQuery:Error() + QUEBRA + cSqlx + QUEBRA )
+				nQErros++
+			End If
+
+			oQuery:Destroy()
+			oQuery := Nil
+
+
+			SaveLog( 'LogImport.txt', time() + ' Seq C100 : ' + Alltrim(Str(   nSeqNt  )) + " Importando Linha Tipo "  + Left( cLine, 6 ) + " Linha Arquivo : " + Alltrim( Str(nI ) ) +  QUEBRA  )
+
+
+			If Left( cLine, 6 ) = '|0100|'
+				nQ1++
+			End If
+
+			If Left( cLine, 6 ) = '|0150|'
+				nQ2++
+			End If
+
+			If Left( cLine, 6 ) = '|0200|'
+				nQ3++
+			End If
+
+			If Left( cLine, 6 ) = '|C100|'
+				nQ4++
+			End If
+
+			If Left( cLine, 6 ) = '|C170|'
+				nQ5++
+			End If
+
+			If Left( cLine, 6 ) = '|C190|'
+				nQ6++
+			End If
+
+
+		End If
+
+		nI++
 
 
 	Enddo
@@ -1143,11 +1130,11 @@ Function ProcArq(  aMtr1, cStr1, lProgress  , nIdSped1  , nEmpresa  )
 
 	If ( nQ6 > 0 )
 
-	// If nQ6 > 0
-	// cMsg += "Qtde. Resumo NF Incluidos (C190): " + Alltrim(Str(  nQ6 )) + QUEBRA
-	// End If
+		// If nQ6 > 0
+		// cMsg += "Qtde. Resumo NF Incluidos (C190): " + Alltrim(Str(  nQ6 )) + QUEBRA
+		// End If
 
-	// lTermino := .t.
+		// lTermino := .t.
 
 		/*
 	If nQ2 > 0
@@ -1175,10 +1162,10 @@ Function ProcArq(  aMtr1, cStr1, lProgress  , nIdSped1  , nEmpresa  )
 	End If
 	*/
 
-	// msginfo( Hb_ansiToOem("Processo de Importação Concluido!") +  QUEBRA +   cMsg )
+		// msginfo( Hb_ansiToOem("Processo de Importação Concluido!") +  QUEBRA +   cMsg )
 
 	Else
-	// msginfo( Hb_ansiToOem("Processo de Importação Concluido!") )
+		// msginfo( Hb_ansiToOem("Processo de Importação Concluido!") )
 	End If
 
 	SaveLog( 'LogFin1.txt', Dtoc( date() ) + ' ' + time() + ' Concluido !  Importação ' + cStr1 + ' Tempo : ' + timeAsString( Seconds() - nSeca ) + QUEBRA )
@@ -1187,7 +1174,7 @@ Function ProcArq(  aMtr1, cStr1, lProgress  , nIdSped1  , nEmpresa  )
 	oSrv2 := Nil
 
 
-	Do Events
+Do Events
 // Do Events
 
 Return
@@ -1196,26 +1183,26 @@ Return
 
 
 
-REturn 
-	(long_description)
-	@type  Function
-	@author user
-	@since 23/12/2021
-	@version version
-	@param param_name, param_type, param_descr
-	@return return_var, return_type, return_description
-	@example
-	(examples)
-	@see (links_or_references)
+REturn
+(long_description)
+@type  Function
+@author user
+@since 23/12/2021
+@version version
+@param param_name, param_type, param_descr
+@return return_var, return_type, return_description
+@example
+(examples)
+@see (links_or_references)
 	/*/
 Function xGetMax( cTabela )
-  
+
 //	Local oSrvx1 := GetConexao()
 
 	Local cSql := "Select Count(*) AS T1 From " + cTabela
 	Local nQt1 := 0
-	Local oQry 
-	Local oRow1 
+	Local oQry
+	Local oRow1
 
 	Local cAlias := 'TMP'
 
@@ -1257,11 +1244,11 @@ Function xGetMax( cTabela )
 	nQt1 := T1
 
 	dbSelectArea( cAlias )
-	Use  
+	Use
 
 
-REturn nQt1 
-	
+REturn nQt1
+
 Return return_var
 
 
@@ -1344,14 +1331,14 @@ Function CheckChv(  cTabela, nIdEmp , cCampo ,  nId1 )
 
 
 	Local cSql := "Select Count(*) as N1 from " + cTabela  + " where idEmpresa = " + Alltrim(Str(nIdEmp)) + " and " + cCampo + " = " + ;
-	Alltrim(Str(  nId1 ))
+		Alltrim(Str(  nId1 ))
 
 
 	//oQry := oSrvx1:Query(cSql)
 
 	oQry := oSrvx1:Query(cSql)
 
-   
+
 	SaveLog('sqlcheck.txt'  , cSql + QUEBRA)
 
 
@@ -1379,7 +1366,7 @@ Function CheckChv(  cTabela, nIdEmp , cCampo ,  nId1 )
 	lRet := (oRow1:FieldGet(1) > 0)
 
 	oSrvx1:Destroy()
-	oSrvx1:=Nil 
+	oSrvx1:=Nil
 
 
 	oQry := NIL
@@ -1414,8 +1401,8 @@ Function cSqlz1(  cTabela )
 	Next
 
 // - 1
-	cSql1 := Left( cSql2, Len( cSql2 ) - 3 ) 
-	
+	cSql1 := Left( cSql2, Len( cSql2 ) - 3 )
+
 
 	dbSelectArea( cAlias )
 	Use
@@ -1498,7 +1485,7 @@ Static FUNCTION fTiraChar( wCampo )
 
 	FOR i := 1 TO Len( wCampo )
 		IF SubStr( wCampo, i, 1 ) == "'" .OR. SubStr( wCampo, i, 1 ) == ")" .OR. SubStr( wCampo, i, 1 ) == "(" .OR. SubStr( wCampo, i, 1 ) == "*" .OR. SubStr( wCampo, i, 1 ) == "/"  .OR. SubStr( wCampo, i, 1 ) == "\"  .OR. SubStr( wCampo, i, 1 ) == '%' .OR. SubStr( wCampo, i, 1 ) == "-" ;
-				.OR. SubStr( wCampo, i, 1 ) == "\" .or. SubStr( wCampo, i, 1 ) == "á"  .or. SubStr( wCampo, i, 1 ) == "¡"  
+				.OR. SubStr( wCampo, i, 1 ) == "\" .or. SubStr( wCampo, i, 1 ) == "á"  .or. SubStr( wCampo, i, 1 ) == "¡"
 
 		ELSE
 			cStr1 += SubStr( wCampo, i, 1 )
@@ -1507,32 +1494,90 @@ Static FUNCTION fTiraChar( wCampo )
 
 RETURN cStr1
 
+
+Function xGetIdEmp(cCnpj)
+
+	Local oServer := GetConexao()
+	Local nRet := 0
+	Local cSql := "SELECT ID FROM EMPRESAS WHERE CNPJ = '" + cCnpj + "' AND STATUS = 'Normal'"
+	Local oQry := Nil
+
+
+	saveLog( 'hbSave2.Txt' , cSql) 
+	
+	oQry := oServer:Query(cSql)
+
+
+	If oQry:LastRec() > 0
+
+		oRow := oQry:GetRow(1)
+
+		nRet := GetCampo(oRow , 'ID')
+
+	End If
+
+
+	oServer:Destroy()
+	oServer := Nil
+
+	oQry := Nil
+//	oQry:Destroy()
+
+
+Return nRet
+
+
+Function xVerSped(cData , cCnpj1 , cTipox )
+
+	Local nIdEmpresa := xGetIdEmp(cCnpj1)
+	Local lRet := .t.
+	Local cSql := "select count(*) as T1 from speds where (idemp = " + alltrim(Str( nIdEmpresa)) + ")"
+
+
+	LOCAL oServ   := GetConexao()
+	LOCAL oRow
+	LOCAL oQuery
+	LOCAL cDesc := ''
+
+	cSql += " and (Left(periodo,8) = " + QuotedStr(Left(cData,8)) + ")"
+	cSql += " and (tipoarq = "  + QuotedStr(cTipox)  + ") And (status = 'Normal')"
+
+	oQuery := oServ:Query( cSql )
+	
+	
+	If oQuery:LastRec() > 0
+		oRow := oQuery:GetRow(1)
+		lRet := (GetCampo(oRow , 'T1') = 0)
+	End If
+	
+	oServer:Destroy()
+	oServer := Nil
+
+	oQuery := Nil
+//	oQuery:Destroy()
+
+Return lRet 
+
+
+
+
+
 static FUNCTION NoAcento(cStrp1)
 	Local cChar  := ""
 	Local nX     := 0
 	Local nY     := 0
-	Local cVogal := "aeiouAEIOU"  
+	Local cVogal := "aeiouAEIOU"
 	Local cAgudo := "áéíóú"+"ÁÉÍÓÚ"
 	Local cCircu := "âêîôû"+"ÂÊÎÔÛ"
 	Local cTrema := "äëïöü"+"ÄËÏÖÜ"
 	Local cCrase := "àèìòù"+"ÀÈÌÒÙ"
 	Local cTio   := "ãõÃÕ"
 	Local cCecid := "çÇ"
-	Local cMaior := "&lt;"   
+	Local cMaior := "&lt;"
 	Local cMenor := "&gt;"
 	Local c1 := "½"
 	//Local cString := cStrp1
-	Local cString := cStrp1  
-
-	//¢
-	//"á"
-
-
-//	If ("ª" $ cStrp1 )
-//		cString := Hb_ansiToOem(cStrp1)  
-		//msginfo( cString )
-//	End If 
-
+	Local cString := cStrp1
 
 
 	For nX:= 1 To Len(cString)
@@ -1540,8 +1585,8 @@ static FUNCTION NoAcento(cStrp1)
 		IF cChar$cAgudo+cCircu+cTrema+cCecid+cTio+cCrase
 			nY:= At(cChar,cAgudo)
 			If nY > 0
-				cString := StrTran(cString,cChar,SubStr(cVogal,nY,1))				
-   				//SaveLog('acento.txt',cString + '  ' + SubStr(cVogal,nY,1) + QUEBRA)
+				cString := StrTran(cString,cChar,SubStr(cVogal,nY,1))
+				//SaveLog('acento.txt',cString + '  ' + SubStr(cVogal,nY,1) + QUEBRA)
 
 			EndIf
 			nY:= At(cChar,cCircu)
@@ -1584,10 +1629,10 @@ Return Hb_ansiToOem(cString)
 
 FUNCTION RandomN()
 
-   LOCAL cString
+	LOCAL cString
 
-   //hb_default( @cPath, hb_DirTemp() )
-   //hb_default( @cExt, "tmp" )
+	//hb_default( @cPath, hb_DirTemp() )
+	//hb_default( @cExt, "tmp" )
 
-   RETURN Int( 2.5 * hb_Random( Val(  '323' + StrTran( Time(), ":" )   ) ) )
+RETURN Int( 2.5 * hb_Random( Val(  '323' + StrTran( Time(), ":" )   ) ) )
 

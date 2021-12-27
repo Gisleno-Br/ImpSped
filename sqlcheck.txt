@@ -1,1 +1,0 @@
-Select Count(*) AS T1 From empresas
