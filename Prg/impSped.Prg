@@ -35,12 +35,9 @@ Static aThread3 := Nil
 Static aThread4 := Nil
 Static aThread5 := Nil
 Static aThread6 := Nil
-
 Static aThread7 := Nil
 Static aThread8 := Nil
-
 Static aThread9 := Nil
-
 Static aThread10 := Nil
 Static aThread11 := Nil
 
@@ -54,22 +51,18 @@ Static oServer170
 
 Static oServer120
 
+
 Static oServer200
 Static oServer190
 
 Static nSeqNt := 0
 
 
-
 Static aThread16 := Nil
-
 Static lAborted := .f.
-
 Static lOkDb    := .t.
-
 Static cSqlIns150
 Static cSqlIns200
-
 Static cSqlInsC100
 Static cSqlInsC170
 
