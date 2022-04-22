@@ -30,7 +30,7 @@ DEFINE WINDOW TEMPLATE AT 567 , 1 WIDTH 194 HEIGHT 43 VIRTUAL WIDTH Nil VIRTUAL 
         COL    10
         WIDTH  32
         HEIGHT 32
-        PICTURE "img\logo.png"
+        PICTURE "LOGO1"
         HELPID Nil
         VISIBLE .T.
         STRETCH .F.

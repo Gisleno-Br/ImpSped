@@ -1,3 +1,14 @@
+ update dicionario set tamdisp = 64 where tabela = 'Clientes' and camposistema = 'Nome' ;
+ COMMIT 
+ 
+
+SELECT * FROM dicionario WHERE tabela = 'clientes'
+
+
+update dicionario set tamdisp = 46 where tabela = 'Clientes' and camposistema = 'Nome'
+
+
+
 SELECT * FROM notasfiscais WHERE chave = '24190103656804001707651080000051071000051078'
 
 DELETE FROM notasfiscais;
